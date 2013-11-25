@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Awesomium.Core;
+using Awesomium.Windows.Forms;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 
@@ -21,8 +23,19 @@ namespace PureSeeder.Forms
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
 
+            _context.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
+            ((IWebView) webControl1).ParentWindow = browserPanel.Handle;
             LoadBattlelog();
+
+            webControl1.DocumentReady += BrowserChanged;
         }
 
         private Form1()
@@ -34,22 +47,77 @@ namespace PureSeeder.Forms
         {
             serverSelector.DataSource = _context.Servers;
             serverSelector.DisplayMember = "Name";
+
+            curPlayers.DataBindings.Add("Text", _context, "CurrentPlayers" );
+            maxPlayers.DataBindings.Add("Text", _context, "ServerMaxPlayers");
         }
 
         private void LoadBattlelog()
         {
-            webControl1.Source = GetAddress(serverSelector);
-        }
-
-        private void serverSelector_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            webControl1.Source = GetAddress((ComboBox)sender);
+            LoadPage(GetAddress(serverSelector));
         }
 
         private Uri GetAddress(ComboBox cb)
         {
             var address = ((Server) cb.SelectedItem).Address;
             return new Uri(address);
+        }
+
+        private void LoadPage(Uri address)
+        {
+            webControl1.Source = address;
+            //UpdateContext();
+        }
+
+        static void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            
+        }
+
+        void BrowserChanged(object sender, EventArgs e)
+        {
+            //System.Threading.Thread.Sleep(1000); // Testcode
+            UpdateContext();
+        }
+
+        private void UpdateContext()
+        {
+            var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+
+            // Update the context
+            // Note: This is super ugly.
+            //  - Awesomium doesn't have a reliable way of determining when a page is completely finished loading
+            //  - Battlelog finshes loading the DOM, then JS is processed which alters it, Awesomium fires event on DOM Load
+            //  - This just retries and induces an artificial delay to try to let it finish loading
+            //  - Hopefully futrue versions of Awesomium will make this cleaner
+            for (var i = 0; i < 10; i++)
+            {
+                _context.UpdateStatus(source);
+
+                if (_context.CurrentPlayers != null)
+                {
+                    return;
+                }
+                
+                // Delay 50 ms and try again
+                System.Threading.Thread.Sleep(50);
+                UpdateContext();
+            }
+        }
+
+        private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)
+        {
+            
+        }
+
+        private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            LoadPage(GetAddress((ComboBox)sender));
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 
@@ -20,7 +21,14 @@ namespace PureSeeder.Core.Initialization
 
             if (type == typeof (IDataContext))
                 return new CurrentContext(
-                    Resolve<IPureConfigHelper>());
+                    Resolve<IPureConfigHelper>(),
+                    Resolve<IDataContextUpdater[]>());
+
+            if (type == typeof (IDataContextUpdater[]))
+                return new List<IDataContextUpdater>
+                    {
+                        new PlayerCountsUpdater(),
+                    }.ToArray();
 
             throw new ArgumentException(
                 String.Format("DefaultContainer cannot retrieve an instance of the required type: {0}", type.Name));
