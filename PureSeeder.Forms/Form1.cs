@@ -22,6 +22,7 @@ namespace PureSeeder.Forms
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
+            ((IWebView) webControl1).ParentWindow = this.Handle;
 
             _context.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
         }
