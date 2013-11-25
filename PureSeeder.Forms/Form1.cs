@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Awesomium.Core;
+using Awesomium.Windows.Forms;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 
@@ -20,9 +22,12 @@ namespace PureSeeder.Forms
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
+            ((IWebView) webControl1).ParentWindow = this.Handle;
 
             CreateBindings();
             LoadBattlelog();
+
+            
         }
 
         private Form1()
@@ -38,18 +43,36 @@ namespace PureSeeder.Forms
 
         private void LoadBattlelog()
         {
-            webControl1.Source = GetAddress(serverSelector);
+            LoadPage(GetAddress(serverSelector));
         }
 
         private void serverSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            webControl1.Source = GetAddress((ComboBox)sender);
+            LoadPage(GetAddress((ComboBox)sender));
         }
 
         private Uri GetAddress(ComboBox cb)
         {
             var address = ((Server) cb.SelectedItem).Address;
             return new Uri(address);
+        }
+
+        private void LoadPage(Uri address)
+        {
+            webControl1.Source = address;
+            UpdateContext();
+        }
+
+        private void UpdateContext()
+        {
+            var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+
+            // Update the context
+        }
+
+        private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)
+        {
+            
         }
     }
 }

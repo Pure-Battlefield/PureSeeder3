@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Awesomium.Core;
 using PureSeeder.Forms.Initalization;
 
 namespace PureSeeder.Forms
@@ -19,6 +20,15 @@ namespace PureSeeder.Forms
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            var webConfig = new WebConfig
+                {
+                    HomeURL = new Uri("http://battlelog.battlefield.com"),
+                    LogLevel = LogLevel.Verbose
+                };
+            
+            WebCore.Initialize(webConfig);
+
             Application.Run(container.Resolve<Form1>());
         }
     }

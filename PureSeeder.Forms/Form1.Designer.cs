@@ -32,6 +32,8 @@
             this.serverSelector = new System.Windows.Forms.ComboBox();
             this.webControl1 = new Awesomium.Windows.Forms.WebControl(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.webControlBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // serverSelector
@@ -60,6 +62,10 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Server";
             // 
+            // webControlBindingSource
+            // 
+            this.webControlBindingSource.DataSource = typeof(Awesomium.Core.IWebView);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -70,6 +76,7 @@
             this.Controls.Add(this.serverSelector);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -80,6 +87,7 @@
         private System.Windows.Forms.ComboBox serverSelector;
         private Awesomium.Windows.Forms.WebControl webControl1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.BindingSource webControlBindingSource;
     }
 }
 
