@@ -22,7 +22,7 @@ namespace PureSeeder.Forms
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
-            ((IWebView) webControl1).ParentWindow = this.Handle;
+            //((IWebView) webControl1).ParentWindow = this.Handle;
 
             _context.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
         }
@@ -33,10 +33,15 @@ namespace PureSeeder.Forms
 
             //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
-            ((IWebView) webControl1).ParentWindow = browserPanel.Handle;
+            //((IWebView) webControl1).ParentWindow = browserPanel.Handle;
             LoadBattlelog();
 
-            webControl1.DocumentReady += BrowserChanged;
+            //webControl1.DocumentReady += BrowserChanged;
+
+            //geckoWebBrowser1.Navigate("battlelog.battlefield.com/bf4/");
+
+            //geckoWebBrowser1.Navigated += BrowserChanged;
+            geckoWebBrowser1.DocumentCompleted += BrowserChanged;
         }
 
         private Form1()
@@ -58,15 +63,23 @@ namespace PureSeeder.Forms
             LoadPage(GetAddress(serverSelector));
         }
 
-        private Uri GetAddress(ComboBox cb)
+        private Uri GetAddressOld(ComboBox cb)
         {
             var address = ((Server) cb.SelectedItem).Address;
             return new Uri(address);
         }
 
-        private void LoadPage(Uri address)
+        private string GetAddress(ComboBox cb)
         {
-            webControl1.Source = address;
+            var address = ((Server) cb.SelectedItem).Address;
+
+            return address;
+        }
+
+        private void LoadPage(string address)
+        {
+            //webControl1.Source = address;
+            geckoWebBrowser1.Navigate(address);
             //UpdateContext();
         }
 
@@ -83,7 +96,18 @@ namespace PureSeeder.Forms
 
         private void UpdateContext()
         {
-            var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+            //var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+
+            var source = string.Empty;
+
+            string pageSource = string.Empty;
+
+            if (!string.IsNullOrEmpty(geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml))
+                pageSource = geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml;
+
+            source = pageSource;
+
+            _context.UpdateStatus(source);
 
             // Update the context
             // Note: This is super ugly.
@@ -91,19 +115,19 @@ namespace PureSeeder.Forms
             //  - Battlelog finshes loading the DOM, then JS is processed which alters it, Awesomium fires event on DOM Load
             //  - This just retries and induces an artificial delay to try to let it finish loading
             //  - Hopefully futrue versions of Awesomium will make this cleaner
-            for (var i = 0; i < 10; i++)
-            {
-                _context.UpdateStatus(source);
-
-                if (_context.CurrentPlayers != null)
-                {
-                    return;
-                }
-                
-                // Delay 50 ms and try again
-                System.Threading.Thread.Sleep(50);
-                UpdateContext();
-            }
+//            for (var i = 0; i < 10; i++)
+//            {
+//                //_context.UpdateStatus(source);
+//
+//                if (_context.CurrentPlayers != null)
+//                {
+//                    return;
+//                }
+//                
+//                // Delay 50 ms and try again
+//                System.Threading.Thread.Sleep(50);
+//                UpdateContext();
+//            }
         }
 
         private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)
@@ -118,7 +142,8 @@ namespace PureSeeder.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+            //var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
+            geckoWebBrowser1.Navigate("about:plugins");
         }
     }
 }

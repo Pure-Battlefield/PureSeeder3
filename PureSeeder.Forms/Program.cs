@@ -16,6 +16,10 @@ namespace PureSeeder.Forms
         [STAThread]
         static void Main()
         {
+            // Setup Gecko
+            Gecko.Xpcom.Initialize(@"C:\Dev\Random\pure\new\PureSeeder\lib\xulrunner\");
+            Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
+
             var container = new FormsContainer();
 
             Application.EnableVisualStyles();

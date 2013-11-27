@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.serverSelector = new System.Windows.Forms.ComboBox();
-            this.webControl1 = new Awesomium.Windows.Forms.WebControl(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.webControlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.browserPanel = new System.Windows.Forms.Panel();
@@ -39,6 +38,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.maxPlayers = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.geckoWebBrowser1 = new Gecko.GeckoWebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -52,14 +52,6 @@
             this.serverSelector.Size = new System.Drawing.Size(310, 21);
             this.serverSelector.TabIndex = 0;
             this.serverSelector.SelectionChangeCommitted += new System.EventHandler(this.serverSelector_SelectionChangeCommitted);
-            // 
-            // webControl1
-            // 
-            this.webControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webControl1.Location = new System.Drawing.Point(0, 0);
-            this.webControl1.Size = new System.Drawing.Size(1094, 609);
-            this.webControl1.Source = new System.Uri("about:blank", System.UriKind.Absolute);
-            this.webControl1.TabIndex = 1;
             // 
             // label1
             // 
@@ -76,7 +68,7 @@
             // 
             // browserPanel
             // 
-            this.browserPanel.Controls.Add(this.webControl1);
+            this.browserPanel.Controls.Add(this.geckoWebBrowser1);
             this.browserPanel.Location = new System.Drawing.Point(12, 124);
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(1094, 609);
@@ -132,6 +124,14 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // geckoWebBrowser1
+            // 
+            this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.geckoWebBrowser1.Name = "geckoWebBrowser1";
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1088, 603);
+            this.geckoWebBrowser1.TabIndex = 0;
+            this.geckoWebBrowser1.UseHttpActivityObserver = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,7 +157,6 @@
         #endregion
 
         private System.Windows.Forms.ComboBox serverSelector;
-        private Awesomium.Windows.Forms.WebControl webControl1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource webControlBindingSource;
         private System.Windows.Forms.Panel browserPanel;
@@ -166,6 +165,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label maxPlayers;
         private System.Windows.Forms.Button button1;
+        private Gecko.GeckoWebBrowser geckoWebBrowser1;
     }
 }
 
