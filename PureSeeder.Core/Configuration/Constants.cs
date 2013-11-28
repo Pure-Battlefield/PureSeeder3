@@ -12,11 +12,13 @@ namespace PureSeeder.Core.Configuration
 
         public static class SettingNames
         {
-            public const string GameHangProtectionEnabled = "EnableGameHangProtection";
+            public const string EnableGameHangProtection = "EnableGameHangProtection";
             public const string DisplayPlayerCount = "DisplayPlayerCount";
             public const string SleepWhenNotSeeding = "SleepWhenNotSeeding";
             public const string SleepWhenSeeding = "SleepWhenSeeding";
             public const string EnableLogging = "EnableLogging";
+            public const string Username = "Username";
+            public const string Servers = "Servers";
         }
     }
 }

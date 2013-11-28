@@ -14,8 +14,9 @@ namespace PureSeeder.Core.Context
         IList<Server> Servers { get; }
         int? CurrentPlayers { get; set; }
         int? ServerMaxPlayers { get; set; }
-        bool HangProtectionStatus { get; }
+        bool? HangProtectionStatus { get; set; }
         bool SeedStatus { get; set; }
+        string Username { get; set; }
 
         void UpdateStatus(string pageData);
 
@@ -33,38 +34,44 @@ namespace PureSeeder.Core.Context
             if (updaters == null) throw new ArgumentNullException("updaters");
             _configHelper = configHelper;
             _updaters = updaters;
+
+            LoadFromConfig();
         }
 
         public IList<Server> Servers
         {
-            get { return _configHelper.GetServers(); }
+            get { return _servers; }
+            private set { SetProperty(ref _servers, value); }
         }
-
+         
+        private IList<Server> _servers = null; 
         private int? _currentPlayers = null;
         private int? _serverMaxPlayers = null;
+        private string _username = null;
+        private bool? _hangProtectionStatuis = null;
 
         public int? CurrentPlayers
         {
             get { return this._currentPlayers; }
-            set 
-            { 
-//                this._currentPlayers = value;
-                SetProperty(ref _currentPlayers, value);
-            }
+            set { SetProperty(ref _currentPlayers, value); }
         }
         public int? ServerMaxPlayers
         {
             get { return this._serverMaxPlayers; }
-            set 
-            { 
-//                this._serverMaxPlayers = value;
-                SetProperty(ref _serverMaxPlayers, value);
-            }
+            set { SetProperty(ref _serverMaxPlayers, value); }
         }
-        public bool HangProtectionStatus
+
+        public string Username
         {
-            get { return _configHelper.GetSetting<bool>(Constants.SettingNames.GameHangProtectionEnabled); }
+            get { return this._username; }
+            set { SetProperty(ref _username, value); }
         }
+        public bool? HangProtectionStatus
+        {
+            get { return this._hangProtectionStatuis; }
+            set { SetProperty(ref _hangProtectionStatuis, value); }
+        }
+
         public bool SeedStatus { get; set; }
 
 
@@ -74,6 +81,13 @@ namespace PureSeeder.Core.Context
             {
                 updater.UpdateContextData(this, pageData);
             }
+        }
+
+        private void LoadFromConfig()
+        {
+            Servers = _configHelper.GetServers();
+            Username = _configHelper.GetSetting<string>(Constants.SettingNames.Username);
+            HangProtectionStatus = _configHelper.GetSetting<bool?>(Constants.SettingNames.EnableGameHangProtection);
         }
     }
 

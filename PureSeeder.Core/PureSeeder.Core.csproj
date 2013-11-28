@@ -55,12 +55,15 @@
     <Compile Include="Initialization\IContainer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\CustomSettingsProvider.cs" />
-    <Compile Include="Settings\IsolatedStorageSettingsStore.cs" />
-    <Compile Include="Settings\PureSettings.cs" />
-    <Compile Include="Settings\SettingsProvider.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SeederSettings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Configuration\PureConfig.csd">
       <Generator>CsdFileGenerator</Generator>
       <LastGenOutput>PureConfig.csd.cs</LastGenOutput>
@@ -77,6 +80,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

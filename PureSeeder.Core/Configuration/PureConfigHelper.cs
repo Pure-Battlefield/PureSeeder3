@@ -46,6 +46,9 @@ namespace PureSeeder.Core.Configuration
         {
             var setting = GetSetting(settingName);
 
+            if (Nullable.GetUnderlyingType(typeof (T)) != null)
+                return (T) Convert.ChangeType(setting, Nullable.GetUnderlyingType(typeof (T)));
+
             return (T) Convert.ChangeType(setting, typeof (T));
         }
 
