@@ -8,7 +8,7 @@ using PureSeeder.Core.Configuration;
 
 namespace PureSeeder.Core.Settings
 {
-    class SeederUserSettings : ApplicationSettingsBase
+    public class SeederUserSettings : ApplicationSettingsBase
     {
         [UserScopedSetting()]
         [DefaultSettingValue("BattlelogUsername")]
@@ -39,6 +39,27 @@ namespace PureSeeder.Core.Settings
         {
             get { return (List<Server>) this[Constants.SettingNames.Servers]; }
             set { this[Constants.SettingNames.Servers] = value; }
+        }
+
+        public void SetDefaultServers()
+        {
+            Servers = new List<Server>
+                {
+                    new Server()
+                        {
+                            Name = "Pure Server 2 - 32 Player Mixed Mode",
+                            Address = "http://bf4-server2.purebattlefield.org",
+                            MinPlayers = 18,
+                            MaxPlayers = 32
+                        },
+                    new Server()
+                        {
+                            Name = "Pure Server 1 - 64 Player Conquest",
+                            Address = "http://bf4-server1.purebattlefield.org",
+                            MinPlayers = 32,
+                            MaxPlayers = 64
+                        }
+                };
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Initialization
 {
@@ -18,11 +19,19 @@ namespace PureSeeder.Core.Initialization
         {
             if (type == typeof (IPureConfigHelper))
                 return new PureConfigHelper(Constants.ConfigSectionName);
+// Deprecated
+//            if (type == typeof (IDataContext))
+//                return new CurrentContext(
+//                    Resolve<IPureConfigHelper>(),
+//                    Resolve<IDataContextUpdater[]>());
 
             if (type == typeof (IDataContext))
-                return new CurrentContext(
-                    Resolve<IPureConfigHelper>(),
+                return new SeederContext(
+                    Resolve<SeederUserSettings>(),
                     Resolve<IDataContextUpdater[]>());
+
+            if (type == typeof (SeederUserSettings))
+                return new SeederUserSettings();
 
             if (type == typeof (IDataContextUpdater[]))
                 return new List<IDataContextUpdater>
