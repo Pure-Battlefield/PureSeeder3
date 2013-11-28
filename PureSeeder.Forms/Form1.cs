@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Awesomium.Core;
 using Awesomium.Windows.Forms;
-using PureSeeder.Core.Configuration;
+//using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Forms
 {
@@ -58,6 +59,9 @@ namespace PureSeeder.Forms
 
             curPlayers.DataBindings.Add("Text", _context, "CurrentPlayers" );
             maxPlayers.DataBindings.Add("Text", _context, "ServerMaxPlayers");
+
+            gameHangDetection.DataBindings.Add("Checked", _context, "HangProtectionStatus");
+            logging.DataBindings.Add("Checked", _context, "LoggingEnabled");
         }
 
         private void LoadBattlelog()
@@ -74,6 +78,7 @@ namespace PureSeeder.Forms
         private string GetAddress(ComboBox cb)
         {
             var address = ((Server) cb.SelectedItem).Address;
+            //var address = "http://battlelog.battlefield.com/bf4/";
 
             return address;
         }

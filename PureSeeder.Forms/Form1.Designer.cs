@@ -40,6 +40,8 @@
             this.maxPlayers = new System.Windows.Forms.Label();
             this.username = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.gameHangDetection = new System.Windows.Forms.CheckBox();
+            this.logging = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -139,11 +141,33 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Username";
             // 
+            // gameHangDetection
+            // 
+            this.gameHangDetection.AutoSize = true;
+            this.gameHangDetection.Location = new System.Drawing.Point(849, 58);
+            this.gameHangDetection.Name = "gameHangDetection";
+            this.gameHangDetection.Size = new System.Drawing.Size(134, 17);
+            this.gameHangDetection.TabIndex = 11;
+            this.gameHangDetection.Text = "Game Hang Protection";
+            this.gameHangDetection.UseVisualStyleBackColor = true;
+            // 
+            // logging
+            // 
+            this.logging.AutoSize = true;
+            this.logging.Location = new System.Drawing.Point(849, 81);
+            this.logging.Name = "logging";
+            this.logging.Size = new System.Drawing.Size(64, 17);
+            this.logging.TabIndex = 12;
+            this.logging.Text = "Logging";
+            this.logging.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 793);
+            this.Controls.Add(this.logging);
+            this.Controls.Add(this.gameHangDetection);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.username);
             this.Controls.Add(this.maxPlayers);
@@ -175,6 +199,8 @@
         private Gecko.GeckoWebBrowser geckoWebBrowser1;
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox gameHangDetection;
+        private System.Windows.Forms.CheckBox logging;
     }
 }
 

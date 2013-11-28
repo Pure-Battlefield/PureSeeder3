@@ -19,6 +19,7 @@ namespace PureSeeder.Core.Configuration
             public const string EnableLogging = "EnableLogging";
             public const string Username = "Username";
             public const string Servers = "Servers";
+            public const string CurrentServer = "CurrentServer";
         }
     }
 }
