@@ -54,6 +54,8 @@ namespace PureSeeder.Forms
             serverSelector.DataSource = _context.Servers;
             serverSelector.DisplayMember = "Name";
 
+            username.DataBindings.Add("Text", _context, "Username");
+
             curPlayers.DataBindings.Add("Text", _context, "CurrentPlayers" );
             maxPlayers.DataBindings.Add("Text", _context, "ServerMaxPlayers");
         }
@@ -140,10 +142,7 @@ namespace PureSeeder.Forms
             LoadPage(GetAddress((ComboBox)sender));
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
-            geckoWebBrowser1.Navigate("about:plugins");
-        }
+        
+        
     }
 }

@@ -17,7 +17,7 @@ namespace PureSeeder.Forms
         static void Main()
         {
             // Setup Gecko
-            Gecko.Xpcom.Initialize(@"C:\Dev\Random\pure\new\PureSeeder\lib\xulrunner\");
+            Gecko.Xpcom.Initialize(@"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner");
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
 
             var container = new FormsContainer();

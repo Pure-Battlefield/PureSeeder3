@@ -33,12 +33,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.webControlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.browserPanel = new System.Windows.Forms.Panel();
+            this.geckoWebBrowser1 = new Gecko.GeckoWebBrowser();
             this.label2 = new System.Windows.Forms.Label();
             this.curPlayers = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.maxPlayers = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.geckoWebBrowser1 = new Gecko.GeckoWebBrowser();
+            this.username = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +74,14 @@
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(1094, 609);
             this.browserPanel.TabIndex = 3;
+            // 
+            // geckoWebBrowser1
+            // 
+            this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.geckoWebBrowser1.Name = "geckoWebBrowser1";
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1088, 603);
+            this.geckoWebBrowser1.TabIndex = 0;
+            this.geckoWebBrowser1.UseHttpActivityObserver = false;
             // 
             // label2
             // 
@@ -114,30 +123,29 @@
             this.maxPlayers.TabIndex = 7;
             this.maxPlayers.Text = "max";
             // 
-            // button1
+            // username
             // 
-            this.button1.Location = new System.Drawing.Point(897, 25);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.username.Location = new System.Drawing.Point(12, 79);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(200, 20);
+            this.username.TabIndex = 9;
             // 
-            // geckoWebBrowser1
+            // label3
             // 
-            this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.geckoWebBrowser1.Name = "geckoWebBrowser1";
-            this.geckoWebBrowser1.Size = new System.Drawing.Size(1088, 603);
-            this.geckoWebBrowser1.TabIndex = 0;
-            this.geckoWebBrowser1.UseHttpActivityObserver = false;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 63);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Username";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 793);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.username);
             this.Controls.Add(this.maxPlayers);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.curPlayers);
@@ -164,8 +172,9 @@
         private System.Windows.Forms.Label curPlayers;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label maxPlayers;
-        private System.Windows.Forms.Button button1;
         private Gecko.GeckoWebBrowser geckoWebBrowser1;
+        private System.Windows.Forms.TextBox username;
+        private System.Windows.Forms.Label label3;
     }
 }
 
