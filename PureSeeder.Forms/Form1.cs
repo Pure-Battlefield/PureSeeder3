@@ -35,7 +35,7 @@ namespace PureSeeder.Forms
             //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
             //((IWebView) webControl1).ParentWindow = browserPanel.Handle;
-            serverSelector.SelectedIndex = _context.CurrentServer;
+            serverSelector.SelectedIndex = GetCurrentServer();
             
             LoadBattlelog();
 
@@ -49,6 +49,14 @@ namespace PureSeeder.Forms
             
         }
 
+        private int GetCurrentServer()
+        {
+            var serverName = _context.CurrentServer.Name;
+
+            var index = Array.FindIndex<Server>(_context.Servers.ToArray(), x => x.Name == serverName);
+            return index;
+        }
+
         private Form1()
         {
             InitializeComponent();
@@ -58,6 +66,12 @@ namespace PureSeeder.Forms
         {
             serverSelector.DataSource = _context.Servers;
             serverSelector.DisplayMember = "Name";
+
+            serverSelector.DataBindings.Add("SelectedValue", _context, "CurrentServer");
+
+            SeedingMinPlayers.DataBindings.Add("Text", _context.CurrentServer, "MinPlayers");
+            SeedingMaxPlayers.DataBindings.Add("Text", _context.CurrentServer, "MaxPlayers");
+
 
             // Todo: Create an extension for adding Databindings that accepts an expression tree like
             //       BindableBase.SetProperty<T1, T2>() so that this no longer relies on magic strings
@@ -78,25 +92,16 @@ namespace PureSeeder.Forms
             LoadPage(GetAddress(serverSelector));
         }
 
-        private Uri GetAddressOld(ComboBox cb)
-        {
-            var address = ((Server) cb.SelectedItem).Address;
-            return new Uri(address);
-        }
-
         private string GetAddress(ComboBox cb)
         {
             var address = ((Server) cb.SelectedItem).Address;
-            //var address = "http://battlelog.battlefield.com/bf4/";
 
             return address;
         }
 
         private void LoadPage(string address)
         {
-            //webControl1.Source = address;
             geckoWebBrowser1.Navigate(address);
-            //UpdateContext();
         }
 
         static void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -134,7 +139,8 @@ namespace PureSeeder.Forms
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LoadPage(GetAddress((ComboBox)sender));
-            _context.CurrentServer = ((ComboBox) sender).SelectedIndex;
+            //_context.CurrentServer = ((ComboBox) sender).SelectedIndex;
+            _context.CurrentServer = (Server)((ComboBox) sender).SelectedValue;
         }
 
         

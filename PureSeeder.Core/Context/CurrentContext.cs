@@ -24,7 +24,7 @@ namespace PureSeeder.Core.Context
         bool SeedingEnabled { get; set; }
         string Username { get; set; }
         bool LoggingEnabled { get; set; }
-        int CurrentServer { get; set; }
+        Server CurrentServer { get; set; }
         string CurrentLoggedInUser { get; set; }
         Constants.Game CurrentGame { get; set; }
 
@@ -48,12 +48,11 @@ namespace PureSeeder.Core.Context
             SetLocalDefaults();
         }
 
-        #region Local
+        #region Session
 
         private int? _currentPlayers;
         private int? _serverMaxPlayers;
         private bool _seedingEnabled;
-        private int _currentServer;
         private string _currentLoggedInUser;
         private Constants.Game _currentGame;
        
@@ -73,12 +72,6 @@ namespace PureSeeder.Core.Context
         {
             get { return this._seedingEnabled; }
             set { SetProperty(ref this._seedingEnabled, value); }
-        }
-
-        public int CurrentServer
-        {
-            get { return this._currentServer; }
-            set { SetProperty(ref _currentServer, value); }
         }
 
         public string CurrentLoggedInUser
@@ -105,6 +98,8 @@ namespace PureSeeder.Core.Context
                 if (_settings.Servers == null)
                 {
                     _settings.SetDefaultServers();
+                    if (_settings.CurrentServer == null)
+                        _settings.CurrentServer = _settings.Servers.First();
                     _settings.Save();
                 }
 
@@ -145,6 +140,16 @@ namespace PureSeeder.Core.Context
             set 
             { 
                 SetProperty(_settings, value, x => x.EnableLogging);
+                _settings.Save();
+            }
+        }
+
+        public Server CurrentServer
+        {
+            get { return _settings.CurrentServer; }
+            set
+            {
+                SetProperty(_settings, value, x => x.CurrentServer);
                 _settings.Save();
             }
         }

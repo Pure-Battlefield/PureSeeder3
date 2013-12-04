@@ -45,6 +45,10 @@
             this.seedingEnabled = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.currentLoggedInUser = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.SeedingMinPlayers = new System.Windows.Forms.TextBox();
+            this.SeedingMaxPlayers = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +79,7 @@
             // browserPanel
             // 
             this.browserPanel.Controls.Add(this.geckoWebBrowser1);
-            this.browserPanel.Location = new System.Drawing.Point(12, 124);
+            this.browserPanel.Location = new System.Drawing.Point(12, 172);
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(1094, 609);
             this.browserPanel.TabIndex = 3;
@@ -130,7 +134,7 @@
             // 
             // username
             // 
-            this.username.Location = new System.Drawing.Point(12, 79);
+            this.username.Location = new System.Drawing.Point(12, 138);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(200, 20);
             this.username.TabIndex = 9;
@@ -138,7 +142,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 63);
+            this.label3.Location = new System.Drawing.Point(12, 122);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 10;
@@ -194,11 +198,47 @@
             this.currentLoggedInUser.TabIndex = 15;
             this.currentLoggedInUser.Text = "None";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 58);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(106, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Seeding Min Players:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 81);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(109, 13);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "Seeding Max Players:";
+            // 
+            // SeedingMinPlayers
+            // 
+            this.SeedingMinPlayers.Location = new System.Drawing.Point(127, 55);
+            this.SeedingMinPlayers.Name = "SeedingMinPlayers";
+            this.SeedingMinPlayers.Size = new System.Drawing.Size(100, 20);
+            this.SeedingMinPlayers.TabIndex = 18;
+            // 
+            // SeedingMaxPlayers
+            // 
+            this.SeedingMaxPlayers.Location = new System.Drawing.Point(127, 78);
+            this.SeedingMaxPlayers.Name = "SeedingMaxPlayers";
+            this.SeedingMaxPlayers.Size = new System.Drawing.Size(100, 20);
+            this.SeedingMaxPlayers.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 793);
+            this.Controls.Add(this.SeedingMaxPlayers);
+            this.Controls.Add(this.SeedingMinPlayers);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.currentLoggedInUser);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.seedingEnabled);
@@ -241,6 +281,10 @@
         private System.Windows.Forms.CheckBox seedingEnabled;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label currentLoggedInUser;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox SeedingMinPlayers;
+        private System.Windows.Forms.TextBox SeedingMaxPlayers;
     }
 }
 

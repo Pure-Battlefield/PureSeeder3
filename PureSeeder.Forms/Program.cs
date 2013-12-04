@@ -16,8 +16,10 @@ namespace PureSeeder.Forms
         [STAThread]
         static void Main()
         {
+            var xulLocation = @"C:\Dev\Random\pure\new\XulRunner\xulrunner-22.0.en-US.win32\xulrunner";
+            //var xulLocation = @"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner";
             // Setup Gecko
-            Gecko.Xpcom.Initialize(@"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner");
+            Gecko.Xpcom.Initialize(xulLocation);
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
 
             var container = new FormsContainer();

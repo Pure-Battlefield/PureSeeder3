@@ -41,6 +41,13 @@ namespace PureSeeder.Core.Settings
             set { this[Constants.SettingNames.Servers] = value; }
         }
 
+        [UserScopedSetting()]
+        public Server CurrentServer
+        {
+            get { return ((Server) this[Constants.SettingNames.CurrentServer]); }
+            set { this[Constants.SettingNames.CurrentServer] = value; }
+        }
+
         public void SetDefaultServers()
         {
             Servers = new List<Server>
