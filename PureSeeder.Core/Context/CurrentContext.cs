@@ -21,9 +21,10 @@ namespace PureSeeder.Core.Context
         int? CurrentPlayers { get; set; }
         int? ServerMaxPlayers { get; set; }
         bool HangProtectionStatus { get; set; }
-        bool SeedStatus { get; set; }
+        bool SeedingEnabled { get; set; }
         string Username { get; set; }
         bool LoggingEnabled { get; set; }
+        int CurrentServer { get; set; }
 
         void UpdateStatus(string pageData);
 
@@ -41,13 +42,37 @@ namespace PureSeeder.Core.Context
             if (updaters == null) throw new ArgumentNullException("updaters");
             _settings = settings;
             _updaters = updaters;
+
+            SetLocalDefaults();
         }
 
-        private IList<Server> _servers; 
+        #region Local
+
         private int? _currentPlayers;
         private int? _serverMaxPlayers;
-        //private bool _hangProtectionStatus;
-        private bool _seedStatus;
+        private bool _seedingEnabled;
+       
+        public int? CurrentPlayers
+        {
+            get { return this._currentPlayers; }
+            set { SetProperty(ref _currentPlayers, value); }
+        }
+
+        public int? ServerMaxPlayers
+        {
+            get { return this._serverMaxPlayers; }
+            set { SetProperty(ref _serverMaxPlayers, value); }
+        }
+
+        public bool SeedingEnabled
+        {
+            get { return this._seedingEnabled; }
+            set { SetProperty(ref this._seedingEnabled, value); }
+        }
+
+        #endregion
+        
+        #region Settings
 
         public IList<Server> Servers
         {
@@ -61,22 +86,11 @@ namespace PureSeeder.Core.Context
 
                 return _settings.Servers;
             }
-            private set 
-            { 
+            private set
+            {
                 SetProperty(_settings, value, x => x.Servers);
                 _settings.Save();
             }
-        }
-        public int? CurrentPlayers
-        {
-            get { return this._currentPlayers; }
-            set { SetProperty(ref _currentPlayers, value); }
-        }
-
-        public int? ServerMaxPlayers
-        {
-            get { return this._serverMaxPlayers; }
-            set { SetProperty(ref _serverMaxPlayers, value); }
         }
         
         public string Username
@@ -121,9 +135,8 @@ namespace PureSeeder.Core.Context
                 _settings.EnableGameHangProtection = value;
             }
         }
-        
-        public bool SeedStatus { get; set; }
-        
+
+        #endregion
         
         public void UpdateStatus(string pageData)
         {
@@ -132,75 +145,15 @@ namespace PureSeeder.Core.Context
                 updater.UpdateContextData(this, pageData);
             }
         }
+
+        private void SetLocalDefaults()
+        {
+            CurrentPlayers = null;
+            ServerMaxPlayers = null;
+            SeedingEnabled = true;
+        }
     }
 
-//    public class CurrentContext : BindableBase, IDataContext
-//    {
-//        private readonly IPureConfigHelper _configHelper;
-//        private readonly IDataContextUpdater[] _updaters;
-//
-//        public CurrentContext(IPureConfigHelper configHelper, [NotNull] IDataContextUpdater[] updaters)
-//        {
-//            if (configHelper == null) throw new ArgumentNullException("configHelper");
-//            if (updaters == null) throw new ArgumentNullException("updaters");
-//            _configHelper = configHelper;
-//            _updaters = updaters;
-//
-//            LoadFromConfig();
-//        }
-//
-//        public IList<Server> Servers
-//        {
-//            get { return _servers; }
-//            private set { SetProperty(ref _servers, value); }
-//        }
-//         
-//        private IList<Server> _servers = null; 
-//        private int? _currentPlayers = null;
-//        private int? _serverMaxPlayers = null;
-//        private string _username = null;
-//        private bool? _hangProtectionStatuis = null;
-//
-//        public int? CurrentPlayers
-//        {
-//            get { return this._currentPlayers; }
-//            set { SetProperty(ref _currentPlayers, value); }
-//        }
-//        public int? ServerMaxPlayers
-//        {
-//            get { return this._serverMaxPlayers; }
-//            set { SetProperty(ref _serverMaxPlayers, value); }
-//        }
-//
-//        public string Username
-//        {
-//            get { return this._username; }
-//            set { SetProperty(ref _username, value); }
-//        }
-//        public bool? HangProtectionStatus
-//        {
-//            get { return this._hangProtectionStatuis; }
-//            set { SetProperty(ref _hangProtectionStatuis, value); }
-//        }
-//
-//        public bool SeedStatus { get; set; }
-//
-//
-//        public void UpdateStatus(string pageData)
-//        {
-//            foreach (var updater in _updaters)
-//            {
-//                updater.UpdateContextData(this, pageData);
-//            }
-//        }
-//
-//        private void LoadFromConfig()
-//        {
-//            Servers = _configHelper.GetServers();
-//            Username = _configHelper.GetSetting<string>(Constants.SettingNames.Username);
-//            HangProtectionStatus = _configHelper.GetSetting<bool?>(Constants.SettingNames.EnableGameHangProtection);
-//        }
-//    }
 
     public interface IDataContextUpdater
     {

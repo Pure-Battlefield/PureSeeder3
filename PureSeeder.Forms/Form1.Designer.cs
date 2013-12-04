@@ -42,6 +42,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.gameHangDetection = new System.Windows.Forms.CheckBox();
             this.logging = new System.Windows.Forms.CheckBox();
+            this.seedingEnabled = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -161,11 +162,22 @@
             this.logging.Text = "Logging";
             this.logging.UseVisualStyleBackColor = true;
             // 
+            // seedingEnabled
+            // 
+            this.seedingEnabled.AutoSize = true;
+            this.seedingEnabled.Location = new System.Drawing.Point(849, 32);
+            this.seedingEnabled.Name = "seedingEnabled";
+            this.seedingEnabled.Size = new System.Drawing.Size(107, 17);
+            this.seedingEnabled.TabIndex = 13;
+            this.seedingEnabled.Text = "Seeding Enabled";
+            this.seedingEnabled.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 793);
+            this.Controls.Add(this.seedingEnabled);
             this.Controls.Add(this.logging);
             this.Controls.Add(this.gameHangDetection);
             this.Controls.Add(this.label3);
@@ -178,7 +190,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverSelector);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Pure Seeder 3";
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -201,6 +213,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox gameHangDetection;
         private System.Windows.Forms.CheckBox logging;
+        private System.Windows.Forms.CheckBox seedingEnabled;
     }
 }
 

@@ -35,6 +35,8 @@ namespace PureSeeder.Forms
             //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
             //((IWebView) webControl1).ParentWindow = browserPanel.Handle;
+            serverSelector.SelectedIndex = _context.CurrentServer;
+            
             LoadBattlelog();
 
             //webControl1.DocumentReady += BrowserChanged;
@@ -43,6 +45,8 @@ namespace PureSeeder.Forms
 
             //geckoWebBrowser1.Navigated += BrowserChanged;
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
+
+            
         }
 
         private Form1()
@@ -62,6 +66,8 @@ namespace PureSeeder.Forms
 
             gameHangDetection.DataBindings.Add("Checked", _context, "HangProtectionStatus");
             logging.DataBindings.Add("Checked", _context, "LoggingEnabled");
+            seedingEnabled.DataBindings.Add("Checked", _context, "SeedingEnabled");
+
         }
 
         private void LoadBattlelog()
@@ -115,26 +121,6 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
-
-            // Update the context
-            // Note: This is super ugly.
-            //  - Awesomium doesn't have a reliable way of determining when a page is completely finished loading
-            //  - Battlelog finshes loading the DOM, then JS is processed which alters it, Awesomium fires event on DOM Load
-            //  - This just retries and induces an artificial delay to try to let it finish loading
-            //  - Hopefully futrue versions of Awesomium will make this cleaner
-//            for (var i = 0; i < 10; i++)
-//            {
-//                //_context.UpdateStatus(source);
-//
-//                if (_context.CurrentPlayers != null)
-//                {
-//                    return;
-//                }
-//                
-//                // Delay 50 ms and try again
-//                System.Threading.Thread.Sleep(50);
-//                UpdateContext();
-//            }
         }
 
         private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)
@@ -145,6 +131,7 @@ namespace PureSeeder.Forms
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LoadPage(GetAddress((ComboBox)sender));
+            _context.CurrentServer = ((ComboBox) sender).SelectedIndex;
         }
 
         
