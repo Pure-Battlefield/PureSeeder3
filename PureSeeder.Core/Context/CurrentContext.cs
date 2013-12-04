@@ -25,6 +25,8 @@ namespace PureSeeder.Core.Context
         string Username { get; set; }
         bool LoggingEnabled { get; set; }
         int CurrentServer { get; set; }
+        string CurrentLoggedInUser { get; set; }
+        Constants.Game CurrentGame { get; set; }
 
         void UpdateStatus(string pageData);
 
@@ -51,6 +53,9 @@ namespace PureSeeder.Core.Context
         private int? _currentPlayers;
         private int? _serverMaxPlayers;
         private bool _seedingEnabled;
+        private int _currentServer;
+        private string _currentLoggedInUser;
+        private Constants.Game _currentGame;
        
         public int? CurrentPlayers
         {
@@ -69,6 +74,25 @@ namespace PureSeeder.Core.Context
             get { return this._seedingEnabled; }
             set { SetProperty(ref this._seedingEnabled, value); }
         }
+
+        public int CurrentServer
+        {
+            get { return this._currentServer; }
+            set { SetProperty(ref _currentServer, value); }
+        }
+
+        public string CurrentLoggedInUser
+        {
+            get { return this._currentLoggedInUser; }
+            set { SetProperty(ref _currentLoggedInUser, value); }
+        }
+
+        public Constants.Game CurrentGame
+        {
+            get { return this._currentGame; }
+            set { SetProperty(ref _currentGame, value); }
+        }
+
 
         #endregion
         
@@ -125,17 +149,6 @@ namespace PureSeeder.Core.Context
             }
         }
 
-        public bool HangProtectionStatus
-        {
-            get { return _settings.EnableGameHangProtection; }
-            set
-            {
-                //SetProperty(ref _hangProtectionStatus, value);
-                SetProperty(_settings, value, x => x.EnableGameHangProtection);
-                _settings.EnableGameHangProtection = value;
-            }
-        }
-
         #endregion
         
         public void UpdateStatus(string pageData)
@@ -160,11 +173,12 @@ namespace PureSeeder.Core.Context
         void UpdateContextData(IDataContext context, string pageData);
     }
 
-    class PlayerCountsUpdater : IDataContextUpdater
+    class Bf4PlayerCountsUpdater : IDataContextUpdater
     {
         public void UpdateContextData(IDataContext context, string pageData)
         {
             //""slots"".*?""2"":{""current"":(.*?),""max"":(.*?)}
+            // Todo: Make regex pattern a global setting so it can more easily be changed
             var curPlayersRegEx = new Regex(@"""slots"".*?""2"":{""current"":(.*?),""max"":(.*?)}");
 
             var curPlayers = curPlayersRegEx.Match(pageData);
@@ -185,6 +199,27 @@ namespace PureSeeder.Core.Context
             context.ServerMaxPlayers = maxPlayers;
         }
     }
+
+    class CurrentBf4UserUpdater : IDataContextUpdater
+    {
+        public void UpdateContextData(IDataContext context, string pageData)
+        {
+            // Todo: Make regex pattern a global setting so it can more easily be changed
+            var curUserRegEx = new Regex(@"class=""username""\W*href=""/bf4/user/(.*?)/");
+
+            var curUser = curUserRegEx.Match(pageData);
+
+            if (!curUser.Success)
+            {
+                context.CurrentLoggedInUser = "None";
+                return;
+            }
+
+            context.CurrentLoggedInUser = curUser.Groups[1].Value;
+        }
+    }
+
+    
 
     public class CurrentPlayerCountException : ContextUpdateException
     {

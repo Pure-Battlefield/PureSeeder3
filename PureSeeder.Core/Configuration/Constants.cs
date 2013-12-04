@@ -21,5 +21,11 @@ namespace PureSeeder.Core.Configuration
             public const string Servers = "Servers";
             public const string CurrentServer = "CurrentServer";
         }
+
+        public enum Game
+        {
+            BF3,
+            BF4
+        }
     }
 }

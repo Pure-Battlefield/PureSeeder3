@@ -43,6 +43,8 @@
             this.gameHangDetection = new System.Windows.Forms.CheckBox();
             this.logging = new System.Windows.Forms.CheckBox();
             this.seedingEnabled = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.currentLoggedInUser = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -138,9 +140,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 63);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 10;
-            this.label3.Text = "Username";
+            this.label3.Text = "Seeder Username";
             // 
             // gameHangDetection
             // 
@@ -172,11 +174,33 @@
             this.seedingEnabled.Text = "Seeding Enabled";
             this.seedingEnabled.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(435, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(104, 20);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Current User:";
+            // 
+            // currentLoggedInUser
+            // 
+            this.currentLoggedInUser.AutoSize = true;
+            this.currentLoggedInUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentLoggedInUser.Location = new System.Drawing.Point(562, 49);
+            this.currentLoggedInUser.Name = "currentLoggedInUser";
+            this.currentLoggedInUser.Size = new System.Drawing.Size(47, 20);
+            this.currentLoggedInUser.TabIndex = 15;
+            this.currentLoggedInUser.Text = "None";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 793);
+            this.Controls.Add(this.currentLoggedInUser);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.seedingEnabled);
             this.Controls.Add(this.logging);
             this.Controls.Add(this.gameHangDetection);
@@ -189,6 +213,7 @@
             this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverSelector);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Pure Seeder 3";
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
@@ -214,6 +239,8 @@
         private System.Windows.Forms.CheckBox gameHangDetection;
         private System.Windows.Forms.CheckBox logging;
         private System.Windows.Forms.CheckBox seedingEnabled;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label currentLoggedInUser;
     }
 }
 

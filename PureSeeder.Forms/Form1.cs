@@ -59,10 +59,13 @@ namespace PureSeeder.Forms
             serverSelector.DataSource = _context.Servers;
             serverSelector.DisplayMember = "Name";
 
+            // Todo: Create an extension for adding Databindings that accepts an expression tree like
+            //       BindableBase.SetProperty<T1, T2>() so that this no longer relies on magic strings
             username.DataBindings.Add("Text", _context, "Username");
 
             curPlayers.DataBindings.Add("Text", _context, "CurrentPlayers" );
             maxPlayers.DataBindings.Add("Text", _context, "ServerMaxPlayers");
+            currentLoggedInUser.DataBindings.Add("Text", _context, "CurrentLoggedInUser");
 
             gameHangDetection.DataBindings.Add("Checked", _context, "HangProtectionStatus");
             logging.DataBindings.Add("Checked", _context, "LoggingEnabled");

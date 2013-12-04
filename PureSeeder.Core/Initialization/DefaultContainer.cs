@@ -36,7 +36,8 @@ namespace PureSeeder.Core.Initialization
             if (type == typeof (IDataContextUpdater[]))
                 return new List<IDataContextUpdater>
                     {
-                        new PlayerCountsUpdater(),
+                        new Bf4PlayerCountsUpdater(),
+                        new CurrentBf4UserUpdater(),
                     }.ToArray();
 
             throw new ArgumentException(
