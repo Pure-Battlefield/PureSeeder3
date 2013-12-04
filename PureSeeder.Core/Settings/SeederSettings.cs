@@ -41,14 +41,6 @@ namespace PureSeeder.Core.Settings
             set { this[Constants.SettingNames.Servers] = value; }
         }
 
-        [UserScopedSetting()]
-        [DefaultSettingValue("0")]
-        public int CurrentServer
-        {
-            get { return ((int) this[Constants.SettingNames.CurrentServer]); }
-            set { this[Constants.SettingNames.CurrentServer] = value; }
-        }
-
         public void SetDefaultServers()
         {
             Servers = new List<Server>
@@ -58,16 +50,14 @@ namespace PureSeeder.Core.Settings
                             Name = "Pure Server 2 - 32 Player Mixed Mode",
                             Address = "http://bf4-server2.purebattlefield.org",
                             MinPlayers = 18,
-                            MaxPlayers = 32,
-                            SeedingEnabled = false
+                            MaxPlayers = 32
                         },
                     new Server()
                         {
                             Name = "Pure Server 1 - 64 Player Conquest",
                             Address = "http://bf4-server1.purebattlefield.org",
                             MinPlayers = 32,
-                            MaxPlayers = 64,
-                            SeedingEnabled = false
+                            MaxPlayers = 64
                         }
                 };
         }

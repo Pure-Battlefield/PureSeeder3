@@ -111,13 +111,14 @@ namespace PureSeeder.Core.Context
             }
         }
 
-        public int CurrentServer
+        public bool HangProtectionStatus
         {
-            get { return _settings.CurrentServer; }
-            set 
-            { 
-                SetProperty(_settings, value, x => x.CurrentServer);
-                _settings.Save();
+            get { return _settings.EnableGameHangProtection; }
+            set
+            {
+                //SetProperty(ref _hangProtectionStatus, value);
+                SetProperty(_settings, value, x => x.EnableGameHangProtection);
+                _settings.EnableGameHangProtection = value;
             }
         }
         
