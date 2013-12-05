@@ -35,9 +35,9 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting()]
-        public List<Server> Servers
+        public Servers Servers
         {
-            get { return (List<Server>) this[Constants.SettingNames.Servers]; }
+            get { return (Servers) this[Constants.SettingNames.Servers]; }
             set { this[Constants.SettingNames.Servers] = value; }
         }
 
@@ -50,7 +50,7 @@ namespace PureSeeder.Core.Settings
 
         public void SetDefaultServers()
         {
-            Servers = new List<Server>
+            Servers = new Servers()
                 {
                     new Server()
                         {
@@ -67,7 +67,13 @@ namespace PureSeeder.Core.Settings
                             MaxPlayers = 64
                         }
                 };
+            Servers.CurrentServerIndex = 0;
         }
+    }
+
+    public class Servers : List<Server>
+    {
+        public int CurrentServerIndex { get; set; }
     }
 
     public class Server

@@ -64,15 +64,24 @@ namespace PureSeeder.Forms
 
         private void CreateBindings()
         {
-            serverSelector.DataSource = _context.Servers;
+            var serversBindingSource = new BindingSource();
+            serversBindingSource.DataSource = _context.Servers;
+
+            //serverSelector.DataSource = _context.Servers;
+            serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
 
-            serverSelector.DataBindings.Add("SelectedValue", _context, "CurrentServer");
+            //serverSelector.DataBindings.Add("SelectedValue", _context, "CurrentServer");
+            //serverSelector.DataBindings.Add("SelectedIndex", _context.Servers, "CurrentServerIndex");
 
-            SeedingMinPlayers.DataBindings.Add("Text", _context.CurrentServer, "MinPlayers");
-            SeedingMaxPlayers.DataBindings.Add("Text", _context.CurrentServer, "MaxPlayers");
+            // Todo: Re-add this
+            //serverSelector.DataBindings.Add("SelectedItem", _context, "CurrentServer");
 
-
+//            SeedingMinPlayers.DataBindings.Add("Text", _context.CurrentServer, "MinPlayers");
+//            SeedingMaxPlayers.DataBindings.Add("Text", _context.CurrentServer, "MaxPlayers");
+            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
+            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
+            
             // Todo: Create an extension for adding Databindings that accepts an expression tree like
             //       BindableBase.SetProperty<T1, T2>() so that this no longer relies on magic strings
             username.DataBindings.Add("Text", _context, "Username");
@@ -104,9 +113,9 @@ namespace PureSeeder.Forms
             geckoWebBrowser1.Navigate(address);
         }
 
-        static void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            UpdateInterface();
         }
 
         void BrowserChanged(object sender, EventArgs e)
@@ -129,6 +138,11 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
+        }
+
+        private void UpdateInterface()
+        {
+            currentLoggedInUser.ForeColor = _context.IsCorrectUser ? Color.Green : Color.Red;
         }
 
         private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)

@@ -17,7 +17,7 @@ namespace PureSeeder.Core.Context
 {
     public interface IDataContext
     {
-        IList<Server> Servers { get; }
+        Servers Servers { get; set; }
         int? CurrentPlayers { get; set; }
         int? ServerMaxPlayers { get; set; }
         bool HangProtectionStatus { get; set; }
@@ -27,6 +27,8 @@ namespace PureSeeder.Core.Context
         Server CurrentServer { get; set; }
         string CurrentLoggedInUser { get; set; }
         Constants.Game CurrentGame { get; set; }
+
+        bool IsCorrectUser { get; }
 
         void UpdateStatus(string pageData);
 
@@ -48,7 +50,7 @@ namespace PureSeeder.Core.Context
             SetLocalDefaults();
         }
 
-        #region Session
+        #region Session Data
 
         private int? _currentPlayers;
         private int? _serverMaxPlayers;
@@ -86,12 +88,20 @@ namespace PureSeeder.Core.Context
             set { SetProperty(ref _currentGame, value); }
         }
 
+        public bool IsCorrectUser
+        {
+            get
+            {
+                return String.Equals(this.Username, this.CurrentLoggedInUser,
+                                     StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
 
         #endregion
         
-        #region Settings
+        #region Settings Data
 
-        public IList<Server> Servers
+        public Servers Servers
         {
             get
             {
@@ -99,13 +109,15 @@ namespace PureSeeder.Core.Context
                 {
                     _settings.SetDefaultServers();
                     if (_settings.CurrentServer == null)
-                        _settings.CurrentServer = _settings.Servers.First();
+                        _settings.CurrentServer = _settings.Servers[_settings.Servers.CurrentServerIndex];
                     _settings.Save();
                 }
 
+                if (_settings.CurrentServer == null)
+                    _settings.CurrentServer = _settings.Servers[_settings.Servers.CurrentServerIndex];
                 return _settings.Servers;
             }
-            private set
+            set
             {
                 SetProperty(_settings, value, x => x.Servers);
                 _settings.Save();
@@ -155,6 +167,7 @@ namespace PureSeeder.Core.Context
         }
 
         #endregion
+        
         
         public void UpdateStatus(string pageData)
         {
@@ -264,6 +277,7 @@ namespace PureSeeder.Core.Context
             var expr = (MemberExpression) outExpr.Body;
             var prop = (PropertyInfo) expr.Member;
             prop.SetValue(storage, value);
+            this.OnPropertyChanged(prop.Name);
             return true;
         }
     }
