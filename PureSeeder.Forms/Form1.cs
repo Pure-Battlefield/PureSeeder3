@@ -12,6 +12,7 @@ using Awesomium.Windows.Forms;
 //using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Settings;
+using PureSeeder.Forms.Extensions;
 
 namespace PureSeeder.Forms
 {
@@ -25,7 +26,8 @@ namespace PureSeeder.Forms
             _context = context;
             //((IWebView) webControl1).ParentWindow = this.Handle;
 
-            _context.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+            _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+            _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -35,7 +37,7 @@ namespace PureSeeder.Forms
             //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
             //((IWebView) webControl1).ParentWindow = browserPanel.Handle;
-            serverSelector.SelectedIndex = GetCurrentServer();
+            //serverSelector.SelectedIndex = GetCurrentServer();
             
             LoadBattlelog();
 
@@ -49,13 +51,14 @@ namespace PureSeeder.Forms
             
         }
 
-        private int GetCurrentServer()
-        {
-            var serverName = _context.CurrentServer.Name;
-
-            var index = Array.FindIndex<Server>(_context.Servers.ToArray(), x => x.Name == serverName);
-            return index;
-        }
+        // Deprecated
+//        private int GetCurrentServer()
+//        {
+//            var serverName = _context.Settings.CurrentServer.Name;
+//
+//            var index = Array.FindIndex<Server>(_context.Servers.ToArray(), x => x.Name == serverName);
+//            return index;
+//        }
 
         private Form1()
         {
@@ -65,35 +68,26 @@ namespace PureSeeder.Forms
         private void CreateBindings()
         {
             var serversBindingSource = new BindingSource();
-            serversBindingSource.DataSource = _context.Servers;
+            serversBindingSource.DataSource = _context.Settings.Servers;
 
-            //serverSelector.DataSource = _context.Servers;
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
+            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer);
 
-            //serverSelector.DataBindings.Add("SelectedValue", _context, "CurrentServer");
-            //serverSelector.DataBindings.Add("SelectedIndex", _context.Servers, "CurrentServerIndex");
-
-            // Todo: Re-add this
-            //serverSelector.DataBindings.Add("SelectedItem", _context, "CurrentServer");
-
-//            SeedingMinPlayers.DataBindings.Add("Text", _context.CurrentServer, "MinPlayers");
-//            SeedingMaxPlayers.DataBindings.Add("Text", _context.CurrentServer, "MaxPlayers");
             SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
             SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
             
-            // Todo: Create an extension for adding Databindings that accepts an expression tree like
-            //       BindableBase.SetProperty<T1, T2>() so that this no longer relies on magic strings
-            username.DataBindings.Add("Text", _context, "Username");
+            username.DataBindings.Add("Text", _context.Settings, x => x.Username);
 
-            curPlayers.DataBindings.Add("Text", _context, "CurrentPlayers" );
-            maxPlayers.DataBindings.Add("Text", _context, "ServerMaxPlayers");
-            currentLoggedInUser.DataBindings.Add("Text", _context, "CurrentLoggedInUser");
+            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers);
+            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
+            currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
-            gameHangDetection.DataBindings.Add("Checked", _context, "HangProtectionStatus");
-            logging.DataBindings.Add("Checked", _context, "LoggingEnabled");
-            seedingEnabled.DataBindings.Add("Checked", _context, "SeedingEnabled");
+            gameHangDetection.DataBindings.Add("Checked", _context.Settings, x => x.EnableGameHangProtection);
+            logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
+            seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
 
+            saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LoadBattlelog()
@@ -153,11 +147,16 @@ namespace PureSeeder.Forms
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
             LoadPage(GetAddress((ComboBox)sender));
+
+            // Deprecated
+            //_context.Settings.CurrentServer = ((ComboBox) sender).SelectedIndex;
             //_context.CurrentServer = ((ComboBox) sender).SelectedIndex;
-            _context.CurrentServer = (Server)((ComboBox) sender).SelectedValue;
+            //_context.CurrentServer = (Server)((ComboBox) sender).SelectedValue;
         }
 
-        
-        
+        private void saveSettings_Click(object sender, EventArgs e)
+        {
+            _context.Settings.SaveSettings();
+        }
     }
 }

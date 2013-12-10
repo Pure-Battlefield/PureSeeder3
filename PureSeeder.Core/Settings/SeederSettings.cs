@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -37,20 +36,31 @@ namespace PureSeeder.Core.Settings
         [UserScopedSetting()]
         public Servers Servers
         {
-            get { return (Servers) this[Constants.SettingNames.Servers]; }
-            set { this[Constants.SettingNames.Servers] = value; }
+            get
+            {
+                if (this[Constants.SettingNames.Servers] == null)
+                {
+                    var defaultServers = GetDefaultServers();
+                    Servers = defaultServers;
+                }
+                return (Servers) this[Constants.SettingNames.Servers];
+            }
+            private set { this[Constants.SettingNames.Servers] = (Servers) value; }
         }
 
+        
         [UserScopedSetting()]
-        public Server CurrentServer
+        [DefaultSettingValue("0")]
+        public int CurrentServer
         {
-            get { return ((Server) this[Constants.SettingNames.CurrentServer]); }
-            set { this[Constants.SettingNames.CurrentServer] = value; }
+            get { return ((int) this[Constants.SettingNames.CurrentServer]); }
+            set { this[Constants.SettingNames.CurrentServer] = (int) value; }
         }
 
-        public void SetDefaultServers()
+        // Todo: Move this into Application Scoped Settings in another class and inject
+        private static Servers GetDefaultServers()
         {
-            Servers = new Servers()
+            var servers = new Servers()
                 {
                     new Server()
                         {
@@ -67,21 +77,7 @@ namespace PureSeeder.Core.Settings
                             MaxPlayers = 64
                         }
                 };
-            Servers.CurrentServerIndex = 0;
+            return servers;
         }
-    }
-
-    public class Servers : List<Server>
-    {
-        public int CurrentServerIndex { get; set; }
-    }
-
-    public class Server
-    {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public int MinPlayers { get; set; }
-        public int MaxPlayers { get; set; }
-        public bool SeedingEnabled { get; set; }
     }
 }

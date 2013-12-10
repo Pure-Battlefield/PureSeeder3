@@ -22,7 +22,8 @@ namespace PureSeeder.Forms
             Gecko.Xpcom.Initialize(xulLocation);
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
 
-            var container = new FormsContainer();
+            //var container = new FormsContainer();
+            var container = new TempContainer();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

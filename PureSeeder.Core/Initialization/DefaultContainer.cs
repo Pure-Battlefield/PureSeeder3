@@ -19,15 +19,18 @@ namespace PureSeeder.Core.Initialization
         {
             if (type == typeof (IPureConfigHelper))
                 return new PureConfigHelper(Constants.ConfigSectionName);
-// Deprecated
-//            if (type == typeof (IDataContext))
-//                return new CurrentContext(
-//                    Resolve<IPureConfigHelper>(),
-//                    Resolve<IDataContextUpdater[]>());
+
+            if (type == typeof (SessionData))
+                return new SessionData();
+
+            if (type == typeof (BindableSettings))
+                return new BindableSettings(
+                    Resolve<SeederUserSettings>());
 
             if (type == typeof (IDataContext))
                 return new SeederContext(
-                    Resolve<SeederUserSettings>(),
+                    Resolve<SessionData>(),
+                    Resolve<BindableSettings>(),
                     Resolve<IDataContextUpdater[]>());
 
             if (type == typeof (SeederUserSettings))
@@ -43,6 +46,14 @@ namespace PureSeeder.Core.Initialization
             throw new ArgumentException(
                 String.Format("DefaultContainer cannot retrieve an instance of the required type: {0}", type.Name));
 
+        }
+    }
+
+    public class TempContainer : IContainer
+    {
+        public T Resolve<T>()
+        {
+            throw new NotImplementedException();
         }
     }
 }
