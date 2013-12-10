@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Awesomium.Core;
 using Awesomium.Windows.Forms;
 //using PureSeeder.Core.Configuration;
+using Gecko;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
@@ -90,6 +91,17 @@ namespace PureSeeder.Forms
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
+        private void JoinServer()
+        {
+            // Todo: This should be moved into configuration so it can more easily be changed
+            const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
+
+            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+            {
+                context.EvaluateScript(jsCommand);
+            }
+        }
+
         private void LoadBattlelog()
         {
             LoadPage(GetAddress(serverSelector));
@@ -157,6 +169,28 @@ namespace PureSeeder.Forms
         private void saveSettings_Click(object sender, EventArgs e)
         {
             _context.Settings.SaveSettings();
+        }
+
+        private void joinServerButton_Click(object sender, EventArgs e)
+        {
+            if (!CheckUsernames())
+                return;
+            JoinServer();
+        }
+
+        private bool CheckUsernames()
+        {
+            if (!_context.IsCorrectUser)
+            {
+                var result = MessageBoxEx.Show("You don't appear to be logged in to the correct account. Are you sure you'd like to try to connect?", "Incorrect User",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, 5000);
+
+                if (result == DialogResult.Yes)
+                    return true;
+
+                return false;
+            }
+            return true;
         }
     }
 }

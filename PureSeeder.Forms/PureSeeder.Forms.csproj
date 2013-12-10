@@ -67,6 +67,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Initalization\FormsContainer.cs" />
+    <Compile Include="MessageBoxEx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Browser.resx">

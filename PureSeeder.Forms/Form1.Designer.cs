@@ -50,6 +50,7 @@
             this.seedingEnabled = new System.Windows.Forms.CheckBox();
             this.logging = new System.Windows.Forms.CheckBox();
             this.gameHangDetection = new System.Windows.Forms.CheckBox();
+            this.joinServerButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -241,11 +242,22 @@
             this.gameHangDetection.Text = "Game Hang Protection";
             this.gameHangDetection.UseVisualStyleBackColor = true;
             // 
+            // joinServerButton
+            // 
+            this.joinServerButton.Location = new System.Drawing.Point(439, 72);
+            this.joinServerButton.Name = "joinServerButton";
+            this.joinServerButton.Size = new System.Drawing.Size(217, 23);
+            this.joinServerButton.TabIndex = 24;
+            this.joinServerButton.Text = "Join Server";
+            this.joinServerButton.UseVisualStyleBackColor = true;
+            this.joinServerButton.Click += new System.EventHandler(this.joinServerButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 798);
+            this.Controls.Add(this.joinServerButton);
             this.Controls.Add(this.seedingEnabled);
             this.Controls.Add(this.saveSettings);
             this.Controls.Add(this.logging);
@@ -298,6 +310,7 @@
         private System.Windows.Forms.CheckBox seedingEnabled;
         private System.Windows.Forms.CheckBox logging;
         private System.Windows.Forms.CheckBox gameHangDetection;
+        private System.Windows.Forms.Button joinServerButton;
     }
 }
 

@@ -6,7 +6,7 @@ namespace PureSeeder.Core.Context
     {
         private int? _currentPlayers;
         private int? _serverMaxPlayers;
-        private bool _seedingEnabled;
+        private bool _seedingEnabled = true;
         private string _currentLoggedInUser;
         private Constants.Game _currentGame;
 
