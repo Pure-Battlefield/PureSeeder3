@@ -95,6 +95,7 @@
             this.geckoWebBrowser1.Size = new System.Drawing.Size(1088, 603);
             this.geckoWebBrowser1.TabIndex = 0;
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
+            this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
             // 
             // label2
             // 
@@ -227,6 +228,7 @@
             // logging
             // 
             this.logging.AutoSize = true;
+            this.logging.Enabled = false;
             this.logging.Location = new System.Drawing.Point(968, 75);
             this.logging.Name = "logging";
             this.logging.Size = new System.Drawing.Size(64, 17);

@@ -237,5 +237,10 @@ namespace PureSeeder.Forms
             }
             return true;
         }
+
+        private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
+        {
+            UpdateContext();
+        }
     }
 }
