@@ -21,6 +21,7 @@ namespace PureSeeder.Forms
     {
         private readonly IDataContext _context;
         private readonly Timer _refreshTimer;
+        private readonly Timer _gameHangProtectionTimer;
 
         public Form1(IDataContext context) : this()
         {
@@ -30,24 +31,18 @@ namespace PureSeeder.Forms
 
             _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
             _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+            _context.OnHangProtectionInvoke += HandleHangProtectionInvoked;
 
             _refreshTimer = new Timer();
+            _gameHangProtectionTimer = new Timer();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            //((IWebView)webControl1).ParentWindow = this.Handle;
             CreateBindings();
-            //((IWebView) webControl1).ParentWindow = browserPanel.Handle;
-            //serverSelector.SelectedIndex = GetCurrentServer();
-            
             LoadBattlelog();
-
-            //webControl1.DocumentReady += BrowserChanged;
-
-            //geckoWebBrowser1.Navigate("battlelog.battlefield.com/bf4/");
 
             //geckoWebBrowser1.Navigated += BrowserChanged;
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
@@ -71,8 +66,27 @@ namespace PureSeeder.Forms
         private void HandleRefresh(object sender, EventArgs e)
         {
             _refreshTimer.Stop();
+
+            // Create a single use event handler to fire AttemptSeeding after context is updated
+            ContextUpdatedHandler handler = null;
+            handler = (tSender, tE) =>
+                {
+                    _context.OnContextUpdate -= handler;
+                    AttemptSeeding();
+                };
+            _context.OnContextUpdate += handler;
             LoadPage();
+
+            // Note: Not sure which of these is correct.
             _refreshTimer.Start();
+            //_refreshTimer.Enabled = true;
+        }
+
+        private void HandleHangProtectionInvoked(object sender, EventArgs e)
+        {
+            MessageBoxEx.Show(
+                "In order to protect from hangs. Battlefield will be shut down. It will be restarted if seeding is still necessary.",
+                "Hang Protection", MessageBoxButtons.OK, 5000);
         }
 
         private Form1()
@@ -118,6 +132,8 @@ namespace PureSeeder.Forms
             {
                 context.EvaluateScript(jsCommand);
             }
+
+            _context.JoinServer();
         }
 
         private void LoadBattlelog()
@@ -163,9 +179,6 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
-
-            throw new NotImplementedException("Need to figure out a way to only attempt seeding if the refresh timer was the trigger for getting here.");
-            AttemptSeeding();
         }
 
         private void AttemptSeeding()
@@ -223,11 +236,6 @@ namespace PureSeeder.Forms
                 return false;
             }
             return true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

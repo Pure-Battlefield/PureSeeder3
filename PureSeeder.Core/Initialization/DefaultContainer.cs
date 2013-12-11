@@ -48,12 +48,4 @@ namespace PureSeeder.Core.Initialization
 
         }
     }
-
-    public class TempContainer : IContainer
-    {
-        public T Resolve<T>()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

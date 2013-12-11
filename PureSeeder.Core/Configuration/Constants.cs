@@ -28,5 +28,7 @@ namespace PureSeeder.Core.Configuration
             BF3,
             BF4
         }
+
+        public const int GameHangProtectionTimerInterval = 30; // minutes
     }
 }

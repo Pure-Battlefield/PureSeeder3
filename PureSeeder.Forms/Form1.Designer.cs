@@ -301,7 +301,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Pure Seeder 3";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
             this.ResumeLayout(false);
