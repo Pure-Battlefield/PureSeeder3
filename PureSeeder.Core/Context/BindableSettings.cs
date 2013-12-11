@@ -76,5 +76,11 @@ namespace PureSeeder.Core.Context
             get { return _settings.CurrentServer; }
             set { SetProperty(_settings, value, x => x.CurrentServer); }
         }
+
+        public int RefreshInterval
+        {
+            get { return _settings.RefreshInterval; }
+            set { SetProperty(_settings, value, x => x.RefreshInterval); }
+        }
     }
 }

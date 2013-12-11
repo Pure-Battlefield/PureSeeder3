@@ -51,6 +51,8 @@
             this.logging = new System.Windows.Forms.CheckBox();
             this.gameHangDetection = new System.Windows.Forms.CheckBox();
             this.joinServerButton = new System.Windows.Forms.Button();
+            this.refreshInterval = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +83,7 @@
             // browserPanel
             // 
             this.browserPanel.Controls.Add(this.geckoWebBrowser1);
-            this.browserPanel.Location = new System.Drawing.Point(12, 172);
+            this.browserPanel.Location = new System.Drawing.Point(12, 174);
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(1094, 609);
             this.browserPanel.TabIndex = 3;
@@ -136,15 +138,15 @@
             // 
             // username
             // 
-            this.username.Location = new System.Drawing.Point(12, 138);
+            this.username.Location = new System.Drawing.Point(18, 148);
             this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(200, 20);
+            this.username.Size = new System.Drawing.Size(209, 20);
             this.username.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 122);
+            this.label3.Location = new System.Drawing.Point(15, 132);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 10;
@@ -204,7 +206,7 @@
             // 
             // saveSettings
             // 
-            this.saveSettings.Location = new System.Drawing.Point(968, 135);
+            this.saveSettings.Location = new System.Drawing.Point(968, 145);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(134, 23);
             this.saveSettings.TabIndex = 20;
@@ -244,19 +246,38 @@
             // 
             // joinServerButton
             // 
-            this.joinServerButton.Location = new System.Drawing.Point(439, 72);
+            this.joinServerButton.Location = new System.Drawing.Point(439, 145);
             this.joinServerButton.Name = "joinServerButton";
             this.joinServerButton.Size = new System.Drawing.Size(217, 23);
             this.joinServerButton.TabIndex = 24;
-            this.joinServerButton.Text = "Join Server";
+            this.joinServerButton.Text = "Seed Now";
             this.joinServerButton.UseVisualStyleBackColor = true;
             this.joinServerButton.Click += new System.EventHandler(this.joinServerButton_Click);
+            // 
+            // refreshInterval
+            // 
+            this.refreshInterval.Location = new System.Drawing.Point(566, 71);
+            this.refreshInterval.Name = "refreshInterval";
+            this.refreshInterval.Size = new System.Drawing.Size(43, 20);
+            this.refreshInterval.TabIndex = 25;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(435, 69);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(126, 20);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "Refresh Interval:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1118, 798);
+            this.ClientSize = new System.Drawing.Size(1118, 791);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.refreshInterval);
             this.Controls.Add(this.joinServerButton);
             this.Controls.Add(this.seedingEnabled);
             this.Controls.Add(this.saveSettings);
@@ -280,6 +301,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Pure Seeder 3";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -311,6 +333,8 @@
         private System.Windows.Forms.CheckBox logging;
         private System.Windows.Forms.CheckBox gameHangDetection;
         private System.Windows.Forms.Button joinServerButton;
+        private System.Windows.Forms.TextBox refreshInterval;
+        private System.Windows.Forms.Label label8;
     }
 }
 

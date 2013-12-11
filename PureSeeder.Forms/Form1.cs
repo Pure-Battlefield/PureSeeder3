@@ -20,6 +20,7 @@ namespace PureSeeder.Forms
     public partial class Form1 : Form
     {
         private readonly IDataContext _context;
+        private readonly Timer _refreshTimer;
 
         public Form1(IDataContext context) : this()
         {
@@ -29,6 +30,8 @@ namespace PureSeeder.Forms
 
             _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
             _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+
+            _refreshTimer = new Timer();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -49,17 +52,28 @@ namespace PureSeeder.Forms
             //geckoWebBrowser1.Navigated += BrowserChanged;
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
-            
+            SetRefreshTimer();
         }
 
-        // Deprecated
-//        private int GetCurrentServer()
-//        {
-//            var serverName = _context.Settings.CurrentServer.Name;
-//
-//            var index = Array.FindIndex<Server>(_context.Servers.ToArray(), x => x.Name == serverName);
-//            return index;
-//        }
+        private void SetRefreshTimer()
+        {
+            int refreshTimerInterval;
+            if (!int.TryParse(refreshInterval.Text, out refreshTimerInterval))
+                refreshTimerInterval = _context.Settings.RefreshInterval;
+
+            refreshTimerInterval = refreshTimerInterval*1000;
+
+            _refreshTimer.Interval = refreshTimerInterval;
+
+            _refreshTimer.Tick += HandleRefresh;
+        }
+
+        private void HandleRefresh(object sender, EventArgs e)
+        {
+            _refreshTimer.Stop();
+            LoadPage();
+            _refreshTimer.Start();
+        }
 
         private Form1()
         {
@@ -87,12 +101,16 @@ namespace PureSeeder.Forms
             gameHangDetection.DataBindings.Add("Checked", _context.Settings, x => x.EnableGameHangProtection);
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
+            refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
 
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void JoinServer()
         {
+            if (!CheckUsernames())
+                return;
+
             // Todo: This should be moved into configuration so it can more easily be changed
             const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
@@ -104,7 +122,7 @@ namespace PureSeeder.Forms
 
         private void LoadBattlelog()
         {
-            LoadPage(GetAddress(serverSelector));
+            LoadPage();
         }
 
         private string GetAddress(ComboBox cb)
@@ -114,9 +132,10 @@ namespace PureSeeder.Forms
             return address;
         }
 
-        private void LoadPage(string address)
+        private void LoadPage()
         {
-            geckoWebBrowser1.Navigate(address);
+            //geckoWebBrowser1.Navigate(address);
+            geckoWebBrowser1.Navigate(GetAddress(serverSelector));
         }
 
         void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -144,6 +163,26 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
+
+            throw new NotImplementedException("Need to figure out a way to only attempt seeding if the refresh timer was the trigger for getting here.");
+            AttemptSeeding();
+        }
+
+        private void AttemptSeeding()
+        {
+            if (!CheckUsernames())
+                return;
+
+            if (!_context.ShouldSeed)
+                return;
+
+            var result = MessageBoxEx.Show("Auto-seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
+                                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+
+            if (result == DialogResult.Cancel)
+                return;
+
+            JoinServer();
         }
 
         private void UpdateInterface()
@@ -158,12 +197,7 @@ namespace PureSeeder.Forms
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            LoadPage(GetAddress((ComboBox)sender));
-
-            // Deprecated
-            //_context.Settings.CurrentServer = ((ComboBox) sender).SelectedIndex;
-            //_context.CurrentServer = ((ComboBox) sender).SelectedIndex;
-            //_context.CurrentServer = (Server)((ComboBox) sender).SelectedValue;
+            LoadPage();
         }
 
         private void saveSettings_Click(object sender, EventArgs e)
@@ -173,8 +207,6 @@ namespace PureSeeder.Forms
 
         private void joinServerButton_Click(object sender, EventArgs e)
         {
-            if (!CheckUsernames())
-                return;
             JoinServer();
         }
 
@@ -191,6 +223,11 @@ namespace PureSeeder.Forms
                 return false;
             }
             return true;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

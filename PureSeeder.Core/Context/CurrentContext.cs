@@ -17,6 +17,8 @@ namespace PureSeeder.Core.Context
         
         bool IsCorrectUser { get; }
         void UpdateStatus(string pageData);
+        bool ShouldSeed { get; }
+        bool ShouldKick { get; }
     }
 
     public class SeederContext : IDataContext
@@ -53,6 +55,36 @@ namespace PureSeeder.Core.Context
             foreach (var updater in _updaters)
             {
                 updater.UpdateContextData(this, pageData);
+            }
+        }
+
+        public bool ShouldSeed
+        {
+            get 
+            { 
+                var shouldSeed = true;
+                // There are less than or equal to MinPlayers in the server
+                shouldSeed &= _sessionData.CurrentPlayers <=
+                              _bindableSettings.Servers[_bindableSettings.CurrentServer].MinPlayers;
+
+                throw new NotImplementedException("Need to make sure BF is not already running.");
+
+                return shouldSeed;
+            }
+        }
+
+        public bool ShouldKick
+        {
+            get 
+            { 
+                var shouldKick = true;
+
+                shouldKick &= _sessionData.CurrentPlayers >
+                              _bindableSettings.Servers[_bindableSettings.CurrentServer].MaxPlayers;
+
+                throw new NotImplementedException("Need to make sure BF is running");
+
+                return shouldKick;
             }
         }
     }

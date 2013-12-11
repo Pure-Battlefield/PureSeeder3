@@ -47,7 +47,6 @@ namespace PureSeeder.Core.Settings
             }
             private set { this[Constants.SettingNames.Servers] = (Servers) value; }
         }
-
         
         [UserScopedSetting()]
         [DefaultSettingValue("0")]
@@ -55,6 +54,14 @@ namespace PureSeeder.Core.Settings
         {
             get { return ((int) this[Constants.SettingNames.CurrentServer]); }
             set { this[Constants.SettingNames.CurrentServer] = (int) value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("60")]
+        public int RefreshInterval
+        {
+            get { return ((int) this[Constants.SettingNames.RefreshInterval]); }
+            set { this[Constants.SettingNames.RefreshInterval] = (int) value; }
         }
 
         // Todo: Move this into Application Scoped Settings in another class and inject
