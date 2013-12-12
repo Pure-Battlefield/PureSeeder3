@@ -53,6 +53,7 @@
             this.joinServerButton = new System.Windows.Forms.Button();
             this.refreshInterval = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.refresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -75,9 +76,6 @@
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Server";
-            // 
-            // webControlBindingSource
-            // 
             // 
             // browserPanel
             // 
@@ -272,11 +270,22 @@
             this.label8.TabIndex = 26;
             this.label8.Text = "Refresh Interval:";
             // 
+            // refresh
+            // 
+            this.refresh.Location = new System.Drawing.Point(615, 69);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(75, 23);
+            this.refresh.TabIndex = 27;
+            this.refresh.Text = "Refresh";
+            this.refresh.UseVisualStyleBackColor = true;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 791);
+            this.Controls.Add(this.refresh);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.refreshInterval);
             this.Controls.Add(this.joinServerButton);
@@ -335,6 +344,7 @@
         private System.Windows.Forms.Button joinServerButton;
         private System.Windows.Forms.TextBox refreshInterval;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button refresh;
     }
 }
 

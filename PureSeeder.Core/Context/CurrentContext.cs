@@ -126,7 +126,8 @@ namespace PureSeeder.Core.Context
         private bool BfIsRunning()
         {
             // Todo: The process name should be injected so it can work with BF3
-            var bfProcess = Process.GetProcessesByName("bf4");
+            var bfProcess = Process.GetProcessesByName("bf4"); // Process name is bf4.exe (in Details tab of Task Manager)
+            
             return bfProcess.Length != 0;
         }
 
@@ -245,17 +246,5 @@ namespace PureSeeder.Core.Context
 
             context.Session.CurrentLoggedInUser = curUser.Groups[1].Value;
         }
-    }
-
-    
-
-    public class CurrentPlayerCountException : ContextUpdateException
-    {
-        
-    }
-
-    public class ContextUpdateException : Exception
-    {
-        
     }
 }

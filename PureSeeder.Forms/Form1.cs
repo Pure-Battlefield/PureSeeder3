@@ -58,25 +58,30 @@ namespace PureSeeder.Forms
             _refreshTimer.Interval = refreshTimerInterval;
 
             _refreshTimer.Tick += HandleRefresh;
+
+            _refreshTimer.Start();
         }
 
         private void HandleRefresh(object sender, EventArgs e)
+        {
+           RefreshPageAndData();
+        }
+
+        private void RefreshPageAndData()
         {
             _refreshTimer.Stop();
 
             // Create a single use event handler to fire AttemptSeeding after context is updated
             ContextUpdatedHandler handler = null;
             handler = (tSender, tE) =>
-                {
-                    _context.OnContextUpdate -= handler;
-                    AttemptSeeding();
-                };
+            {
+                _context.OnContextUpdate -= handler;
+                AttemptSeeding();
+            };
             _context.OnContextUpdate += handler;
             LoadPage();
 
-            // Note: Not sure which of these is correct.
             _refreshTimer.Start();
-            //_refreshTimer.Enabled = true;
         }
 
         private void HandleHangProtectionInvoked(object sender, EventArgs e)
@@ -176,6 +181,7 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
+            refresh.Enabled = true; // Todo: This is a hacky way to avoid refresh hammering. Think of something better.
         }
 
         private void AttemptSeeding()
@@ -233,6 +239,12 @@ namespace PureSeeder.Forms
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
         {
             UpdateContext();
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            refresh.Enabled = false;  // Todo: This is a hacky way to avoid refresh hammering. Think of something better.
+            RefreshPageAndData();
         }
     }
 }
