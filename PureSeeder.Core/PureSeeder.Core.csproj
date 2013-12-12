@@ -44,12 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Constants.cs" />
-    <Compile Include="Configuration\PureConfig.csd.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PureConfig.csd</DependentUpon>
-    </Compile>
-    <Compile Include="Configuration\PureConfigHelper.cs" />
     <Compile Include="Context\BindableBase.cs" />
     <Compile Include="Context\BindableSettings.cs" />
     <Compile Include="Context\CurrentContext.cs" />
@@ -64,21 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Configuration\PureConfig.csd">
-      <Generator>CsdFileGenerator</Generator>
-      <LastGenOutput>PureConfig.csd.cs</LastGenOutput>
-    </None>
-    <None Include="Configuration\PureConfig.csd.config">
-      <DependentUpon>PureConfig.csd</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Configuration\PureConfig.csd.diagram">
-      <DependentUpon>PureConfig.csd</DependentUpon>
-    </None>
-    <None Include="Configuration\PureConfig.csd.xsd">
-      <DependentUpon>PureConfig.csd</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

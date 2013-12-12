@@ -17,9 +17,6 @@ namespace PureSeeder.Core.Initialization
 
         private object CreateObject(Type type)
         {
-            if (type == typeof (IPureConfigHelper))
-                return new PureConfigHelper(Constants.ConfigSectionName);
-
             if (type == typeof (SessionData))
                 return new SessionData();
 

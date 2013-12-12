@@ -78,7 +78,6 @@
             // 
             // webControlBindingSource
             // 
-            this.webControlBindingSource.DataSource = typeof(Awesomium.Core.IWebView);
             // 
             // browserPanel
             // 

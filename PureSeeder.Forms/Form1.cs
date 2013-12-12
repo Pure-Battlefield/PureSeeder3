@@ -7,9 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Awesomium.Core;
-using Awesomium.Windows.Forms;
-//using PureSeeder.Core.Configuration;
 using Gecko;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Settings;
@@ -201,11 +198,6 @@ namespace PureSeeder.Forms
         private void UpdateInterface()
         {
             currentLoggedInUser.ForeColor = _context.IsCorrectUser ? Color.Green : Color.Red;
-        }
-
-        private static void OnShowNewView(object sender, ShowCreatedWebViewEventArgs e)
-        {
-            
         }
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
