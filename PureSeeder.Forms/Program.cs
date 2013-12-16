@@ -17,7 +17,7 @@ namespace PureSeeder.Forms
         {
             //var xulLocation = @"C:\Dev\Random\pure\new\XulRunner\xulrunner-22.0.en-US.win32\xulrunner";
             //var xulLocation = @"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner";
-            var xulLocation = @"..\..\..\lib\xulrunner";
+            var xulLocation = @"xulrunner";
             
             // Setup Gecko
             Gecko.Xpcom.Initialize(xulLocation);
