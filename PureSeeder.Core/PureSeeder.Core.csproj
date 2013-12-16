@@ -50,6 +50,7 @@
     <Compile Include="Context\SessionData.cs" />
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />
+    <Compile Include="Monitoring\ProcessMonitor.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\SeederSettings.cs" />
