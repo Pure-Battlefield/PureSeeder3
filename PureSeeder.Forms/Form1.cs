@@ -5,12 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.Monitoring;
 using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
+using Timer = System.Windows.Forms.Timer;
 
 namespace PureSeeder.Forms
 {
@@ -19,6 +22,7 @@ namespace PureSeeder.Forms
         private readonly IDataContext _context;
         private readonly Timer _refreshTimer;
         private readonly Timer _gameHangProtectionTimer;
+        private readonly ProcessMonitor _processMonitor;
 
         public Form1(IDataContext context) : this()
         {
@@ -32,6 +36,15 @@ namespace PureSeeder.Forms
 
             _refreshTimer = new Timer();
             _gameHangProtectionTimer = new Timer();
+
+            // Todo: This should be injected
+            _processMonitor = new ProcessMonitor();
+            _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
+        }
+
+        void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
+        {
+            MessageBox.Show(String.Format("IsRunning: {0}", e.IsRunning), "Process State Changed", MessageBoxButtons.OK);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -45,6 +58,14 @@ namespace PureSeeder.Forms
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
             SetRefreshTimer();
+
+            SpinUpProcessMonitor();
+        }
+
+        private async void SpinUpProcessMonitor()
+        {
+            var ct = CancellationTokenSource.CreateLinkedTokenSource();
+            await Task.Run(() => _processMonitor.CheckOnProcess());
         }
 
         private void SetRefreshTimer()
