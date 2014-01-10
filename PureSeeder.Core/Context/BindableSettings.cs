@@ -82,5 +82,11 @@ namespace PureSeeder.Core.Context
             get { return _settings.RefreshInterval; }
             set { SetProperty(_settings, value, x => x.RefreshInterval); }
         }
+
+        public bool MinimizeToTray
+        {
+            get { return _settings.MinimizeToTray; }
+            set { SetProperty(_settings, value, x => x.MinimizeToTray); }
+        }
     }
 }

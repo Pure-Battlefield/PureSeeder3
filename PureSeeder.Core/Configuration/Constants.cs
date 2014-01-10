@@ -21,6 +21,7 @@ namespace PureSeeder.Core.Configuration
             public const string Servers = "Servers";
             public const string CurrentServer = "CurrentServer";
             public const string RefreshInterval = "RefreshInterval";
+            public const string MinimizeToTray = "MinimizeToTray";
         }
 
         public enum Game

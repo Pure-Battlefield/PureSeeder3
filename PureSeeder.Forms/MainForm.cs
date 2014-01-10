@@ -17,7 +17,7 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace PureSeeder.Forms
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private readonly IDataContext _context;
         private readonly Timer _refreshTimer;
@@ -26,7 +26,7 @@ namespace PureSeeder.Forms
 
         private bool _fakeSeedStatus = false;
 
-        public Form1(IDataContext context) : this()
+        public MainForm(IDataContext context) : this()
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
@@ -122,15 +122,14 @@ namespace PureSeeder.Forms
                 "Hang Protection", MessageBoxButtons.OK, 5000);
         }
 
-        private Form1()
+        private MainForm()
         {
             InitializeComponent();
         }
 
         private void CreateBindings()
         {
-            var serversBindingSource = new BindingSource();
-            serversBindingSource.DataSource = _context.Settings.Servers;
+            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers};
 
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
@@ -147,6 +146,8 @@ namespace PureSeeder.Forms
 
             gameHangDetection.DataBindings.Add("Checked", _context.Settings, x => x.EnableGameHangProtection);
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
+            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,
+                                            DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
             refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
 
@@ -276,6 +277,26 @@ namespace PureSeeder.Forms
         {
             refresh.Enabled = false;  // Todo: This is a hacky way to avoid refresh hammering. Think of something better.
             RefreshPageAndData();
+        }
+
+        private void showWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void minimizeWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState && _context.Settings.MinimizeToTray)
+            {
+                notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running", "Right click to restore the window", ToolTipIcon.Info);
+                this.Hide();
+            }
         }
     }
 }

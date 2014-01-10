@@ -64,7 +64,15 @@ namespace PureSeeder.Core.Settings
             set { this[Constants.SettingNames.RefreshInterval] = (int) value; }
         }
 
-        // Todo: Move this into Application Scoped Settings in another class and inject
+        [UserScopedSetting]
+        [DefaultSettingValue("true")]
+        public bool MinimizeToTray
+        {
+            get { return ((bool) this[Constants.SettingNames.MinimizeToTray]); }
+            set { this[Constants.SettingNames.MinimizeToTray] = (bool) value; }
+        }
+
+        // Todo: Move this out of code and into configuration
         private static Servers GetDefaultServers()
         {
             var servers = new Servers()

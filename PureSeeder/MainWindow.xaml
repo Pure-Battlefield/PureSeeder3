@@ -1,9 +1,0 @@
-﻿<Window x:Class="PureSeeder.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Pure Seeder" Height="525" Width="783">
-    <Grid>
-        <Label Content="WPF Project incomplete.  Switch to start PureSeeder.Forms project by default instead." HorizontalAlignment="Left" Margin="54,46,0,0" VerticalAlignment="Top" FontSize="18"/>
-
-    </Grid>
-</Window>

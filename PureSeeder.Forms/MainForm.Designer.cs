@@ -1,6 +1,6 @@
 ﻿namespace PureSeeder.Forms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -55,8 +55,13 @@
             this.label8 = new System.Windows.Forms.Label();
             this.refresh = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeToTray = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // serverSelector
@@ -283,14 +288,48 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // Form1
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showWindowToolStripMenuItem,
+            this.minimizeWindowToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(171, 48);
+            // 
+            // showWindowToolStripMenuItem
+            // 
+            this.showWindowToolStripMenuItem.Name = "showWindowToolStripMenuItem";
+            this.showWindowToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.showWindowToolStripMenuItem.Text = "Show Window";
+            this.showWindowToolStripMenuItem.Click += new System.EventHandler(this.showWindowToolStripMenuItem_Click);
+            // 
+            // minimizeWindowToolStripMenuItem
+            // 
+            this.minimizeWindowToolStripMenuItem.Name = "minimizeWindowToolStripMenuItem";
+            this.minimizeWindowToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.minimizeWindowToolStripMenuItem.Text = "Minimize Window";
+            this.minimizeWindowToolStripMenuItem.Click += new System.EventHandler(this.minimizeWindowToolStripMenuItem_Click);
+            // 
+            // minimizeToTray
+            // 
+            this.minimizeToTray.AutoSize = true;
+            this.minimizeToTray.Location = new System.Drawing.Point(968, 98);
+            this.minimizeToTray.Name = "minimizeToTray";
+            this.minimizeToTray.Size = new System.Drawing.Size(106, 17);
+            this.minimizeToTray.TabIndex = 28;
+            this.minimizeToTray.Text = "Minimize To Tray";
+            this.minimizeToTray.UseVisualStyleBackColor = true;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 791);
+            this.Controls.Add(this.minimizeToTray);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.refreshInterval);
@@ -315,10 +354,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverSelector);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "Form1";
+            this.MaximizeBox = false;
+            this.Name = "MainForm";
             this.Text = "Pure Seeder 3";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,6 +394,10 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button refresh;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.CheckBox minimizeToTray;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem showWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minimizeWindowToolStripMenuItem;
     }
 }
 

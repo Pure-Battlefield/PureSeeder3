@@ -24,8 +24,8 @@ namespace PureSeeder.Forms.Initalization
         private object Resolve(Type type)
         {
             
-            if (type == typeof(Form1))
-                return new Form1(
+            if (type == typeof(MainForm))
+                return new MainForm(
                     _coreContainer.Resolve<IDataContext>());
 
             throw new ArgumentException(String.Format("FormsContainer cannot create an instance of the required type: {0}", type.Name));
@@ -42,8 +42,8 @@ namespace PureSeeder.Forms.Initalization
         }
 
         private object Resolve(Type type){
-            if (type == typeof (Form1))
-                return new Form1(
+            if (type == typeof (MainForm))
+                return new MainForm(
                     new SeederContext(
                         new SessionData(),
                         new BindableSettings(

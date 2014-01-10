@@ -29,7 +29,7 @@ namespace PureSeeder.Forms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(container.Resolve<Form1>());
+            Application.Run(container.Resolve<MainForm>());
         }
     }
 }
