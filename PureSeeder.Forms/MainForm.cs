@@ -24,6 +24,9 @@ namespace PureSeeder.Forms
         private readonly Timer _gameHangProtectionTimer;
         private readonly ProcessMonitor _processMonitor;
 
+        // CancellationTokens
+        private CancellationToken _processMonitorCt;
+
         private bool _fakeSeedStatus = false;
 
         public MainForm(IDataContext context) : this()
@@ -75,6 +78,7 @@ namespace PureSeeder.Forms
         private async void SpinUpProcessMonitor()
         {
             //var ct = CancellationTokenSource.CreateLinkedTokenSource();
+            _processMonitorCt = new CancellationTokenSource().Token;
             await Task.Run(() => _processMonitor.CheckOnProcess());
         }
 

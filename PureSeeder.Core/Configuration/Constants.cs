@@ -30,6 +30,19 @@ namespace PureSeeder.Core.Configuration
             BF4
         }
 
+        public static class ProcessNames
+        {
+            //public const string Bf4 = "BF4";
+            public const string Bf4 = "Crash";
+            public const string Bf3 = "BF3";
+        }
+
+        public static class WindowTitles
+        {
+            //public const string Bf4FaultWindow = "Battlefield 4";
+            public const string Bf4FaultWindow = "Crash";
+        }
+
         public const int GameHangProtectionTimerInterval = 30; // minutes
     }
 }
