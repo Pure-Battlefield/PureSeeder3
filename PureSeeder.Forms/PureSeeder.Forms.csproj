@@ -104,6 +104,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\Awesomium.Core.IWebView.datasource" />
     <None Include="Properties\DataSources\Awesomium.Windows.Forms.WebControl.datasource" />
@@ -173,6 +174,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\PB.ico" />
+    <None Include="Resources\PBOn.ico" />
+    <None Include="Resources\PBOff.ico" />
     <Content Include="xulrunner\breakpadinjector.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

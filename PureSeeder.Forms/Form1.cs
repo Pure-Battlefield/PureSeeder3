@@ -24,6 +24,8 @@ namespace PureSeeder.Forms
         private readonly Timer _gameHangProtectionTimer;
         private readonly ProcessMonitor _processMonitor;
 
+        private bool _fakeSeedStatus = false;
+
         public Form1(IDataContext context) : this()
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -44,12 +46,20 @@ namespace PureSeeder.Forms
 
         void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
         {
-            MessageBox.Show(String.Format("IsRunning: {0}", e.IsRunning), "Process State Changed", MessageBoxButtons.OK);
+            //MessageBox.Show(String.Format("IsRunning: {0}", e.IsRunning), "Process State Changed", MessageBoxButtons.OK);
+            _fakeSeedStatus = !_fakeSeedStatus;
+            if (_fakeSeedStatus)
+                notifyIcon1.Icon = Properties.Resources.PBOn;
+            if (!_fakeSeedStatus)
+                notifyIcon1.Icon = Properties.Resources.PBOff;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            this.Icon = PureSeeder.Forms.Properties.Resources.PB;
+            notifyIcon1.Icon = Properties.Resources.PBOff;
 
             CreateBindings();
             LoadBattlelog();
@@ -64,7 +74,7 @@ namespace PureSeeder.Forms
 
         private async void SpinUpProcessMonitor()
         {
-            var ct = CancellationTokenSource.CreateLinkedTokenSource();
+            //var ct = CancellationTokenSource.CreateLinkedTokenSource();
             await Task.Run(() => _processMonitor.CheckOnProcess());
         }
 

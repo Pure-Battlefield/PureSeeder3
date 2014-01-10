@@ -14,6 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EB52A5
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icons", "Icons", "{4C3959C5-7FC5-4D64-811A-037CDF477680}"
+	ProjectSection(SolutionItems) = preProject
+		Icons\PB.ico = Icons\PB.ico
+		Icons\PBOff.ico = Icons\PBOff.ico
+		Icons\PBOn.ico = Icons\PBOn.ico
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

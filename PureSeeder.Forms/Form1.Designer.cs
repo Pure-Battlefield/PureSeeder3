@@ -54,6 +54,7 @@
             this.refreshInterval = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.refresh = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.SuspendLayout();
@@ -280,6 +281,11 @@
             this.refresh.UseVisualStyleBackColor = true;
             this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,6 +351,7 @@
         private System.Windows.Forms.TextBox refreshInterval;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
