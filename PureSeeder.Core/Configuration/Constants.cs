@@ -8,6 +8,7 @@ namespace PureSeeder.Core.Configuration
 {
     public static class Constants
     {
+        public const string ApplicationName = "Pure Seeder 3";
         public const string ConfigSectionName = "PureConfig";
 
         public static class SettingNames

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
+using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Monitoring;
 using PureSeeder.Core.Settings;
@@ -26,8 +27,6 @@ namespace PureSeeder.Forms
 
         // CancellationTokens
         private CancellationToken _processMonitorCt;
-
-        private bool _fakeSeedStatus = false;
 
         public MainForm(IDataContext context) : this()
         {
@@ -49,12 +48,13 @@ namespace PureSeeder.Forms
 
         void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
         {
-            //MessageBox.Show(String.Format("IsRunning: {0}", e.IsRunning), "Process State Changed", MessageBoxButtons.OK);
-            _fakeSeedStatus = !_fakeSeedStatus;
-            if (_fakeSeedStatus)
+            _context.Session.BfIsRunning = e.IsRunning;
+
+            if (_context.Session.BfIsRunning)
                 notifyIcon1.Icon = Properties.Resources.PBOn;
-            if (!_fakeSeedStatus)
+            if (!_context.Session.BfIsRunning)
                 notifyIcon1.Icon = Properties.Resources.PBOff;
+
         }
 
         protected override void OnLoad(EventArgs e)
@@ -63,6 +63,8 @@ namespace PureSeeder.Forms
 
             this.Icon = PureSeeder.Forms.Properties.Resources.PB;
             notifyIcon1.Icon = Properties.Resources.PBOff;
+            notifyIcon1.Text = Constants.ApplicationName;
+            this.Text = Constants.ApplicationName;
 
             CreateBindings();
             LoadBattlelog();
@@ -79,7 +81,7 @@ namespace PureSeeder.Forms
         {
             //var ct = CancellationTokenSource.CreateLinkedTokenSource();
             _processMonitorCt = new CancellationTokenSource().Token;
-            await Task.Run(() => _processMonitor.CheckOnProcess());
+            await Task.Run(() => _processMonitor.CheckOnProcess(_processMonitorCt));
         }
 
         private void SetRefreshTimer()

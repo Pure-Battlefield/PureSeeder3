@@ -39,51 +39,43 @@ namespace PureSeeder.Core.Monitoring
 
                     var isRunning = process != null;
                     var previousState = isRunning;
-                    
+
                     while (!ct.IsCancellationRequested)
                     {
                         process = Process.GetProcessesByName(Constants.ProcessNames.Bf4).FirstOrDefault();
                         isRunning = process != null;
-                        if (isRunning != previousState)
-                        {
-                            if(OnProcessStateChanged != null)
-                                OnProcessStateChanged.Invoke(this, new ProcessStateChangeEventArgs() {IsRunning = isRunning});
+                        if (OnProcessStateChanged != null)
+                            OnProcessStateChanged.Invoke(this, new ProcessStateChangeEventArgs() {IsRunning = isRunning});
 
-                            previousState = isRunning;
+                        previousState = isRunning;
 
-                            await CrashDetection();
-                        }
+                        CrashDetection();
 
                         Thread.Sleep(5000);
                     }
-
                 });
         }
 
-        private async Task CrashDetection()
+        private void CrashDetection()
         {
-            await Task.Run(() =>
-                {
-                    var process = Process.GetProcessesByName(Constants.ProcessNames.Bf4).FirstOrDefault();
-                    if (process == null)
-                        return;
+            var process = Process.GetProcessesByName(Constants.ProcessNames.Bf4).FirstOrDefault();
+            if (process == null)
+                return;
 
-                    if (!process.Responding) // Check if the process is responding
-                    {
-                        process.Kill(); // Kill the process
-                        var faultProcess =
-                            Process.GetProcessesByName("WerFault")
-                                   .FirstOrDefault(x => x.MainWindowTitle == Constants.WindowTitles.Bf4FaultWindow); // Find the fault window
+            if (!process.Responding) // Check if the process is responding
+            {
+                process.Kill(); // Kill the process
+                var faultProcess =
+                    Process.GetProcessesByName("WerFault")
+                           .FirstOrDefault(x => x.MainWindowTitle == Constants.WindowTitles.Bf4FaultWindow);
+                    // Find the fault window
 
-                        if (faultProcess == null)
-                            return;
+                if (faultProcess == null)
+                    return;
 
-                        faultProcess.Kill(); // Kill the fault window
-                    }
-                });
+                faultProcess.Kill(); // Kill the fault window
+            }
         }
-
-       
     }
 
     public class ProcessStateChangeEventArgs : EventArgs
