@@ -36,7 +36,6 @@ namespace PureSeeder.Forms
 
             _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
             _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
-            _context.OnHangProtectionInvoke += HandleHangProtectionInvoked;
 
             _refreshTimer = new Timer();
             _gameHangProtectionTimer = new Timer();
@@ -150,7 +149,6 @@ namespace PureSeeder.Forms
             maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
             currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
-            gameHangDetection.DataBindings.Add("Checked", _context.Settings, x => x.EnableGameHangProtection);
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
             minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,
                                             DataSourceUpdateMode.OnPropertyChanged);

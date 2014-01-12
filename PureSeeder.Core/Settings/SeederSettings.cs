@@ -18,14 +18,6 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("true")]
-        public bool EnableGameHangProtection
-        {
-            get { return ((bool) this[Constants.SettingNames.EnableGameHangProtection]); }
-            set { this[Constants.SettingNames.EnableGameHangProtection] = (bool) value; }
-        }
-
-        [UserScopedSetting()]
         [DefaultSettingValue("false")]
         public bool EnableLogging
         {

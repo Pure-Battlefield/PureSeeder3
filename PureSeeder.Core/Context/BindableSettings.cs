@@ -60,12 +60,6 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.Username); }
         }
 
-        public bool EnableGameHangProtection
-        {
-            get { return _settings.EnableGameHangProtection; }
-            set { SetProperty(_settings, value, x => x.EnableGameHangProtection); }
-        }
-
         public bool EnableLogging
         {
             get { return _settings.EnableLogging; }

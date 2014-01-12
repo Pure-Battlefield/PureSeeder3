@@ -49,7 +49,6 @@
             this.saveSettings = new System.Windows.Forms.Button();
             this.seedingEnabled = new System.Windows.Forms.CheckBox();
             this.logging = new System.Windows.Forms.CheckBox();
-            this.gameHangDetection = new System.Windows.Forms.CheckBox();
             this.joinServerButton = new System.Windows.Forms.Button();
             this.refreshInterval = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -249,16 +248,6 @@
             this.logging.Text = "Logging";
             this.logging.UseVisualStyleBackColor = true;
             // 
-            // gameHangDetection
-            // 
-            this.gameHangDetection.AutoSize = true;
-            this.gameHangDetection.Location = new System.Drawing.Point(968, 52);
-            this.gameHangDetection.Name = "gameHangDetection";
-            this.gameHangDetection.Size = new System.Drawing.Size(134, 17);
-            this.gameHangDetection.TabIndex = 21;
-            this.gameHangDetection.Text = "Game Hang Protection";
-            this.gameHangDetection.UseVisualStyleBackColor = true;
-            // 
             // joinServerButton
             // 
             this.joinServerButton.Location = new System.Drawing.Point(439, 145);
@@ -327,7 +316,7 @@
             // minimizeToTray
             // 
             this.minimizeToTray.AutoSize = true;
-            this.minimizeToTray.Location = new System.Drawing.Point(968, 98);
+            this.minimizeToTray.Location = new System.Drawing.Point(968, 52);
             this.minimizeToTray.Name = "minimizeToTray";
             this.minimizeToTray.Size = new System.Drawing.Size(106, 17);
             this.minimizeToTray.TabIndex = 28;
@@ -375,20 +364,20 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.importToolStripMenuItem.Text = "Import";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -407,7 +396,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1118, 791);
+            this.ClientSize = new System.Drawing.Size(1118, 749);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.password);
@@ -420,7 +409,6 @@
             this.Controls.Add(this.saveSettings);
             this.Controls.Add(this.logging);
             this.Controls.Add(this.SeedingMaxPlayers);
-            this.Controls.Add(this.gameHangDetection);
             this.Controls.Add(this.SeedingMinPlayers);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -472,7 +460,6 @@
         private System.Windows.Forms.Button saveSettings;
         private System.Windows.Forms.CheckBox seedingEnabled;
         private System.Windows.Forms.CheckBox logging;
-        private System.Windows.Forms.CheckBox gameHangDetection;
         private System.Windows.Forms.Button joinServerButton;
         private System.Windows.Forms.TextBox refreshInterval;
         private System.Windows.Forms.Label label8;

@@ -66,7 +66,6 @@ namespace PureSeeder.Core.Context
         /// <summary>
         /// Event fired when Hang Protection is invoked
         /// </summary>
-        event HangProtectionInvokedHandler OnHangProtectionInvoke;
 
         /// <summary>
         /// Update the context in any necessary ways when a server is joined
@@ -82,7 +81,6 @@ namespace PureSeeder.Core.Context
         private readonly SessionData _sessionData;
         private readonly BindableSettings _bindableSettings;
         private readonly IDataContextUpdater[] _updaters;
-        private readonly Timer _hangProtectionTimer;
 
         public SeederContext(SessionData sessionData, BindableSettings bindableSettings, IDataContextUpdater[] updaters)
         {
@@ -93,11 +91,6 @@ namespace PureSeeder.Core.Context
             _sessionData = sessionData;
             _bindableSettings = bindableSettings;
             _updaters = updaters;
-
-            _hangProtectionTimer = new Timer(Constants.GameHangProtectionTimerInterval * 60 * 1000);
-            _hangProtectionTimer.Elapsed += InvokeHangProtection;
-
-            _sessionData.PropertyChanged += HangProtectionStatusChanged;
 
         }
 
@@ -181,11 +174,10 @@ namespace PureSeeder.Core.Context
         }
 
         public event ContextUpdatedHandler OnContextUpdate;
-        public event HangProtectionInvokedHandler OnHangProtectionInvoke;
         
         public void JoinServer()
         {
-            SetHangProtectionTimer();
+            
         }
 
         private void OnContextUpdated()
@@ -193,40 +185,6 @@ namespace PureSeeder.Core.Context
             var handler = OnContextUpdate;
             if (handler != null)
                 handler(this, new EventArgs());
-        }
-
-        private void OnHangProtectionInvoked()
-        {
-            var handler = OnHangProtectionInvoke;
-            if (handler != null)
-                handler(this, new EventArgs());
-        }
-
-        private void HangProtectionStatusChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != "EnableGameHangProtection")
-                return;
-
-            SetHangProtectionTimer();
-        }
-
-        private void SetHangProtectionTimer()
-        {
-            if (!_bindableSettings.EnableGameHangProtection)
-            {
-                _hangProtectionTimer.Stop();
-                return;
-            }
-
-            if (!BfIsRunning())
-                return;
-
-            _hangProtectionTimer.Start();
-        }
-
-        private void InvokeHangProtection(object sender, ElapsedEventArgs e)
-        {
-            OnHangProtectionInvoked();
         }
     }
 }
