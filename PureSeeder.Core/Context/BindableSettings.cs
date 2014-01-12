@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Newtonsoft.Json;
 using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Context
@@ -17,6 +18,11 @@ namespace PureSeeder.Core.Context
             DirtySettings = false;
             this.PropertyChanged += SettingChanged;
             Servers.ServerChanged += SettingChanged;
+        }
+
+        // Note: This is to allow Deserializing to this class
+        protected BindableSettings() : this(new SeederUserSettings())
+        {
         }
 
         private void SettingChanged(object sender, EventArgs e)
@@ -40,13 +46,14 @@ namespace PureSeeder.Core.Context
         }
 
         private bool _dirtySettings;
+        [JsonIgnore]
         public bool DirtySettings
         {
             get { return _dirtySettings; }
             set { SetField(ref _dirtySettings, value); }
         }
 
-
+        [JsonIgnore]
         public string Username
         {
             get { return _settings.Username; }
@@ -71,6 +78,7 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.Servers); }
         }
 
+        [JsonIgnore]
         public int CurrentServer
         {
             get { return _settings.CurrentServer; }
@@ -83,6 +91,7 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.RefreshInterval); }
         }
 
+        [JsonIgnore]
         public bool MinimizeToTray
         {
             get { return _settings.MinimizeToTray; }

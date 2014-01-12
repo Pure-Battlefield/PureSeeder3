@@ -8,7 +8,7 @@ namespace PureSeeder.Core.Context
         private int? _serverMaxPlayers;
         private bool _seedingEnabled = true;
         private string _currentLoggedInUser;
-        private Constants.Game _currentGame;
+        private GameInfo _currentGame;
         private bool _bfIsRunning;
 
         public int? CurrentPlayers
@@ -35,7 +35,7 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _currentLoggedInUser, value); }
         }
 
-        public Constants.Game CurrentGame
+        public GameInfo CurrentGame
         {
             get { return this._currentGame; }
             set { SetField(ref _currentGame, value); }

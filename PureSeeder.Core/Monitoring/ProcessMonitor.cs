@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PureSeeder.Core.Annotations;
 using PureSeeder.Core.Configuration;
 
 namespace PureSeeder.Core.Monitoring
@@ -11,22 +12,18 @@ namespace PureSeeder.Core.Monitoring
 
     public class ProcessMonitor
     {
-        // Need a couple of custom events to attach to
-        public event ProcessStateChangeHandler OnProcessStateChanged; 
+        private readonly ICrashDetector _crashDetector;
 
-        public async void CheckOnProcess(object sender, EventArgs e)
+        public ProcessMonitor([NotNull] ICrashDetector crashDetector)
         {
-            await Task.Run(() =>
-                {
-                    // Check for the process every few seconds
-                    // If it's running, trigger idle kick avoidance
-                    // If state changes from running or to running, trigger an event
-
-                    Thread.Sleep(10000);
-                });
+            if (crashDetector == null) throw new ArgumentNullException("crashDetector");
+            _crashDetector = crashDetector;
         }
-        
-        public async void CheckOnProcess(CancellationToken ct)
+
+        // Need a couple of custom events to attach to
+       public event ProcessStateChangeHandler OnProcessStateChanged; 
+
+       public async void CheckOnProcess(CancellationToken ct)
         {
             await Task.Run(() =>
                 {
@@ -34,7 +31,7 @@ namespace PureSeeder.Core.Monitoring
                     // If it's running, trigger idle kick avoidance
                     // If state changes from running or to running, trigger an event
 
-                    var processList = Process.GetProcessesByName(Constants.ProcessNames.Bf4);
+                    var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
                     var process = processList.FirstOrDefault();
 
                     var isRunning = process != null;
@@ -42,39 +39,70 @@ namespace PureSeeder.Core.Monitoring
 
                     while (!ct.IsCancellationRequested)
                     {
-                        process = Process.GetProcessesByName(Constants.ProcessNames.Bf4).FirstOrDefault();
+                        process = Process.GetProcessesByName(Constants.Games.First().ProcessName).FirstOrDefault();
                         isRunning = process != null;
                         if (OnProcessStateChanged != null)
                             OnProcessStateChanged.Invoke(this, new ProcessStateChangeEventArgs() {IsRunning = isRunning});
 
                         previousState = isRunning;
 
-                        CrashDetection();
+                        _crashDetector.DetectCrash(Constants.Games.First().ProcessName, Constants.Games.First().WindowTitle);
 
                         Thread.Sleep(5000);
                     }
                 });
         }
 
-        private void CrashDetection()
+        
+    }
+
+    public interface ICrashDetector
+    {
+        void DetectCrash(string processName, string windowTitle);
+    }
+
+    class CrashDetector : ICrashDetector
+    {
+        private readonly ICrashHandler _crashHandler;
+
+        public CrashDetector([NotNull] ICrashHandler crashHandler)
         {
-            var process = Process.GetProcessesByName(Constants.ProcessNames.Bf4).FirstOrDefault();
+            if (crashHandler == null) throw new ArgumentNullException("crashHandler");
+            _crashHandler = crashHandler;
+        }
+
+        public void DetectCrash(string processName, string windowTitle)
+        {
+            var process = Process.GetProcessesByName(processName).FirstOrDefault();
             if (process == null)
                 return;
 
-            if (!process.Responding) // Check if the process is responding
-            {
-                process.Kill(); // Kill the process
-                var faultProcess =
+            if(!process.Responding)
+                _crashHandler.HandleCrash(process, processName, windowTitle);
+        }
+    }
+
+    public interface ICrashHandler
+    {
+        void HandleCrash(Process process, string processName, string windowTitle);
+    }
+
+    class CrashHandler : ICrashHandler
+    {
+        public void HandleCrash(Process process, string processName, string windowTitle)
+        {
+            if(process != null)
+                process.Kill();
+
+            // Find the fault window and kill it
+            var faultProcess =
                     Process.GetProcessesByName("WerFault")
-                           .FirstOrDefault(x => x.MainWindowTitle == Constants.WindowTitles.Bf4FaultWindow);
-                    // Find the fault window
+                           .FirstOrDefault(x => x.MainWindowTitle == windowTitle);
+            
+            if (faultProcess == null)
+                return;
 
-                if (faultProcess == null)
-                    return;
-
-                faultProcess.Kill(); // Kill the fault window
-            }
+            faultProcess.Kill(); // Kill the fault window
         }
     }
 

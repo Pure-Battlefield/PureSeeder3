@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PureSeeder.Core.Configuration
@@ -25,25 +26,32 @@ namespace PureSeeder.Core.Configuration
             public const string MinimizeToTray = "MinimizeToTray";
         }
 
-        public enum Game
-        {
-            BF3,
-            BF4
-        }
-
-        public static class ProcessNames
-        {
-            //public const string Bf4 = "BF4";
-            public const string Bf4 = "Crash";
-            public const string Bf3 = "BF3";
-        }
-
-        public static class WindowTitles
-        {
-            //public const string Bf4FaultWindow = "Battlefield 4";
-            public const string Bf4FaultWindow = "Crash";
-        }
-
         public const int GameHangProtectionTimerInterval = 30; // minutes
+
+        // Todo: This should be moved to a custom config section
+        public static readonly IEnumerable<GameInfo> Games = new List<GameInfo>
+            {
+                /*new GameInfo()
+                    {
+                        GameName = "Battlefield 4",
+                        ProcessName = "Bf4",
+                        WindowTitle = "Battlefield 4™",
+                        UrlMatch = new Regex(@"/bf4/")
+                    },*/
+                new GameInfo()
+                    {
+                        GameName = "Crash",
+                        ProcessName = "Crash",
+                        WindowTitle = "Crash",
+                        UrlMatch = new Regex(".*")
+                    },
+                new GameInfo()
+                    {
+                        GameName = "Battlefield 3",
+                        ProcessName = "Bf3",
+                        WindowTitle = "Battlefield 3™",
+                        UrlMatch = new Regex(@"/bf3/")
+                    }
+            }; 
     }
 }

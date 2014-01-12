@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
+using System.IO;
+using System.Linq.Expressions;
 using System.Timers;
+using Newtonsoft.Json;
 using PureSeeder.Core.Annotations;
 using System.Linq;
 using PureSeeder.Core.Configuration;
+using PureSeeder.Core.Settings;
 using Server = PureSeeder.Core.Settings.Server;
 
 //using Server = PureSeeder.Core.Configuration.Server;
@@ -36,6 +39,19 @@ namespace PureSeeder.Core.Context
         /// Check if self-kicking should occur
         /// </summary>
         bool ShouldKick { get; }
+
+        /// <summary>
+        /// Exports settings to a json file
+        /// </summary>
+        /// <param name="filename"></param>
+        void ExportSettings(string filename);
+
+        /// <summary>
+        /// Imports settings from a json file
+        /// </summary>
+        /// <param name="filename"></param>
+        void ImportSettings(string filename);
+       
         
         /// <summary>
         /// Update current status with the given page data
@@ -96,7 +112,25 @@ namespace PureSeeder.Core.Context
                                      StringComparison.InvariantCultureIgnoreCase);
             }
         }
-        
+
+        public void ExportSettings(string filename)
+        {
+            var json = JsonConvert.SerializeObject(_bindableSettings, Formatting.Indented);
+            File.WriteAllText(filename, json);
+        }
+
+        public void ImportSettings(string filename)
+        {
+            var jsonText = File.ReadAllText(filename);
+            var newSettings = PartialObject<BindableSettings>.Create(jsonText);
+
+            // Todo: This probably isn't the best way of doing this
+            //  - should probably have some method of denoting if a setting is importable, then it should run
+            //    newSettings.MergeValue() on each setting that is importable
+            newSettings.MergeValue((BindableSettings x) => x.Servers, _bindableSettings);
+            newSettings.MergeValue((BindableSettings x) => x.RefreshInterval, _bindableSettings);
+        }
+
         public void UpdateStatus(string pageData)
         {
             foreach (var updater in _updaters)
@@ -193,58 +227,6 @@ namespace PureSeeder.Core.Context
         private void InvokeHangProtection(object sender, ElapsedEventArgs e)
         {
             OnHangProtectionInvoked();
-        }
-    }
-
-
-    public interface IDataContextUpdater
-    {
-        void UpdateContextData(IDataContext context, string pageData);
-    }
-
-    class Bf4PlayerCountsUpdater : IDataContextUpdater
-    {
-        public void UpdateContextData(IDataContext context, string pageData)
-        {
-            //""slots"".*?""2"":{""current"":(.*?),""max"":(.*?)}
-            // Todo: Make regex pattern a global setting so it can more easily be changed
-            var curPlayersRegEx = new Regex(@"""slots"".*?""2"":{""current"":(.*?),""max"":(.*?)}");
-
-            var curPlayers = curPlayersRegEx.Match(pageData);
-
-            if (!curPlayers.Success)
-            {
-                context.Session.CurrentPlayers = null;
-                context.Session.ServerMaxPlayers = null;
-                return;
-            }
-
-            int currentPlayers, maxPlayers;
-
-            int.TryParse(curPlayers.Groups[1].Value, out currentPlayers);
-            int.TryParse(curPlayers.Groups[2].Value, out maxPlayers);
-
-            context.Session.CurrentPlayers = currentPlayers;
-            context.Session.ServerMaxPlayers = maxPlayers;
-        }
-    }
-
-    class CurrentBf4UserUpdater : IDataContextUpdater
-    {
-        public void UpdateContextData(IDataContext context, string pageData)
-        {
-            // Todo: Make regex pattern a global setting so it can more easily be changed
-            var curUserRegEx = new Regex(@"class=""username""\W*href=""/bf4/user/(.*?)/");
-
-            var curUser = curUserRegEx.Match(pageData);
-
-            if (!curUser.Success)
-            {
-                context.Session.CurrentLoggedInUser = "None";
-                return;
-            }
-
-            context.Session.CurrentLoggedInUser = curUser.Groups[1].Value;
         }
     }
 }

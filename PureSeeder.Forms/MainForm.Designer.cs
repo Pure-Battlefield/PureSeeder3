@@ -59,9 +59,19 @@
             this.showWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minimizeWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minimizeToTray = new System.Windows.Forms.CheckBox();
+            this.password = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSettingsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.importSettingsDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // serverSelector
@@ -144,7 +154,7 @@
             // 
             this.username.Location = new System.Drawing.Point(18, 148);
             this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(209, 20);
+            this.username.Size = new System.Drawing.Size(144, 20);
             this.username.TabIndex = 9;
             // 
             // label3
@@ -324,11 +334,83 @@
             this.minimizeToTray.Text = "Minimize To Tray";
             this.minimizeToTray.UseVisualStyleBackColor = true;
             // 
+            // password
+            // 
+            this.password.Location = new System.Drawing.Point(178, 148);
+            this.password.Name = "password";
+            this.password.PasswordChar = '*';
+            this.password.Size = new System.Drawing.Size(144, 20);
+            this.password.TabIndex = 29;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(175, 132);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(90, 13);
+            this.label9.TabIndex = 30;
+            this.label9.Text = "Seeder Password";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1118, 24);
+            this.menuStrip1.TabIndex = 31;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
+            // saveSettingsDialog
+            // 
+            this.saveSettingsDialog.DefaultExt = "json";
+            this.saveSettingsDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
+            this.saveSettingsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveSettingsDialog_FileOk);
+            // 
+            // importSettingsDialog
+            // 
+            this.importSettingsDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
+            this.importSettingsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.importSettingsDialog_FileOk);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 791);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.password);
             this.Controls.Add(this.minimizeToTray);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.label8);
@@ -354,12 +436,15 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverSelector);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -397,6 +482,15 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minimizeWindowToolStripMenuItem;
+        private System.Windows.Forms.TextBox password;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveSettingsDialog;
+        private System.Windows.Forms.OpenFileDialog importSettingsDialog;
     }
 }
 

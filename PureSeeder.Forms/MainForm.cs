@@ -42,7 +42,7 @@ namespace PureSeeder.Forms
             _gameHangProtectionTimer = new Timer();
 
             // Todo: This should be injected
-            _processMonitor = new ProcessMonitor();
+            _processMonitor = new ProcessMonitor(new CrashDetector(new CrashHandler()));
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
         }
 
@@ -303,6 +303,28 @@ namespace PureSeeder.Forms
                 notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running", "Right click to restore the window", ToolTipIcon.Info);
                 this.Hide();
             }
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveSettingsDialog.ShowDialog();
+        }
+
+        private void saveSettingsDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            var fileName = saveSettingsDialog.FileName;
+            _context.ExportSettings(fileName);
+        }
+
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            importSettingsDialog.ShowDialog();
+        }
+
+        private void importSettingsDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            var fileName = importSettingsDialog.FileName;
+            _context.ImportSettings(fileName);
         }
     }
 }
