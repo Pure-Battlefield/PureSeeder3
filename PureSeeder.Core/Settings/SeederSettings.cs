@@ -32,7 +32,8 @@ namespace PureSeeder.Core.Settings
             {
                 if (this[Constants.SettingNames.Servers] == null)
                 {
-                    var defaultServers = GetDefaultServers();
+                    //var defaultServers = GetDefaultServers();
+                    var defaultServers = new Servers();
                     Servers = defaultServers;
                 }
                 return (Servers) this[Constants.SettingNames.Servers];

@@ -60,20 +60,24 @@ namespace PureSeeder.Forms
         {
             base.OnLoad(e);
 
-            this.Icon = PureSeeder.Forms.Properties.Resources.PB;
-            notifyIcon1.Icon = Properties.Resources.PBOff;
-            notifyIcon1.Text = Constants.ApplicationName;
-            this.Text = Constants.ApplicationName;
-
             CreateBindings();
+            UiSetup();
+
             LoadBattlelog();
 
-            //geckoWebBrowser1.Navigated += BrowserChanged;
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
             SetRefreshTimer();
 
             SpinUpProcessMonitor();
+        }
+
+        private void UiSetup()
+        {
+            this.Icon = PureSeeder.Forms.Properties.Resources.PB;
+            notifyIcon1.Icon = Properties.Resources.PBOff;
+            notifyIcon1.Text = Constants.ApplicationName;
+            this.Text = Constants.ApplicationName;
         }
 
         private async void SpinUpProcessMonitor()
@@ -181,6 +185,9 @@ namespace PureSeeder.Forms
 
         private string GetAddress(ComboBox cb)
         {
+            if (cb.Items.Count == 0)
+                return "http://battlelog.battlefield.com";
+
             var address = ((Server) cb.SelectedItem).Address;
 
             return address;
