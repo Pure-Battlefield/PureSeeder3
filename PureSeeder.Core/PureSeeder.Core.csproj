@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoItX3.Assembly">
+      <HintPath>..\lib\AutoItX3.Assembly.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -58,6 +61,7 @@
     <Compile Include="Context\SessionData.cs" />
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />
+    <Compile Include="Monitoring\AvoidIdleKick.cs" />
     <Compile Include="Monitoring\ProcessMonitor.cs" />
     <Compile Include="PartialObjects\BuildExpressionStack.cs" />
     <Compile Include="Properties\Annotations.cs" />

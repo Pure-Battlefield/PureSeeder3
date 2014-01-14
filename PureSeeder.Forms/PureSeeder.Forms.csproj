@@ -177,6 +177,9 @@
     <None Include="Resources\PB.ico" />
     <None Include="Resources\PBOn.ico" />
     <None Include="Resources\PBOff.ico" />
+    <Content Include="AutoItX3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="xulrunner\breakpadinjector.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

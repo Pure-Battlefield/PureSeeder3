@@ -24,9 +24,11 @@ namespace PureSeeder.Forms
         private readonly Timer _refreshTimer;
         private readonly Timer _gameHangProtectionTimer;
         private readonly ProcessMonitor _processMonitor;
+        private readonly IdleKickAvoider _idleKickAvoider;
 
         // CancellationTokens
         private CancellationToken _processMonitorCt;
+        private CancellationToken _avoidIdleKickCt;
 
         public MainForm(IDataContext context) : this()
         {
@@ -43,6 +45,8 @@ namespace PureSeeder.Forms
             // Todo: This should be injected
             _processMonitor = new ProcessMonitor(new CrashDetector(new CrashHandler()));
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
+
+            _idleKickAvoider = new IdleKickAvoider();
         }
 
         void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
@@ -69,7 +73,9 @@ namespace PureSeeder.Forms
 
             SetRefreshTimer();
 
+            // Spin up background processes
             SpinUpProcessMonitor();
+            SpinUpAvoidIdleKick();
         }
 
         private void UiSetup()
@@ -85,6 +91,12 @@ namespace PureSeeder.Forms
             //var ct = CancellationTokenSource.CreateLinkedTokenSource();
             _processMonitorCt = new CancellationTokenSource().Token;
             await Task.Run(() => _processMonitor.CheckOnProcess(_processMonitorCt));
+        }
+
+        private async void SpinUpAvoidIdleKick()
+        {
+            _avoidIdleKickCt = new CancellationTokenSource().Token;
+            await Task.Run(() => _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt));
         }
 
         private void SetRefreshTimer()
@@ -330,6 +342,11 @@ namespace PureSeeder.Forms
         {
             var fileName = importSettingsDialog.FileName;
             _context.ImportSettings(fileName);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
