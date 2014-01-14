@@ -97,14 +97,14 @@
             this.browserPanel.Controls.Add(this.geckoWebBrowser1);
             this.browserPanel.Location = new System.Drawing.Point(12, 174);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(1094, 609);
+            this.browserPanel.Size = new System.Drawing.Size(1100, 500);
             this.browserPanel.TabIndex = 3;
             // 
             // geckoWebBrowser1
             // 
             this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
             this.geckoWebBrowser1.Name = "geckoWebBrowser1";
-            this.geckoWebBrowser1.Size = new System.Drawing.Size(1088, 603);
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1100, 500);
             this.geckoWebBrowser1.TabIndex = 0;
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
             this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
@@ -346,7 +346,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1118, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1126, 24);
             this.menuStrip1.TabIndex = 31;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -396,7 +396,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1118, 749);
+            this.ClientSize = new System.Drawing.Size(1126, 694);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.password);
@@ -423,9 +423,9 @@
             this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverSelector);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1142, 733);
             this.Name = "MainForm";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
