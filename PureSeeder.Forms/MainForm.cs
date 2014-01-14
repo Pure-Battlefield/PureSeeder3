@@ -138,11 +138,11 @@ namespace PureSeeder.Forms
 
         private void CreateBindings()
         {
-            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers};
+            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers, };
 
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
-            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer);
+            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer/*, false, DataSourceUpdateMode.OnPropertyChanged*/);
 
             SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
             SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
