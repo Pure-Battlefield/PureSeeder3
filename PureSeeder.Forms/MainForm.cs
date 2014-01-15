@@ -81,15 +81,14 @@ namespace PureSeeder.Forms
 
         private async void SpinUpProcessMonitor()
         {
-            //var ct = CancellationTokenSource.CreateLinkedTokenSource();
             _processMonitorCt = new CancellationTokenSource().Token;
-            await Task.Run(() => _processMonitor.CheckOnProcess(_processMonitorCt, () => _context.Session.CurrentGame));
+            await _processMonitor.CheckOnProcess(_processMonitorCt, () => _context.Session.CurrentGame);
         }
 
         private async void SpinUpAvoidIdleKick()
         {
             _avoidIdleKickCt = new CancellationTokenSource().Token;
-            await /*Task.Run(() =>*/ _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer, () => _context.Session.CurrentGame)/*)*/;
+            await _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer, () => _context.Session.CurrentGame);
         }
 
         private void SetRefreshTimer()
@@ -182,10 +181,13 @@ namespace PureSeeder.Forms
             // Todo: This should be moved into configuration so it can more easily be changed
             const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
-            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
-            {
-                context.EvaluateScript(jsCommand);
-            }
+            // Deprecated
+//            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+//            {
+//                context.EvaluateScript(jsCommand);
+//            }
+
+            RunJavascript(jsCommand)/*.RunSynchronously()*/;
 
             _context.JoinServer();
         }
@@ -200,14 +202,13 @@ namespace PureSeeder.Forms
             if (cb.Items.Count == 0)
                 return Constants.DefaultUrl;
 
-            var address = ((Server) cb.SelectedItem).Address;
+            var address = _context.CurrentServer.Address; //((Server) cb.SelectedItem).Address;
 
             return address;
         }
 
         private void LoadPage()
         {
-            //geckoWebBrowser1.Navigate(address);
             var selectedUrl = GetAddress(serverSelector);
             if (selectedUrl == String.Empty)
                 selectedUrl = Constants.DefaultUrl;
@@ -260,6 +261,9 @@ namespace PureSeeder.Forms
 
         private void AutoLogin(Action successfulLogin = null, Action failedLogin = null)
         {
+            if (!_context.Settings.AutoLogin)
+                return;
+
             if(_context.GetUserStatus() == UserStatus.Correct)
                 if(successfulLogin != null)
                     successfulLogin.Invoke();
@@ -276,53 +280,76 @@ namespace PureSeeder.Forms
         {
             SetStatus("Attempting login.");
 
-//            await Task.Run(() =>
-//                {
-                    // Todo: This should be moved into configuration so it can more easily be changed
-                    string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
+            // Todo: This should be moved into configuration so it can more easily be changed
+            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
 
-                    using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
-                    {
-                        context.EvaluateScript(jsCommand);
-                    }
-//                });
+            RunJavascript(jsCommand);
 
             // Check for a while if the login worked
-            await Task.Run(() =>
+            await CheckLogin(successfulLogin, failedLogin);
+
+            await Sleep(1);
+            SetStatus("");
+
+        }
+
+        private void RunJavascript(string javascript)
+        {
+            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+            {
+                context.EvaluateScript(javascript);
+            }
+        }
+
+//        private Task RunJavascript(string javascript)
+//        {
+//            return Task.Factory.StartNew(() =>
+//                {
+//                    using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+//                    {
+//                        context.EvaluateScript(javascript);
+//                    }
+//                });
+//        }
+
+        private Task CheckLogin(Action successfulLogin = null, Action failedLogin = null)
+        {
+            return Task.Factory.StartNew(() =>
                 {
                     const int loginCheckCount = 10;
                     for (var i = 0; i < loginCheckCount; i++)
                     {
-                        if(_context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername)
+                        if (_context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername)
                         {
-                            if(successfulLogin != null)
+                            if (successfulLogin != null)
                                 successfulLogin.Invoke();
                             return;
                         }
 
                         Thread.Sleep(1000); // Sleep for 1 second
                     }
-                    if(failedLogin != null)
+                    if (failedLogin != null)
                         failedLogin.Invoke();
                 });
-            
-            await Task.Run(() => Thread.Sleep(1000));
-            SetStatus("");
-
         }
 
         private async void Logout(Action successfulLogout, Action failedLogout)
         {
             geckoWebBrowser1.Navigate("http://battlelog.battlefield.com/bf4/session/logout/");
 
-            await Task.Run(() =>
+            await CheckLogout(successfulLogout, failedLogout);
+        }
+
+        private Task CheckLogout(Action successfulLogout, Action failedLogout)
+        {
+            return Task.Factory.StartNew(() =>
                 {
                     const int logoutCheckCount = 10;
                     for (var i = 0; i < logoutCheckCount; i++)
                     {
                         if (_context.GetUserStatus() == UserStatus.None)
                         {
-                            if(successfulLogout != null)
+                            if (successfulLogout != null)
                                 successfulLogout.Invoke();
 
                             return;
@@ -330,7 +357,7 @@ namespace PureSeeder.Forms
 
                         Thread.Sleep(1000);
                     }
-                    if(failedLogout != null)
+                    if (failedLogout != null)
                         failedLogout.Invoke();
                 });
         }
@@ -389,9 +416,9 @@ namespace PureSeeder.Forms
             return true;
         }
 
-        private async void CheckKick()
+        private Task CheckKick()
         {
-            await Task.Run(() =>
+            return Task.Factory.StartNew(() =>
             {
                 var shouldKick = _context.ShouldKick();
                 if (shouldKick.Result)
@@ -509,7 +536,7 @@ namespace PureSeeder.Forms
         private async void DisableRefreshButton()
         {
             refresh.Enabled = false;
-            await Task.Run(() => Thread.Sleep(5));
+            await Sleep(5);
             refresh.Enabled = true;
         }
 
@@ -521,7 +548,6 @@ namespace PureSeeder.Forms
 
             if (time > -1)
             {
-                //await Task.Run(() => Thread.Sleep(time * 1000));
                 await Sleep(time);
                 SetStatus("");
             }

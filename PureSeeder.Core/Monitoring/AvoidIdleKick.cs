@@ -13,9 +13,6 @@ namespace PureSeeder.Core.Monitoring
     {
         public Task AvoidIdleKick(CancellationToken token, int numSeconds, Func<GameInfo> getCurrentGame)
         {
-            //await Task.Run(() =>
-             //   {
-
             return Task.Factory.StartNew(() => {
                     while (!token.IsCancellationRequested)
                     {
@@ -36,7 +33,7 @@ namespace PureSeeder.Core.Monitoring
                             }
                         }
 
-                        Thread.Sleep(1 * /*numSeconds*/ 10 * 1000);  // Sleep
+                        Thread.Sleep(1 * numSeconds * 1000);  // Sleep
                     }
                 });
         }

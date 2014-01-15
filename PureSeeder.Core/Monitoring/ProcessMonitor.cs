@@ -23,22 +23,13 @@ namespace PureSeeder.Core.Monitoring
         // Need a couple of custom events to attach to
        public event ProcessStateChangeHandler OnProcessStateChanged; 
 
-       public async void CheckOnProcess(CancellationToken ct, Func<GameInfo> getGameInfo)
+       public /*async*/ Task CheckOnProcess(CancellationToken ct, Func<GameInfo> getGameInfo)
         {
-            await Task.Run(() =>
+            /*await*/ return Task.Factory.StartNew(() =>
                 {
                     // Check for the process every few seconds
                     // If it's running, trigger idle kick avoidance
                     // If state changes from running or to running, trigger an event
-
-//                    var currentGame = getGameInfo.Invoke();
-//
-//                    var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
-//                    var process = processList.FirstOrDefault();
-//
-//                    var isRunning = process != null;
-//                    var previousState = isRunning;
-
                     var previousState = false;
 
                     while (!ct.IsCancellationRequested)
@@ -64,8 +55,6 @@ namespace PureSeeder.Core.Monitoring
                     }
                 });
         }
-
-        
     }
 
     public interface ICrashDetector

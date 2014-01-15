@@ -99,7 +99,18 @@ namespace PureSeeder.Core.Context
             if(process != null)
                 process.Close();
         }
-        
+
+        public Server CurrentServer 
+        { 
+            get
+            {
+                if (_bindableSettings.Servers.Count == 0)
+                    return null;
+
+                return _bindableSettings.Servers[_bindableSettings.CurrentServer];
+            }
+        }
+
 
         public event ContextUpdatedHandler OnContextUpdate;
         

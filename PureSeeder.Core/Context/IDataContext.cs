@@ -1,4 +1,5 @@
 ﻿using PureSeeder.Core.Configuration;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Context
 {
@@ -54,5 +55,7 @@ namespace PureSeeder.Core.Context
         ResultReason<KickReason> ShouldKick();
 
         void StopGame();
+
+        Server CurrentServer { get; }
     }
 }
