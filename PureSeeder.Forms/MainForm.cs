@@ -63,6 +63,7 @@ namespace PureSeeder.Forms
             LoadBattlelog();
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
+            //_context.OnContextUpdate += ContextUpdated;
 
             SetRefreshTimer();
 
@@ -101,7 +102,7 @@ namespace PureSeeder.Forms
 
             _refreshTimer.Interval = refreshTimerInterval;
 
-            _refreshTimer.Tick += HandleRefresh;
+            _refreshTimer.Tick += TimedRefresh;
 
             _refreshTimer.Start();
         }
@@ -149,9 +150,15 @@ namespace PureSeeder.Forms
                 notifyIcon1.Icon = Properties.Resources.PBOff;
         }
 
-        private void HandleRefresh(object sender, EventArgs e)
+        private void TimedRefresh(object sender, EventArgs e)
         {
-           RefreshPageAndData();
+           AnyRefresh();
+        }
+
+        private void AnyRefresh()
+        {
+            DisableRefreshButton();
+            RefreshPageAndData();
         }
 
         private void RefreshPageAndData()
@@ -159,11 +166,13 @@ namespace PureSeeder.Forms
             _refreshTimer.Stop();
 
             // Create a single use event handler to fire AttemptSeeding after context is updated
+            // This is so that only refreshes triggerd by PS will fire Seeding. This will prevent changes
+            // made inside the browser (by redirect/javascript/etc.) from firing the Seeding.
             ContextUpdatedHandler handler = null;
             handler = (tSender, tE) =>
             {
                 _context.OnContextUpdate -= handler;
-                CheckKick();
+                AttemptKick();
                 AttemptSeeding();
             };
             _context.OnContextUpdate += handler;
@@ -171,6 +180,18 @@ namespace PureSeeder.Forms
 
             _refreshTimer.Start();
         }
+
+        void BrowserChanged(object sender, EventArgs e)
+        {
+            UpdateContext();
+        }
+
+        // Deprecated
+//        private void ContextUpdated(object sender, EventArgs e)
+//        {
+//            AttemptKick();
+//            AttemptSeeding();
+//        }
 
         #endregion EventHandlers
 
@@ -207,13 +228,20 @@ namespace PureSeeder.Forms
             return address;
         }
 
-        private void LoadPage()
+        private async void LoadPage()
         {
             var selectedUrl = GetAddress(serverSelector);
             if (selectedUrl == String.Empty)
                 selectedUrl = Constants.DefaultUrl;
 
-            geckoWebBrowser1.Navigate(selectedUrl);
+            //geckoWebBrowser1.Navigate(selectedUrl);
+            await Navigate(selectedUrl);
+        }
+
+        private Task Navigate(string url)
+        {
+            //this.BeginInvoke(new Action(() => geckoWebBrowser1.Navigate(url)));
+            return Task.Factory.StartNew(() => this.BeginInvoke(new Action(() => geckoWebBrowser1.Navigate(url))));
         }
 
         void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -221,10 +249,7 @@ namespace PureSeeder.Forms
             UpdateInterface();
         }
 
-        void BrowserChanged(object sender, EventArgs e)
-        {
-            UpdateContext();
-        }
+        
 
         private void UpdateContext()
         {
@@ -259,24 +284,27 @@ namespace PureSeeder.Forms
             currentLoggedInUser.ForeColor = _context.GetUserStatus() == UserStatus.Correct ? Color.Green : Color.Red;
         }
 
-        private void AutoLogin(Action successfulLogin = null, Action failedLogin = null)
+        private void AutoLogin(/*Action successfulLogin = null, Action failedLogin = null*/)
         {
             if (!_context.Settings.AutoLogin)
                 return;
 
-            if(_context.GetUserStatus() == UserStatus.Correct)
-                if(successfulLogin != null)
-                    successfulLogin.Invoke();
+            if (_context.GetUserStatus() == UserStatus.Correct)
+                return;
+                /*if(successfulLogin != null)
+                    successfulLogin.Invoke();*/
 
             if (_context.GetUserStatus() == UserStatus.Incorrect)
             {
-                Logout(() => AutoLogin(successfulLogin, failedLogin), null);
+                // Do not autologout
+                //AutoLogout(/*() => AutoLogin(successfulLogin, failedLogin), null*/);
+                return;
             }
             
-            Login(successfulLogin, failedLogin);
+            Login(/*successfulLogin, failedLogin*/);
         }
 
-        private async void Login(Action successfulLogin = null, Action failedLogin = null)
+        private async void Login(/*Action successfulLogin = null, Action failedLogin = null*/)
         {
             SetStatus("Attempting login.");
 
@@ -286,7 +314,7 @@ namespace PureSeeder.Forms
             RunJavascript(jsCommand);
 
             // Check for a while if the login worked
-            await CheckLogin(successfulLogin, failedLogin);
+            //await CheckLogin(successfulLogin, failedLogin);
 
             await Sleep(1);
             SetStatus("");
@@ -312,32 +340,32 @@ namespace PureSeeder.Forms
 //                });
 //        }
 
-        private Task CheckLogin(Action successfulLogin = null, Action failedLogin = null)
-        {
-            return Task.Factory.StartNew(() =>
-                {
-                    const int loginCheckCount = 10;
-                    for (var i = 0; i < loginCheckCount; i++)
-                    {
-                        if (_context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername)
-                        {
-                            if (successfulLogin != null)
-                                successfulLogin.Invoke();
-                            return;
-                        }
+//        private Task CheckLogin(Action successfulLogin = null, Action failedLogin = null)
+//        {
+//            return Task.Factory.StartNew(() =>
+//                {
+//                    const int loginCheckCount = 10;
+//                    for (var i = 0; i < loginCheckCount; i++)
+//                    {
+//                        if (_context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername)
+//                        {
+//                            if (successfulLogin != null)
+//                                successfulLogin.Invoke();
+//                            return;
+//                        }
+//
+//                        Thread.Sleep(1000); // Sleep for 1 second
+//                    }
+//                    if (failedLogin != null)
+//                        failedLogin.Invoke();
+//                });
+//        }
 
-                        Thread.Sleep(1000); // Sleep for 1 second
-                    }
-                    if (failedLogin != null)
-                        failedLogin.Invoke();
-                });
-        }
-
-        private async void Logout(Action successfulLogout, Action failedLogout)
+        private /*async*/ void Logout(/*Action successfulLogout, Action failedLogout*/)
         {
             geckoWebBrowser1.Navigate("http://battlelog.battlefield.com/bf4/session/logout/");
 
-            await CheckLogout(successfulLogout, failedLogout);
+            /*await CheckLogout(successfulLogout, failedLogout);*/
         }
 
         private Task CheckLogout(Action successfulLogout, Action failedLogout)
@@ -362,17 +390,17 @@ namespace PureSeeder.Forms
                 });
         }
 
-        private void AutoLogout(Action logoutSuccess, Action logoutFail)
+        private void AutoLogout(/*Action logoutSuccess, Action logoutFail*/)
         {
             if (_context.GetUserStatus() == UserStatus.None)
             {
-                if (logoutSuccess != null)
-                    logoutSuccess.Invoke();
+                /*if (logoutSuccess != null)
+                    logoutSuccess.Invoke();*/
 
                 return;
             }
 
-            Logout(logoutSuccess, logoutFail);
+            Logout(/*logoutSuccess, logoutFail*/);
         }
 
         private bool ShouldSeed()
@@ -384,14 +412,20 @@ namespace PureSeeder.Forms
                 if (shouldSeed.Reason == ShouldNotSeedReason.NotLoggedIn)
                 {
                     SetStatus("Cannot seed. Not logged in.", 5);
-                    AutoLogin(RefreshPageAndData);
+                    AutoLogin(/*RefreshPageAndData*/);
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.SeedingDisabled)
+                {
+                    SetStatus("Seeding disabled.", 5);
                     return false;
                 }
 
                 if (shouldSeed.Reason == ShouldNotSeedReason.IncorrectUser)
                 {
                     SetStatus("Cannot seed. Incorrect logged in user.", 5);
-                    AutoLogout(() => AutoLogin(RefreshPageAndData), null);
+                    //AutoLogout(/*() => AutoLogin(RefreshPageAndData), null*/);
                     return false;
                 }
 
@@ -416,10 +450,11 @@ namespace PureSeeder.Forms
             return true;
         }
 
-        private Task CheckKick()
+        private /*Task*/ void AttemptKick()
         {
-            return Task.Factory.StartNew(() =>
-            {
+            // Deprecated
+            /*return Task.Factory.StartNew(() =>
+            {*/
                 var shouldKick = _context.ShouldKick();
                 if (shouldKick.Result)
                 {
@@ -444,7 +479,7 @@ namespace PureSeeder.Forms
 
                     throw new NotImplementedException("Need to handle all reasons for kicking.");
                 }
-            });
+            /*});*/
         }
 
         #endregion BattlelogManipulation
@@ -453,7 +488,8 @@ namespace PureSeeder.Forms
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            LoadPage();
+            //LoadPage();
+            AnyRefresh();
         }
 
         private void saveSettings_Click(object sender, EventArgs e)
@@ -463,18 +499,19 @@ namespace PureSeeder.Forms
 
         private void joinServerButton_Click(object sender, EventArgs e)
         {
-            JoinServer();
+            //JoinServer();
+            AttemptSeeding();
         }
 
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
         {
-            UpdateContext();
+            //UpdateContext();
+            BrowserChanged(sender, e);
         }
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            DisableRefreshButton();
-            RefreshPageAndData();
+            AnyRefresh();
         }
 
         private void showWindowToolStripMenuItem_Click(object sender, EventArgs e)

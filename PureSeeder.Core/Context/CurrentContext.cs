@@ -142,6 +142,9 @@ namespace PureSeeder.Core.Context
             if(_bindableSettings.Servers.Count == 0)
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NoServerDefined);
 
+            if (!Session.SeedingEnabled)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.SeedingDisabled);
+            
             if(GetUserStatus() == UserStatus.None)
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotLoggedIn);
 
@@ -151,7 +154,7 @@ namespace PureSeeder.Core.Context
             if(BfIsRunning())
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.GameAlreadyRunning);
 
-            if(_sessionData.CurrentPlayers > _bindableSettings.Servers[_bindableSettings.CurrentServer].MinPlayers)
+            if(_sessionData.CurrentPlayers > CurrentServer.MinPlayers)
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
 
             return new ResultReason<ShouldNotSeedReason>(true);
@@ -162,7 +165,7 @@ namespace PureSeeder.Core.Context
             if(_bindableSettings.Servers.Count == 0)
                 return new ResultReason<KickReason>(false, KickReason.NoServerDefined);
 
-            if(_sessionData.CurrentPlayers > _bindableSettings.Servers[_bindableSettings.CurrentServer].MaxPlayers)
+            if(_sessionData.CurrentPlayers > CurrentServer.MaxPlayers)
                 return new ResultReason<KickReason>(true, KickReason.AboveSeedingRange);
 
             return new ResultReason<KickReason>(false);

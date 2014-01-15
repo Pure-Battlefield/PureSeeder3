@@ -90,7 +90,7 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("60")]
+        [DefaultSettingValue("120")]
         public int IdleKickAvoidanceTimer
         {
             get { return ((int) this[Constants.SettingNames.IdleKickAvoidanceTimer]); }

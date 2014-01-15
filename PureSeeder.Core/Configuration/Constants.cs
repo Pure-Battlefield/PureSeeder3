@@ -63,7 +63,8 @@ namespace PureSeeder.Core.Configuration
         IncorrectUser,
         NotInRange,
         GameAlreadyRunning,
-        NoServerDefined
+        NoServerDefined,
+        SeedingDisabled
     }
 
     public enum KickReason
