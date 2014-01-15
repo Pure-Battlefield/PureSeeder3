@@ -65,27 +65,20 @@ namespace PureSeeder.Core.Settings
             set { this[Constants.SettingNames.MinimizeToTray] = (bool) value; }
         }
 
-        // Todo: Move this out of code and into configuration
-        private static Servers GetDefaultServers()
+        [UserScopedSetting]
+        [DefaultSettingValue("false")]
+        public bool AutoLogin
         {
-            var servers = new Servers()
-                {
-                    new Server()
-                        {
-                            Name = "Pure Server 2 - 32 Player Mixed Mode",
-                            Address = "http://bf4-server2.purebattlefield.org",
-                            MinPlayers = 18,
-                            MaxPlayers = 32
-                        },
-                    new Server()
-                        {
-                            Name = "Pure Server 1 - 64 Player Conquest",
-                            Address = "http://bf4-server1.purebattlefield.org",
-                            MinPlayers = 32,
-                            MaxPlayers = 64
-                        }
-                };
-            return servers;
+            get { return ((bool) this[Constants.SettingNames.AutoLogin]); }
+            set { this[Constants.SettingNames.AutoLogin] = (bool) value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("60")]
+        public int IdleKickAvoidanceTimer
+        {
+            get { return ((int) this[Constants.SettingNames.IdleKickAvoidanceTimer]); }
+            set { this[Constants.SettingNames.IdleKickAvoidanceTimer] = (int) value; }
         }
     }
 }

@@ -91,5 +91,17 @@ namespace PureSeeder.Core.Context
             get { return _settings.MinimizeToTray; }
             set { SetProperty(_settings, value, x => x.MinimizeToTray); }
         }
+
+        public bool AutoLogin
+        {
+            get { return _settings.AutoLogin; }
+            set { SetProperty(_settings, value, x => x.AutoLogin); }
+        }
+
+        public int IdleKickAvoidanceTimer
+        {
+            get { return _settings.IdleKickAvoidanceTimer; }
+            set { SetProperty(_settings, value, x => x.IdleKickAvoidanceTimer); }
+        }
     }
 }

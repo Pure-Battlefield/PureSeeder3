@@ -10,6 +10,7 @@ namespace PureSeeder.Core.Context
         private string _currentLoggedInUser;
         private GameInfo _currentGame;
         private bool _bfIsRunning;
+        private string _password;
 
         public int? CurrentPlayers
         {
@@ -45,6 +46,12 @@ namespace PureSeeder.Core.Context
         {
             get { return this._bfIsRunning; }
             set { SetField(ref _bfIsRunning, value); }
+        }
+
+        public string Password
+        {
+            get { return this._password; }
+            set { SetField(ref _password, value); }
         }
 
     }

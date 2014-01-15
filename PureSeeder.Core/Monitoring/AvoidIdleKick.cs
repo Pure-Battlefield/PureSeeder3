@@ -11,7 +11,7 @@ namespace PureSeeder.Core.Monitoring
 {
     class IdleKickAvoider
     {
-        public async void AvoidIdleKick(CancellationToken token)
+        public async void AvoidIdleKick(CancellationToken token, int numSeconds)
         {
             await Task.Run(() =>
                 {
@@ -26,13 +26,13 @@ namespace PureSeeder.Core.Monitoring
 
                         if (winExists)
                         {
-                            //AutoItX.ControlClick(winHandle, "", "", "LEFT", 1, 0, 0);
-                            AutoItX.ControlClick(winHandle, IntPtr.Zero, "left", 1, 0, 0);
-                            Thread.Sleep(1000);
+                            //AutoItX.ControlClick(winHandle, IntPtr.Zero, "left", 1, 0, 0);
+                            AutoItX.ControlClick(Constants.Games.First().WindowTitle, "", "", "left", 1, 1, 1);
+                            //Thread.Sleep(500);
                             AutoItX.WinActivate("Program Manager");
                         }
 
-                        Thread.Sleep(1 * 60 * 1000);  // Sleep for a minute
+                        Thread.Sleep(1 * numSeconds * 1000);  // Sleep for a minute
                     }
                 });
         }

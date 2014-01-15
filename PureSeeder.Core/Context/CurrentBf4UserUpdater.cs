@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using PureSeeder.Core.Configuration;
 
 namespace PureSeeder.Core.Context
 {
@@ -13,7 +14,7 @@ namespace PureSeeder.Core.Context
 
             if (!curUser.Success)
             {
-                context.Session.CurrentLoggedInUser = "None";
+                context.Session.CurrentLoggedInUser = Constants.NotLoggedInUsername;
                 return;
             }
 

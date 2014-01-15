@@ -65,13 +65,19 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsDialog = new System.Windows.Forms.SaveFileDialog();
             this.importSettingsDialog = new System.Windows.Forms.OpenFileDialog();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoLogin = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStrip = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.loginButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // serverSelector
@@ -100,8 +106,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.browserPanel.Controls.Add(this.geckoWebBrowser1);
             this.browserPanel.Location = new System.Drawing.Point(12, 174);
+            this.browserPanel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 80);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(1100, 500);
+            this.browserPanel.Size = new System.Drawing.Size(1100, 510);
             this.browserPanel.TabIndex = 3;
             // 
             // geckoWebBrowser1
@@ -110,8 +117,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.geckoWebBrowser1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.geckoWebBrowser1.Name = "geckoWebBrowser1";
-            this.geckoWebBrowser1.Size = new System.Drawing.Size(1100, 500);
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1100, 510);
             this.geckoWebBrowser1.TabIndex = 0;
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
             this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
@@ -226,7 +234,7 @@
             // 
             // saveSettings
             // 
-            this.saveSettings.Location = new System.Drawing.Point(968, 145);
+            this.saveSettings.Location = new System.Drawing.Point(545, 106);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(134, 23);
             this.saveSettings.TabIndex = 20;
@@ -237,7 +245,7 @@
             // seedingEnabled
             // 
             this.seedingEnabled.AutoSize = true;
-            this.seedingEnabled.Location = new System.Drawing.Point(968, 29);
+            this.seedingEnabled.Location = new System.Drawing.Point(12, 106);
             this.seedingEnabled.Name = "seedingEnabled";
             this.seedingEnabled.Size = new System.Drawing.Size(107, 17);
             this.seedingEnabled.TabIndex = 23;
@@ -248,7 +256,7 @@
             // 
             this.logging.AutoSize = true;
             this.logging.Enabled = false;
-            this.logging.Location = new System.Drawing.Point(968, 75);
+            this.logging.Location = new System.Drawing.Point(381, 106);
             this.logging.Name = "logging";
             this.logging.Size = new System.Drawing.Size(64, 17);
             this.logging.TabIndex = 22;
@@ -286,9 +294,9 @@
             // 
             this.refresh.Location = new System.Drawing.Point(615, 69);
             this.refresh.Name = "refresh";
-            this.refresh.Size = new System.Drawing.Size(75, 23);
+            this.refresh.Size = new System.Drawing.Size(87, 23);
             this.refresh.TabIndex = 27;
-            this.refresh.Text = "Refresh";
+            this.refresh.Text = "Refresh Now";
             this.refresh.UseVisualStyleBackColor = true;
             this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
@@ -323,7 +331,7 @@
             // minimizeToTray
             // 
             this.minimizeToTray.AutoSize = true;
-            this.minimizeToTray.Location = new System.Drawing.Point(968, 52);
+            this.minimizeToTray.Location = new System.Drawing.Point(256, 106);
             this.minimizeToTray.Name = "minimizeToTray";
             this.minimizeToTray.Size = new System.Drawing.Size(106, 17);
             this.minimizeToTray.TabIndex = 28;
@@ -372,7 +380,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -389,6 +397,13 @@
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // saveSettingsDialog
             // 
             this.saveSettingsDialog.DefaultExt = "json";
@@ -400,18 +415,57 @@
             this.importSettingsDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
             this.importSettingsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.importSettingsDialog_FileOk);
             // 
-            // exitToolStripMenuItem
+            // autoLogin
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.autoLogin.AutoSize = true;
+            this.autoLogin.Location = new System.Drawing.Point(462, 122);
+            this.autoLogin.Name = "autoLogin";
+            this.autoLogin.Size = new System.Drawing.Size(77, 17);
+            this.autoLogin.TabIndex = 32;
+            this.autoLogin.Text = "Auto Login";
+            this.autoLogin.UseVisualStyleBackColor = true;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 683);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1126, 22);
+            this.statusStrip1.TabIndex = 33;
+            this.statusStrip1.Text = "SomeShit";
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(78, 17);
+            this.toolStripStatusLabel1.Text = "Pure Seeder 3";
+            // 
+            // loginButton
+            // 
+            this.loginButton.Location = new System.Drawing.Point(247, 58);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(75, 23);
+            this.loginButton.TabIndex = 34;
+            this.loginButton.Text = "Login";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1126, 695);
+            this.ClientSize = new System.Drawing.Size(1126, 705);
+            this.Controls.Add(this.loginButton);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.autoLogin);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.password);
@@ -447,6 +501,8 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,6 +549,11 @@
         private System.Windows.Forms.SaveFileDialog saveSettingsDialog;
         private System.Windows.Forms.OpenFileDialog importSettingsDialog;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.CheckBox autoLogin;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStrip;
+        private System.Windows.Forms.Button loginButton;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

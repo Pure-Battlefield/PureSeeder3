@@ -96,7 +96,7 @@ namespace PureSeeder.Forms
         private async void SpinUpAvoidIdleKick()
         {
             _avoidIdleKickCt = new CancellationTokenSource().Token;
-            await Task.Run(() => _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt));
+            await Task.Run(() => _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer));
         }
 
         private void SetRefreshTimer()
@@ -166,8 +166,8 @@ namespace PureSeeder.Forms
             currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
-            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,
-                                            DataSourceUpdateMode.OnPropertyChanged);
+            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,DataSourceUpdateMode.OnPropertyChanged);
+            autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false, DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
             refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
 
@@ -208,6 +208,10 @@ namespace PureSeeder.Forms
         private void LoadPage()
         {
             //geckoWebBrowser1.Navigate(address);
+            var selectedUrl = GetAddress(serverSelector);
+            if (selectedUrl == String.Empty)
+                selectedUrl = Constants.DefaultUrl;
+
             geckoWebBrowser1.Navigate(GetAddress(serverSelector));
         }
 
@@ -218,14 +222,11 @@ namespace PureSeeder.Forms
 
         void BrowserChanged(object sender, EventArgs e)
         {
-            //System.Threading.Thread.Sleep(1000); // Testcode
             UpdateContext();
         }
 
         private void UpdateContext()
         {
-            //var source = webControl1.ExecuteJavascriptWithResult("document.documentElement.outerHTML").ToString();
-
             var source = string.Empty;
 
             string pageSource = string.Empty;
@@ -278,6 +279,9 @@ namespace PureSeeder.Forms
 
         private bool CheckUsernames()
         {
+            if (_context.Session.CurrentLoggedInUser == Constants.NotLoggedInUsername)
+                if(autoLogin.Checked)
+
             if (!_context.IsCorrectUser)
             {
                 var result = MessageBoxEx.Show("You don't appear to be logged in to the correct account. Are you sure you'd like to try to connect?", "Incorrect User",
@@ -289,6 +293,27 @@ namespace PureSeeder.Forms
                 return false;
             }
             return true;
+        }
+
+        private async void Login()
+        {
+            statusStrip1.Text = "Attempting login.";
+
+            // Todo: This should be moved into configuration so it can more easily be changed
+            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();");
+
+            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+            {
+                context.EvaluateScript(jsCommand);
+            }
+
+            // Todo: Some check to see if Login worked.
+            
+            await Task.Run(() =>
+                {
+                    Thread.Sleep(1000);
+                    statusStrip1.Text = "";
+                });
         }
 
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
@@ -347,6 +372,11 @@ namespace PureSeeder.Forms
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            Login();
         }
     }
 }
