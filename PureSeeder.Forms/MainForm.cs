@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -160,6 +161,8 @@ namespace PureSeeder.Forms
             SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
             
             username.DataBindings.Add("Text", _context.Settings, x => x.Username);
+            password.DataBindings.Add("Text", _context.Settings, x => x.Password);
+            email.DataBindings.Add("Text", _context.Settings, x => x.Email);
 
             curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers);
             maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
@@ -176,8 +179,8 @@ namespace PureSeeder.Forms
 
         private void JoinServer()
         {
-            if (!CheckUsernames())
-                return;
+//            if (!CheckUsernames())
+//                return;
 
             // Todo: This should be moved into configuration so it can more easily be changed
             const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
@@ -242,13 +245,10 @@ namespace PureSeeder.Forms
 
         private void AttemptSeeding()
         {
-            if (!CheckUsernames())
+            if (!ShouldSeed())
                 return;
 
-            if (!_context.ShouldSeed)
-                return;
-
-            var result = MessageBoxEx.Show("Auto-seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
+            var result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
                                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
 
             if (result == DialogResult.Cancel)
@@ -300,7 +300,7 @@ namespace PureSeeder.Forms
             statusStrip1.Text = "Attempting login.";
 
             // Todo: This should be moved into configuration so it can more easily be changed
-            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();");
+            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
 
             using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
             {
@@ -308,6 +308,10 @@ namespace PureSeeder.Forms
             }
 
             // Todo: Some check to see if Login worked.
+            await Task.Run(() =>
+                {
+
+                });
             
             await Task.Run(() =>
                 {
@@ -377,6 +381,58 @@ namespace PureSeeder.Forms
         private void loginButton_Click(object sender, EventArgs e)
         {
             Login();
+        }
+
+        private bool ShouldSeed()
+        {
+            if (_context.Session.CurrentLoggedInUser == Constants.NotLoggedInUsername)
+            {
+                statusStrip1.Text = "Cannot seed. Not logged in.";
+                return false;
+            }
+
+            if (_context.Session.CurrentLoggedInUser != username.Text)
+            {
+                statusStrip1.Text = "Cannot seed. Incorrect logged in user.";
+                return false;
+            }
+
+            if (_context.BfIsRunning())
+            {
+                return false;
+            }
+                // There are less than or equal to MinPlayers in the server
+            int seedingMinPlayers;
+            int.TryParse(SeedingMinPlayers.Text, out seedingMinPlayers);
+            if (_context.Session.CurrentPlayers > seedingMinPlayers)
+            {
+                statusStrip1.Text = "Player count above min threshold, not starting seeding.";
+            }
+
+            return true;
+        }
+
+        private async void CheckKick()
+        {
+            int seedingMaxPlayers;
+            int.TryParse(SeedingMaxPlayers.Text, out seedingMaxPlayers);
+            if (_context.Session.CurrentPlayers > seedingMaxPlayers && _context.BfIsRunning())
+            {
+                 var result = MessageBoxEx.Show("Player count above max threshold. Stopping seeding in 5 seconds.", "Seeding Threshold Exceeded",
+                                MessageBoxButtons.OKCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, 5000);
+
+                if (result == DialogResult.OK)
+                {
+                    await Task.Run(() => 
+                    {
+                        var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
+                        var process = processList.FirstOrDefault();
+
+                        if(process != null)
+                            process.Close();
+                    });
+                }
+            }
         }
     }
 }

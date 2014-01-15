@@ -103,5 +103,19 @@ namespace PureSeeder.Core.Context
             get { return _settings.IdleKickAvoidanceTimer; }
             set { SetProperty(_settings, value, x => x.IdleKickAvoidanceTimer); }
         }
+
+        [JsonIgnore]
+        public string Password
+        {
+            get { return _settings.Password; }
+            set { SetProperty(_settings, value, x => x.Password); }
+        }
+
+        [JsonIgnore]
+        public string Email
+        {
+            get { return _settings.Email; }
+            set { SetProperty(_settings, value, x => x.Email); }
+        }
     }
 }

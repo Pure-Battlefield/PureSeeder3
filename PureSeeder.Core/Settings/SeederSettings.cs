@@ -18,6 +18,22 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public string Email
+        {
+            get { return ((string) this[Constants.SettingNames.Email]); }
+            set { this[Constants.SettingNames.Email] = (string) value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public string Password
+        {
+            get { return ((string) this[Constants.SettingNames.Password]); }
+            set { this[Constants.SettingNames.Password] = (string) value; }
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("false")]
         public bool EnableLogging
         {

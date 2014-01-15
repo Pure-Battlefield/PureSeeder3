@@ -29,6 +29,8 @@ namespace PureSeeder.Core.Configuration
             public const string MinimizeToTray = "MinimizeToTray";
             public const string AutoLogin = "AutoLogin";
             public const string IdleKickAvoidanceTimer = "IdleKickAvoidanceTimer";
+            public const string Email = "Email";
+            public const string Password = "Password";
         }
 
         public const int GameHangProtectionTimerInterval = 30; // minutes
@@ -58,5 +60,13 @@ namespace PureSeeder.Core.Configuration
                         UrlMatch = new Regex(@"/bf3/")
                     }
             }; 
+
+        public enum ShouldNotSeedReason
+        {
+            NotLoggedIn,
+            IncorrectUser,
+            NotInRange,
+            GameAlreadyRunning
+        }
     }
 }

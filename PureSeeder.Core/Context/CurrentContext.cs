@@ -16,63 +16,6 @@ using Server = PureSeeder.Core.Settings.Server;
 
 namespace PureSeeder.Core.Context
 {
-    public interface IDataContext
-    {
-        /// <summary>
-        /// Data related to the current session
-        /// </summary>
-        SessionData Session { get; }
-        /// <summary>
-        /// Any user-changeable settings
-        /// </summary>
-        BindableSettings Settings { get; }
-        
-        /// <summary>
-        /// Check if the currently logged in user matches the expected user
-        /// </summary>
-        bool IsCorrectUser { get; }
-        /// <summary>
-        /// Check if seeding should occur
-        /// </summary>
-        bool ShouldSeed { get; }
-        /// <summary>
-        /// Check if self-kicking should occur
-        /// </summary>
-        bool ShouldKick { get; }
-
-        /// <summary>
-        /// Exports settings to a json file
-        /// </summary>
-        /// <param name="filename"></param>
-        void ExportSettings(string filename);
-
-        /// <summary>
-        /// Imports settings from a json file
-        /// </summary>
-        /// <param name="filename"></param>
-        void ImportSettings(string filename);
-       
-        
-        /// <summary>
-        /// Update current status with the given page data
-        /// </summary>
-        /// <param name="pageData">Raw page data</param>
-        void UpdateStatus(string pageData);
-        
-        /// <summary>
-        /// Event fired when UpdateStatus is complete
-        /// </summary>
-        event ContextUpdatedHandler OnContextUpdate;
-        /// <summary>
-        /// Event fired when Hang Protection is invoked
-        /// </summary>
-
-        /// <summary>
-        /// Update the context in any necessary ways when a server is joined
-        /// </summary>
-        void JoinServer();
-    }
-
     public delegate void ContextUpdatedHandler(object sender, EventArgs e);
     public delegate void HangProtectionInvokedHandler(object sender, EventArgs e);
     
@@ -142,23 +85,10 @@ namespace PureSeeder.Core.Context
             OnContextUpdated();
         }
 
-        public bool ShouldSeed
-        {
-            get 
-            { 
-                var shouldSeed = true;
-                // There are less than or equal to MinPlayers in the server
-                shouldSeed &= _sessionData.CurrentPlayers <=
-                              _bindableSettings.Servers[_bindableSettings.CurrentServer].MinPlayers;
-
-                shouldSeed &= !BfIsRunning();
-
-                return shouldSeed;
-            }
-        }
+        
 
         // Todo: This should be abstracted and injected
-        private bool BfIsRunning()
+        public bool BfIsRunning()
         {
             // Todo: The process name should be injected so it can work with BF3
             var bfProcess = Process.GetProcessesByName("bf4"); // Process name is bf4.exe (in Details tab of Task Manager)
@@ -166,20 +96,7 @@ namespace PureSeeder.Core.Context
             return bfProcess.Length != 0;
         }
 
-        public bool ShouldKick
-        {
-            get 
-            { 
-                var shouldKick = true;
-
-                shouldKick &= _sessionData.CurrentPlayers >
-                              _bindableSettings.Servers[_bindableSettings.CurrentServer].MaxPlayers;
-
-                shouldKick &= BfIsRunning();
-
-                return shouldKick;
-            }
-        }
+        
 
         public event ContextUpdatedHandler OnContextUpdate;
         
@@ -194,5 +111,7 @@ namespace PureSeeder.Core.Context
             if (handler != null)
                 handler(this, new EventArgs());
         }
+
+       
     }
 }
