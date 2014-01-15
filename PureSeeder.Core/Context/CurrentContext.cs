@@ -40,15 +40,6 @@ namespace PureSeeder.Core.Context
         public SessionData Session { get { return _sessionData; } }
         public BindableSettings Settings { get { return _bindableSettings; }}
 
-        public bool IsCorrectUser
-        {
-            get
-            {
-                return String.Equals(this._bindableSettings.Username, this._sessionData.CurrentLoggedInUser,
-                                     StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
-
         public void ExportSettings(string filename)
         {
             var json = JsonConvert.SerializeObject(_bindableSettings, Formatting.Indented);
@@ -98,6 +89,18 @@ namespace PureSeeder.Core.Context
 
         
 
+        public void StopGame()
+        {
+            if (!BfIsRunning())
+                return;
+
+            var process = Process.GetProcessesByName(_sessionData.CurrentGame.ProcessName).FirstOrDefault();
+
+            if(process != null)
+                process.Close();
+        }
+        
+
         public event ContextUpdatedHandler OnContextUpdate;
         
         public void JoinServer()
@@ -112,6 +115,48 @@ namespace PureSeeder.Core.Context
                 handler(this, new EventArgs());
         }
 
-       
+
+        public UserStatus GetUserStatus()
+        {
+            if(String.Equals(_sessionData.CurrentLoggedInUser, _bindableSettings.Username, StringComparison.InvariantCultureIgnoreCase))
+                return UserStatus.Correct;
+            if(String.Equals(_sessionData.CurrentLoggedInUser, Constants.NotLoggedInUsername, StringComparison.InvariantCultureIgnoreCase))
+                return UserStatus.None;
+
+            return UserStatus.Incorrect;
+        }
+
+        public ResultReason<ShouldNotSeedReason> ShouldSeed()
+        {
+            if(_bindableSettings.Servers.Count == 0)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NoServerDefined);
+
+            if(GetUserStatus() == UserStatus.None)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotLoggedIn);
+
+            if(GetUserStatus() == UserStatus.Incorrect)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.IncorrectUser);
+
+            if(BfIsRunning())
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.GameAlreadyRunning);
+
+            if(_sessionData.CurrentPlayers > _bindableSettings.Servers[_bindableSettings.CurrentServer].MinPlayers)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
+
+            return new ResultReason<ShouldNotSeedReason>(true);
+        }
+
+        public ResultReason<KickReason> ShouldKick()
+        {
+            if(_bindableSettings.Servers.Count == 0)
+                return new ResultReason<KickReason>(false, KickReason.NoServerDefined);
+
+            if(_sessionData.CurrentPlayers > _bindableSettings.Servers[_bindableSettings.CurrentServer].MaxPlayers)
+                return new ResultReason<KickReason>(true, KickReason.AboveSeedingRange);
+
+            return new ResultReason<KickReason>(false);
+        }
     }
+
+    
 }

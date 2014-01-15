@@ -7,6 +7,7 @@ namespace PureSeeder.Core.Configuration
         public string GameName { get; set; }
         public string ProcessName { get; set; }
         public string WindowTitle { get; set; }
+        public string FaultWindowTitle { get; set; }
         public Regex UrlMatch { get; set; }
     }
 }

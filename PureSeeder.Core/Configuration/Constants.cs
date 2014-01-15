@@ -35,38 +35,47 @@ namespace PureSeeder.Core.Configuration
 
         public const int GameHangProtectionTimerInterval = 30; // minutes
 
-        // Todo: This should be moved to a custom config section
-        public static readonly IEnumerable<GameInfo> Games = new List<GameInfo>
-            {
-                new GameInfo()
-                    {
-                        GameName = "Battlefield 4",
-                        ProcessName = "Bf4",
-                        WindowTitle = /*"Battlefield 4™"*/ "Battlefield 4",
-                        UrlMatch = new Regex(@"/bf4/")
-                    },
-                /*new GameInfo()
-                    {
-                        GameName = "Crash",
-                        ProcessName = "Crash",
-                        WindowTitle = "Crash",
-                        UrlMatch = new Regex(".*")
-                    },*/
-                new GameInfo()
-                    {
-                        GameName = "Battlefield 3",
-                        ProcessName = "Bf3",
-                        WindowTitle = "Battlefield 3™",
-                        UrlMatch = new Regex(@"/bf3/")
-                    }
-            }; 
-
-        public enum ShouldNotSeedReason
+        public static class Games
         {
-            NotLoggedIn,
-            IncorrectUser,
-            NotInRange,
-            GameAlreadyRunning
+            public static GameInfo Bf4 = new GameInfo()
+                {
+                    GameName = "Battlefield 4",
+                    ProcessName = "bf4",
+                    WindowTitle = "Battlefield 4",
+                    FaultWindowTitle = "Battlefield 4™",
+                    UrlMatch = new Regex(@"/bf4/")
+                };
+
+            // Note: Right now we only support BF4
+//            public static GameInfo Bf3 = new GameInfo()
+//                {
+//                    GameName = "Battlefield 3",
+//                    ProcessName = "Bf3",
+//                    WindowTitle = "Battlefield 3™",
+//                    UrlMatch = new Regex(@"/bf3/")
+//                };
         }
+    }
+
+    public enum ShouldNotSeedReason
+    {
+        NotLoggedIn,
+        IncorrectUser,
+        NotInRange,
+        GameAlreadyRunning,
+        NoServerDefined
+    }
+
+    public enum KickReason
+    {
+        AboveSeedingRange,
+        NoServerDefined
+    }
+
+    public enum UserStatus
+    {
+        Correct,
+        Incorrect,
+        None
     }
 }

@@ -23,7 +23,6 @@ namespace PureSeeder.Forms
     {
         private readonly IDataContext _context;
         private readonly Timer _refreshTimer;
-        private readonly Timer _gameHangProtectionTimer;
         private readonly ProcessMonitor _processMonitor;
         private readonly IdleKickAvoider _idleKickAvoider;
 
@@ -31,36 +30,29 @@ namespace PureSeeder.Forms
         private CancellationToken _processMonitorCt;
         private CancellationToken _avoidIdleKickCt;
 
+        private MainForm()
+        {
+            InitializeComponent();
+        }
+
         public MainForm(IDataContext context) : this()
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
-            //((IWebView) webControl1).ParentWindow = this.Handle;
 
             _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
             _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
 
             _refreshTimer = new Timer();
-            _gameHangProtectionTimer = new Timer();
 
             // Todo: This should be injected
             _processMonitor = new ProcessMonitor(new CrashDetector(new CrashHandler()));
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
-
             _idleKickAvoider = new IdleKickAvoider();
         }
 
-        void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
-        {
-            _context.Session.BfIsRunning = e.IsRunning;
-
-            if (_context.Session.BfIsRunning)
-                notifyIcon1.Icon = Properties.Resources.PBOn;
-            if (!_context.Session.BfIsRunning)
-                notifyIcon1.Icon = Properties.Resources.PBOff;
-
-        }
-
+        #region Initialization
+        
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -91,13 +83,13 @@ namespace PureSeeder.Forms
         {
             //var ct = CancellationTokenSource.CreateLinkedTokenSource();
             _processMonitorCt = new CancellationTokenSource().Token;
-            await Task.Run(() => _processMonitor.CheckOnProcess(_processMonitorCt));
+            await Task.Run(() => _processMonitor.CheckOnProcess(_processMonitorCt, () => _context.Session.CurrentGame));
         }
 
         private async void SpinUpAvoidIdleKick()
         {
             _avoidIdleKickCt = new CancellationTokenSource().Token;
-            await Task.Run(() => _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer));
+            await /*Task.Run(() =>*/ _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer, () => _context.Session.CurrentGame)/*)*/;
         }
 
         private void SetRefreshTimer()
@@ -115,6 +107,49 @@ namespace PureSeeder.Forms
             _refreshTimer.Start();
         }
 
+        private void CreateBindings()
+        {
+            var serversBindingSource = new BindingSource { DataSource = _context.Settings.Servers, };
+
+            serverSelector.DataSource = serversBindingSource;
+            serverSelector.DisplayMember = "Name";
+            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer/*, false, DataSourceUpdateMode.OnPropertyChanged*/);
+
+            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
+            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            username.DataBindings.Add("Text", _context.Settings, x => x.Username);
+            password.DataBindings.Add("Text", _context.Settings, x => x.Password);
+            email.DataBindings.Add("Text", _context.Settings, x => x.Email);
+
+            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers);
+            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
+            currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
+
+            logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
+            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false, DataSourceUpdateMode.OnPropertyChanged);
+            autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false, DataSourceUpdateMode.OnPropertyChanged);
+            seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
+            refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
+
+            saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+
+        #endregion Intialization
+
+        #region EventHandlers
+
+        void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
+        {
+            _context.Session.BfIsRunning = e.IsRunning;
+
+            if (_context.Session.BfIsRunning)
+                notifyIcon1.Icon = Properties.Resources.PBOn;
+            if (!_context.Session.BfIsRunning)
+                notifyIcon1.Icon = Properties.Resources.PBOff;
+        }
+
         private void HandleRefresh(object sender, EventArgs e)
         {
            RefreshPageAndData();
@@ -129,6 +164,7 @@ namespace PureSeeder.Forms
             handler = (tSender, tE) =>
             {
                 _context.OnContextUpdate -= handler;
+                CheckKick();
                 AttemptSeeding();
             };
             _context.OnContextUpdate += handler;
@@ -137,51 +173,12 @@ namespace PureSeeder.Forms
             _refreshTimer.Start();
         }
 
-        private void HandleHangProtectionInvoked(object sender, EventArgs e)
-        {
-            MessageBoxEx.Show(
-                "In order to protect from hangs. Battlefield will be shut down. It will be restarted if seeding is still necessary.",
-                "Hang Protection", MessageBoxButtons.OK, 5000);
-        }
+        #endregion EventHandlers
 
-        private MainForm()
-        {
-            InitializeComponent();
-        }
-
-        private void CreateBindings()
-        {
-            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers, };
-
-            serverSelector.DataSource = serversBindingSource;
-            serverSelector.DisplayMember = "Name";
-            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer/*, false, DataSourceUpdateMode.OnPropertyChanged*/);
-
-            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
-            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
-            
-            username.DataBindings.Add("Text", _context.Settings, x => x.Username);
-            password.DataBindings.Add("Text", _context.Settings, x => x.Password);
-            email.DataBindings.Add("Text", _context.Settings, x => x.Email);
-
-            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers);
-            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
-            currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
-
-            logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
-            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,DataSourceUpdateMode.OnPropertyChanged);
-            autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false, DataSourceUpdateMode.OnPropertyChanged);
-            seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
-            refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
-
-            saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
-        }
+        #region BattlelogManipulation
 
         private void JoinServer()
         {
-//            if (!CheckUsernames())
-//                return;
-
             // Todo: This should be moved into configuration so it can more easily be changed
             const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
@@ -201,7 +198,7 @@ namespace PureSeeder.Forms
         private string GetAddress(ComboBox cb)
         {
             if (cb.Items.Count == 0)
-                return "http://battlelog.battlefield.com";
+                return Constants.DefaultUrl;
 
             var address = ((Server) cb.SelectedItem).Address;
 
@@ -215,7 +212,7 @@ namespace PureSeeder.Forms
             if (selectedUrl == String.Empty)
                 selectedUrl = Constants.DefaultUrl;
 
-            geckoWebBrowser1.Navigate(GetAddress(serverSelector));
+            geckoWebBrowser1.Navigate(selectedUrl);
         }
 
         void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -240,7 +237,6 @@ namespace PureSeeder.Forms
             source = pageSource;
 
             _context.UpdateStatus(source);
-            refresh.Enabled = true; // Todo: This is a hacky way to avoid refresh hammering. Think of something better.
         }
 
         private void AttemptSeeding()
@@ -259,8 +255,174 @@ namespace PureSeeder.Forms
 
         private void UpdateInterface()
         {
-            currentLoggedInUser.ForeColor = _context.IsCorrectUser ? Color.Green : Color.Red;
+            currentLoggedInUser.ForeColor = _context.GetUserStatus() == UserStatus.Correct ? Color.Green : Color.Red;
         }
+
+        private void AutoLogin(Action successfulLogin = null, Action failedLogin = null)
+        {
+            if(_context.GetUserStatus() == UserStatus.Correct)
+                if(successfulLogin != null)
+                    successfulLogin.Invoke();
+
+            if (_context.GetUserStatus() == UserStatus.Incorrect)
+            {
+                Logout(() => AutoLogin(successfulLogin, failedLogin), null);
+            }
+            
+            Login(successfulLogin, failedLogin);
+        }
+
+        private async void Login(Action successfulLogin = null, Action failedLogin = null)
+        {
+            SetStatus("Attempting login.");
+
+//            await Task.Run(() =>
+//                {
+                    // Todo: This should be moved into configuration so it can more easily be changed
+                    string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
+
+                    using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
+                    {
+                        context.EvaluateScript(jsCommand);
+                    }
+//                });
+
+            // Check for a while if the login worked
+            await Task.Run(() =>
+                {
+                    const int loginCheckCount = 10;
+                    for (var i = 0; i < loginCheckCount; i++)
+                    {
+                        if(_context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername)
+                        {
+                            if(successfulLogin != null)
+                                successfulLogin.Invoke();
+                            return;
+                        }
+
+                        Thread.Sleep(1000); // Sleep for 1 second
+                    }
+                    if(failedLogin != null)
+                        failedLogin.Invoke();
+                });
+            
+            await Task.Run(() => Thread.Sleep(1000));
+            SetStatus("");
+
+        }
+
+        private async void Logout(Action successfulLogout, Action failedLogout)
+        {
+            geckoWebBrowser1.Navigate("http://battlelog.battlefield.com/bf4/session/logout/");
+
+            await Task.Run(() =>
+                {
+                    const int logoutCheckCount = 10;
+                    for (var i = 0; i < logoutCheckCount; i++)
+                    {
+                        if (_context.GetUserStatus() == UserStatus.None)
+                        {
+                            if(successfulLogout != null)
+                                successfulLogout.Invoke();
+
+                            return;
+                        }
+
+                        Thread.Sleep(1000);
+                    }
+                    if(failedLogout != null)
+                        failedLogout.Invoke();
+                });
+        }
+
+        private void AutoLogout(Action logoutSuccess, Action logoutFail)
+        {
+            if (_context.GetUserStatus() == UserStatus.None)
+            {
+                if (logoutSuccess != null)
+                    logoutSuccess.Invoke();
+
+                return;
+            }
+
+            Logout(logoutSuccess, logoutFail);
+        }
+
+        private bool ShouldSeed()
+        {
+            var shouldSeed = _context.ShouldSeed();
+
+            if (!shouldSeed.Result)
+            {
+                if (shouldSeed.Reason == ShouldNotSeedReason.NotLoggedIn)
+                {
+                    SetStatus("Cannot seed. Not logged in.", 5);
+                    AutoLogin(RefreshPageAndData);
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.IncorrectUser)
+                {
+                    SetStatus("Cannot seed. Incorrect logged in user.", 5);
+                    AutoLogout(() => AutoLogin(RefreshPageAndData), null);
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.GameAlreadyRunning)
+                    return false;
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
+                {
+                    SetStatus("Player count above min threshold, not starting seeding.");
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.NoServerDefined)
+                {
+                    SetStatus("No server defined. Cannot seed.");
+                    return false;
+                }
+
+                throw new NotImplementedException("Need to handle all reasons for seeding not starting.");
+            }
+
+            return true;
+        }
+
+        private async void CheckKick()
+        {
+            await Task.Run(() =>
+            {
+                var shouldKick = _context.ShouldKick();
+                if (shouldKick.Result)
+                {
+                    if (shouldKick.Reason == KickReason.AboveSeedingRange)
+                    {
+                        var result =
+                            MessageBoxEx.Show(
+                                "Player count above max threshold. If game is running it will be stopped in 5 seconds.",
+                                "Max Player Threshold Exceeded", MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+
+                        if (result == DialogResult.OK)
+                            _context.StopGame();
+                        
+                        return;
+                    }
+
+                    if (shouldKick.Reason == KickReason.NoServerDefined)
+                    {
+                        return;
+                    }
+
+                    throw new NotImplementedException("Need to handle all reasons for kicking.");
+                }
+            });
+        }
+
+        #endregion BattlelogManipulation
+
+        #region UiEvents
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -277,49 +439,6 @@ namespace PureSeeder.Forms
             JoinServer();
         }
 
-        private bool CheckUsernames()
-        {
-            if (_context.Session.CurrentLoggedInUser == Constants.NotLoggedInUsername)
-                if(autoLogin.Checked)
-
-            if (!_context.IsCorrectUser)
-            {
-                var result = MessageBoxEx.Show("You don't appear to be logged in to the correct account. Are you sure you'd like to try to connect?", "Incorrect User",
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, 5000);
-
-                if (result == DialogResult.Yes)
-                    return true;
-
-                return false;
-            }
-            return true;
-        }
-
-        private async void Login()
-        {
-            statusStrip1.Text = "Attempting login.";
-
-            // Todo: This should be moved into configuration so it can more easily be changed
-            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
-
-            using (var context = new AutoJSContext(geckoWebBrowser1.Window.JSContext))
-            {
-                context.EvaluateScript(jsCommand);
-            }
-
-            // Todo: Some check to see if Login worked.
-            await Task.Run(() =>
-                {
-
-                });
-            
-            await Task.Run(() =>
-                {
-                    Thread.Sleep(1000);
-                    statusStrip1.Text = "";
-                });
-        }
-
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
         {
             UpdateContext();
@@ -327,7 +446,7 @@ namespace PureSeeder.Forms
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            refresh.Enabled = false;  // Todo: This is a hacky way to avoid refresh hammering. Think of something better.
+            DisableRefreshButton();
             RefreshPageAndData();
         }
 
@@ -383,56 +502,37 @@ namespace PureSeeder.Forms
             Login();
         }
 
-        private bool ShouldSeed()
+        #endregion UiEvents
+
+        #region UiManipulation
+
+        private async void DisableRefreshButton()
         {
-            if (_context.Session.CurrentLoggedInUser == Constants.NotLoggedInUsername)
-            {
-                statusStrip1.Text = "Cannot seed. Not logged in.";
-                return false;
-            }
-
-            if (_context.Session.CurrentLoggedInUser != username.Text)
-            {
-                statusStrip1.Text = "Cannot seed. Incorrect logged in user.";
-                return false;
-            }
-
-            if (_context.BfIsRunning())
-            {
-                return false;
-            }
-                // There are less than or equal to MinPlayers in the server
-            int seedingMinPlayers;
-            int.TryParse(SeedingMinPlayers.Text, out seedingMinPlayers);
-            if (_context.Session.CurrentPlayers > seedingMinPlayers)
-            {
-                statusStrip1.Text = "Player count above min threshold, not starting seeding.";
-            }
-
-            return true;
+            refresh.Enabled = false;
+            await Task.Run(() => Thread.Sleep(5));
+            refresh.Enabled = true;
         }
 
-        private async void CheckKick()
+
+        private async void SetStatus(string status, int time = -1)
         {
-            int seedingMaxPlayers;
-            int.TryParse(SeedingMaxPlayers.Text, out seedingMaxPlayers);
-            if (_context.Session.CurrentPlayers > seedingMaxPlayers && _context.BfIsRunning())
+            toolStripStatusLabel1.Text = status;
+            statusStrip1.Refresh();
+
+            if (time > -1)
             {
-                 var result = MessageBoxEx.Show("Player count above max threshold. Stopping seeding in 5 seconds.", "Seeding Threshold Exceeded",
-                                MessageBoxButtons.OKCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, 5000);
-
-                if (result == DialogResult.OK)
-                {
-                    await Task.Run(() => 
-                    {
-                        var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
-                        var process = processList.FirstOrDefault();
-
-                        if(process != null)
-                            process.Close();
-                    });
-                }
+                //await Task.Run(() => Thread.Sleep(time * 1000));
+                await Sleep(time);
+                SetStatus("");
             }
+        }
+
+        #endregion UiManipulation
+
+
+        private Task Sleep(int seconds)
+        {
+            return Task.Factory.StartNew(() => Thread.Sleep(seconds * 1000));
         }
     }
 }

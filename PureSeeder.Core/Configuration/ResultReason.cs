@@ -13,14 +13,12 @@ namespace PureSeeder.Core.Configuration
             Result = result;
         }
 
-        public ResultReason(bool result, T reason, string stringReason)
+        public ResultReason(bool result, T reason)
         {
             Result = result;
             Reason = reason;
-            StringReason = stringReason;
         }
         public bool Result { get; set; }
         public T Reason { get; set; }
-        public string StringReason { get; set; }
     }
 }

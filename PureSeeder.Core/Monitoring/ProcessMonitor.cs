@@ -23,7 +23,7 @@ namespace PureSeeder.Core.Monitoring
         // Need a couple of custom events to attach to
        public event ProcessStateChangeHandler OnProcessStateChanged; 
 
-       public async void CheckOnProcess(CancellationToken ct)
+       public async void CheckOnProcess(CancellationToken ct, Func<GameInfo> getGameInfo)
         {
             await Task.Run(() =>
                 {
@@ -31,22 +31,34 @@ namespace PureSeeder.Core.Monitoring
                     // If it's running, trigger idle kick avoidance
                     // If state changes from running or to running, trigger an event
 
-                    var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
-                    var process = processList.FirstOrDefault();
+//                    var currentGame = getGameInfo.Invoke();
+//
+//                    var processList = Process.GetProcessesByName(Constants.Games.First().ProcessName);
+//                    var process = processList.FirstOrDefault();
+//
+//                    var isRunning = process != null;
+//                    var previousState = isRunning;
 
-                    var isRunning = process != null;
-                    var previousState = isRunning;
+                    var previousState = false;
 
                     while (!ct.IsCancellationRequested)
                     {
-                        process = Process.GetProcessesByName(Constants.Games.First().ProcessName).FirstOrDefault();
-                        isRunning = process != null;
-                        if (OnProcessStateChanged != null)
-                            OnProcessStateChanged.Invoke(this, new ProcessStateChangeEventArgs() {IsRunning = isRunning});
+                        var currentGame = getGameInfo.Invoke();
 
-                        previousState = isRunning;
+                        if (currentGame != null)
+                        {
+                            var process =
+                                Process.GetProcessesByName(currentGame.ProcessName).FirstOrDefault();
+                            var isRunning = process != null;
+                            if (isRunning != previousState && OnProcessStateChanged != null)
+                                OnProcessStateChanged.Invoke(this,
+                                                             new ProcessStateChangeEventArgs() {IsRunning = isRunning});
 
-                        _crashDetector.DetectCrash(Constants.Games.First().ProcessName, Constants.Games.First().WindowTitle);
+                            previousState = isRunning;
+
+                            _crashDetector.DetectCrash(currentGame.ProcessName,
+                                                       currentGame.FaultWindowTitle);
+                        }
 
                         Thread.Sleep(5000);
                     }
@@ -58,7 +70,7 @@ namespace PureSeeder.Core.Monitoring
 
     public interface ICrashDetector
     {
-        void DetectCrash(string processName, string windowTitle);
+        void DetectCrash(string processName, string faultWindowTitle);
     }
 
     class CrashDetector : ICrashDetector
@@ -71,25 +83,25 @@ namespace PureSeeder.Core.Monitoring
             _crashHandler = crashHandler;
         }
 
-        public void DetectCrash(string processName, string windowTitle)
+        public void DetectCrash(string processName, string faultWindowTitle)
         {
             var process = Process.GetProcessesByName(processName).FirstOrDefault();
             if (process == null)
                 return;
 
             if(!process.Responding)
-                _crashHandler.HandleCrash(process, processName, windowTitle);
+                _crashHandler.HandleCrash(process, processName, faultWindowTitle);
         }
     }
 
     public interface ICrashHandler
     {
-        void HandleCrash(Process process, string processName, string windowTitle);
+        void HandleCrash(Process process, string processName, string faultWindowTitle);
     }
 
     class CrashHandler : ICrashHandler
     {
-        public void HandleCrash(Process process, string processName, string windowTitle)
+        public void HandleCrash(Process process, string processName, string faultWindowTitle)
         {
             if(process != null)
                 process.Kill();
@@ -97,7 +109,7 @@ namespace PureSeeder.Core.Monitoring
             // Find the fault window and kill it
             var faultProcess =
                     Process.GetProcessesByName("WerFault")
-                           .FirstOrDefault(x => x.MainWindowTitle == windowTitle);
+                           .FirstOrDefault(x => x.MainWindowTitle == faultWindowTitle);
             
             if (faultProcess == null)
                 return;

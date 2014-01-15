@@ -14,11 +14,6 @@ namespace PureSeeder.Core.Context
         BindableSettings Settings { get; }
         
         /// <summary>
-        /// Check if the currently logged in user matches the expected user
-        /// </summary>
-        bool IsCorrectUser { get; }
-
-        /// <summary>
         /// Exports settings to a json file
         /// </summary>
         /// <param name="filename"></param>
@@ -51,5 +46,13 @@ namespace PureSeeder.Core.Context
         void JoinServer();
 
         bool BfIsRunning();
+
+        UserStatus GetUserStatus();
+
+        ResultReason<ShouldNotSeedReason> ShouldSeed();
+
+        ResultReason<KickReason> ShouldKick();
+
+        void StopGame();
     }
 }
