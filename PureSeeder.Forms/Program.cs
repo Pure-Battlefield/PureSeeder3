@@ -15,21 +15,28 @@ namespace PureSeeder.Forms
         [STAThread]
         static void Main()
         {
-            //var xulLocation = @"C:\Dev\Random\pure\new\XulRunner\xulrunner-22.0.en-US.win32\xulrunner";
-            //var xulLocation = @"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner";
-            var xulLocation = @"xulrunner";
-            
-            // Setup Gecko
-            Gecko.Xpcom.Initialize(xulLocation);
-            Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
+            try
+            {
+                //var xulLocation = @"C:\Dev\Random\pure\new\XulRunner\xulrunner-22.0.en-US.win32\xulrunner";
+                //var xulLocation = @"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner";
+                var xulLocation = @"xulrunner";
 
-            //var container = new FormsContainer();
-            var container = new TempContainer();
+                // Setup Gecko
+                Gecko.Xpcom.Initialize(xulLocation);
+                Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+                //var container = new FormsContainer();
+                var container = new TempContainer();
 
-            Application.Run(container.Resolve<MainForm>());
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                Application.Run(container.Resolve<MainForm>());
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
     }
 }
