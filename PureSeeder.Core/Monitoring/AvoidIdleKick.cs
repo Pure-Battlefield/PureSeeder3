@@ -20,7 +20,7 @@ namespace PureSeeder.Core.Monitoring
 
                         if (currentGame != null)
                         {
-                            PInvoke.ClickInWindow(currentGame.WindowTitle, 20, 20);
+                            PInvoke.ClickInWindow(currentGame.WindowTitle, 20, 20);  // Click in the Window to avoid the idle kick
                         }
 
                         Thread.Sleep(1 * numSeconds * 1000);  // Sleep

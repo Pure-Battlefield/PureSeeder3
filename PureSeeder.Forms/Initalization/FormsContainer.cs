@@ -57,4 +57,25 @@ namespace PureSeeder.Forms.Initalization
             throw new ArgumentException(String.Format("FormsContainer cannot create an instance of the required type: {0}", type.Name));
         }
     }
+
+    public static class Bootstrapper
+    {
+        public static MainForm GetMainForm(IDataContext dataContext)
+        {
+            return new MainForm(dataContext);
+        }
+
+        public static IDataContext GetDataContext()
+        {
+            return new SeederContext(
+                    new SessionData(),
+                    new BindableSettings(
+                        new SeederUserSettings()),
+                    new List<IDataContextUpdater>
+                        {
+                            new Bf4PlayerCountsUpdater(),
+                            new CurrentBf4UserUpdater(),
+                        }.ToArray());
+        }
+    }
 }

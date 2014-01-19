@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PureSeeder.Core.Context;
 using PureSeeder.Forms.Initalization;
 
 namespace PureSeeder.Forms
@@ -15,28 +16,51 @@ namespace PureSeeder.Forms
         [STAThread]
         static void Main()
         {
-            try
+
+            bool singleInstanceResult;
+            var mutex = new System.Threading.Mutex(true, "PureSeeder3App", out singleInstanceResult);
+            if (!singleInstanceResult)
+                return;
+
+            var xulLocation = @"xulrunner";
+
+            // Setup Gecko browser
+            Gecko.Xpcom.Initialize(xulLocation);
+            Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
+
+            //var container = new FormsContainer();
+            //var container = new TempContainer();
+            var context = Bootstrapper.GetDataContext();
+            LoadSettingsAtStartup(context);
+            LoadDefaultServers(context);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.Run(Bootstrapper.GetMainForm(context));
+
+            GC.KeepAlive(mutex);
+        }
+
+        static void LoadSettingsAtStartup(IDataContext context)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Count() < 2)
+                return;
+
+            if (String.IsNullOrEmpty(args[1]))
+                return;
+
+            context.ImportSettings(args.First());
+        }
+
+        static void LoadDefaultServers(IDataContext context)
+        {
+            if (!context.Settings.Servers.Any())
             {
-                //var xulLocation = @"C:\Dev\Random\pure\new\XulRunner\xulrunner-22.0.en-US.win32\xulrunner";
-                //var xulLocation = @"C:\Users\Brad\Documents\Dev\PureBattlefield\new\pureseeder\lib\xulrunner";
-                var xulLocation = @"xulrunner";
-
-                // Setup Gecko
-                Gecko.Xpcom.Initialize(xulLocation);
-                Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
-
-                //var container = new FormsContainer();
-                var container = new TempContainer();
-
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                Application.Run(container.Resolve<MainForm>());
-            }
-            catch (Exception ex)
-            {
-                
+                context.ImportSettings("DefaultSettings/__defaultSettings.psjson");
             }
         }
+
     }
 }

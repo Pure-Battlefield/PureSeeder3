@@ -70,7 +70,8 @@ namespace PureSeeder.Core.Configuration
     public enum KickReason
     {
         AboveSeedingRange,
-        NoServerDefined
+        NoServerDefined,
+        GameNotRunning
     }
 
     public enum UserStatus

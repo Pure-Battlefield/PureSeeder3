@@ -404,6 +404,9 @@ namespace PureSeeder.Forms
                     return;
                 }
 
+                if (shouldKick.Reason == KickReason.GameNotRunning)
+                    return;
+
                 throw new NotImplementedException("Need to handle all reasons for kicking.");
             }
         }

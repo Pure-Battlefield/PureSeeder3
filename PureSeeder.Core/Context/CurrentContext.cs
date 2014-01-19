@@ -162,6 +162,9 @@ namespace PureSeeder.Core.Context
 
         public ResultReason<KickReason> ShouldKick()
         {
+            if(!BfIsRunning())
+                return new ResultReason<KickReason>(false, KickReason.GameNotRunning);
+
             if(_bindableSettings.Servers.Count == 0)
                 return new ResultReason<KickReason>(false, KickReason.NoServerDefined);
 
