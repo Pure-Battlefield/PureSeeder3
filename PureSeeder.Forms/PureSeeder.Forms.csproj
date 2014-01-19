@@ -22,13 +22,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://bradrhodes.github.io/PureSeeder3/publish.htm/</InstallUrl>
+    <InstallUrl>http://bradrhodes.github.io/PureSeeder3/</InstallUrl>
+    <UpdateUrl>http://bradrhodes.github.io/PureSeeder3/</UpdateUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>PURE Seeder 3</ProductName>
     <PublisherName>PURE Battlefield</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
