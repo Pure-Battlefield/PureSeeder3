@@ -1,0 +1,9 @@
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\PureSeeder.Core.dll.config
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\PureSeeder.Core.dll
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\PureSeeder.Core.pdb
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\AutoItX3.Assembly.dll
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\AutoItX3.Assembly.xml
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\obj\Debug\PureSeeder.Core.dll
+C:\Users\Brad\Documents\Dev\PureBattlefield\new\PureSeeder3\PureSeeder.Core\obj\Debug\PureSeeder.Core.pdb
