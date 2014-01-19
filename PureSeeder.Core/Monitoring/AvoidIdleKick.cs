@@ -20,17 +20,7 @@ namespace PureSeeder.Core.Monitoring
 
                         if (currentGame != null)
                         {
-                            var winHandle = AutoItX.WinGetHandle(currentGame.WindowTitle);
-                            var winExists = AutoItX.WinExists(winHandle) != 0;
-
-                            if (winExists)
-                            {
-                                //AutoItX.ControlClick(winHandle, IntPtr.Zero, "left", 1, 0, 0);
-                                AutoItX.ControlClick(currentGame.WindowTitle, "", "", "left", 1, 1, 1);
-                                
-                                //Thread.Sleep(500);
-                                AutoItX.WinActivate("Program Manager"); // Remove focus from the game
-                            }
+                            PInvoke.ClickInWindow(currentGame.WindowTitle, 20, 20);
                         }
 
                         Thread.Sleep(1 * numSeconds * 1000);  // Sleep

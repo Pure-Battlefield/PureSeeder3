@@ -64,6 +64,7 @@
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />
     <Compile Include="Monitoring\AvoidIdleKick.cs" />
+    <Compile Include="Monitoring\PInvoke.cs" />
     <Compile Include="Monitoring\ProcessMonitor.cs" />
     <Compile Include="PartialObjects\BuildExpressionStack.cs" />
     <Compile Include="Properties\Annotations.cs" />
