@@ -106,6 +106,8 @@ namespace PureSeeder.Core.Context
             {
                 if (_bindableSettings.Servers.Count == 0)
                     return null;
+                if (_bindableSettings.CurrentServer < 0)
+                    _bindableSettings.CurrentServer = 0;
 
                 return _bindableSettings.Servers[_bindableSettings.CurrentServer];
             }

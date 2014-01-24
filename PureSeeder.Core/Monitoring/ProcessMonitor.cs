@@ -12,12 +12,12 @@ namespace PureSeeder.Core.Monitoring
 
     public class ProcessMonitor
     {
-        private readonly ICrashDetector _crashDetector;
+        private readonly ICrashDetector[] _crashDetectors;
 
-        public ProcessMonitor([NotNull] ICrashDetector crashDetector)
+        public ProcessMonitor([NotNull] ICrashDetector[] crashDetectors)
         {
-            if (crashDetector == null) throw new ArgumentNullException("crashDetector");
-            _crashDetector = crashDetector;
+            if (crashDetectors == null) throw new ArgumentNullException("crashDetectors");
+            _crashDetectors = crashDetectors;
         }
 
         // Need a couple of custom events to attach to
@@ -47,8 +47,11 @@ namespace PureSeeder.Core.Monitoring
 
                             previousState = isRunning;
 
-                            _crashDetector.DetectCrash(currentGame.ProcessName,
-                                                       currentGame.FaultWindowTitle);
+                            foreach (var crashDetector in _crashDetectors)
+                            {
+                                crashDetector.DetectCrash(currentGame.ProcessName,
+                                                           currentGame.FaultWindowTitle);    
+                            }
                         }
 
                         Thread.Sleep(5000);
@@ -62,6 +65,9 @@ namespace PureSeeder.Core.Monitoring
         void DetectCrash(string processName, string faultWindowTitle);
     }
 
+    /// <summary>
+    /// If the app is not responding, then it has crashed/locked up
+    /// </summary>
     class CrashDetector : ICrashDetector
     {
         private readonly ICrashHandler _crashHandler;
@@ -80,6 +86,28 @@ namespace PureSeeder.Core.Monitoring
 
             if(!process.Responding)
                 _crashHandler.HandleCrash(process, processName, faultWindowTitle);
+        }
+    }
+
+    /// <summary>
+    /// If there is a fault window, then it has crashed/locked up
+    /// </summary>
+    class DetectCrashByFaultWindow : ICrashDetector
+    {
+        public void DetectCrash(string processName, string faultWindowTitle)
+        {
+            var faultProcess = Process.GetProcessesByName("WerFault")
+                                      .FirstOrDefault(x => x.MainWindowTitle == faultWindowTitle);
+
+            if (faultProcess == null)
+                return;
+
+            // Assume the game has crashed
+            faultProcess.Kill();
+
+            var gameProcess = Process.GetProcessesByName(processName).FirstOrDefault();
+            if (gameProcess != null)
+                gameProcess.Kill();
         }
     }
 

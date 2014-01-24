@@ -46,7 +46,7 @@ namespace PureSeeder.Forms
             _refreshTimer = new Timer();
 
             // Todo: This should be injected
-            _processMonitor = new ProcessMonitor(new CrashDetector(new CrashHandler()));
+            _processMonitor = new ProcessMonitor(new ICrashDetector[] {new CrashDetector(new CrashHandler()), new DetectCrashByFaultWindow() });
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
             _idleKickAvoider = new IdleKickAvoider();
         }
@@ -480,6 +480,7 @@ namespace PureSeeder.Forms
         {
             var fileName = importSettingsDialog.FileName;
             _context.ImportSettings(fileName);
+            AnyRefresh();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

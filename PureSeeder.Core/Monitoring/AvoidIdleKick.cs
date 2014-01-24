@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,13 +15,18 @@ namespace PureSeeder.Core.Monitoring
         public Task AvoidIdleKick(CancellationToken token, int numSeconds, Func<GameInfo> getCurrentGame)
         {
             return Task.Factory.StartNew(() => {
+                    var currentGame = getCurrentGame.Invoke();    
                     while (!token.IsCancellationRequested)
                     {
-                        var currentGame = getCurrentGame.Invoke();
+                        var process = Process.GetProcessesByName(currentGame.ProcessName).FirstOrDefault();
 
-                        if (currentGame != null)
+                        if (process != null)
                         {
-                            PInvoke.ClickInWindow(currentGame.WindowTitle, 20, 20);  // Click in the Window to avoid the idle kick
+                            if (currentGame != null)
+                            {
+                                PInvoke.ClickInWindow(currentGame.WindowTitle, 20, 20);
+                                    // Click in the Window to avoid the idle kick
+                            }
                         }
 
                         Thread.Sleep(1 * numSeconds * 1000);  // Sleep
