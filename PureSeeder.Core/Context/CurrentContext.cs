@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Timers;
 using Newtonsoft.Json;
 using PureSeeder.Core.Annotations;
 using System.Linq;
 using PureSeeder.Core.Configuration;
+using PureSeeder.Core.Monitoring;
 using PureSeeder.Core.Settings;
 using Server = PureSeeder.Core.Settings.Server;
 
@@ -118,7 +120,16 @@ namespace PureSeeder.Core.Context
         
         public void JoinServer()
         {
-            
+            SpinUpMinimizer();
+        }
+
+        private async void SpinUpMinimizer()
+        {
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(30 * 1000);
+
+            var minimizerCt = cts.Token;
+            await new GameMinimizer().MinimizeGameOnce(minimizerCt, () => Session.CurrentGame);
         }
 
         private void OnContextUpdated()
