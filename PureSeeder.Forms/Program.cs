@@ -16,20 +16,17 @@ namespace PureSeeder.Forms
         [STAThread]
         static void Main()
         {
-
+            // Ensure only 1 instance of the seeder can run at a time
             bool singleInstanceResult;
             var mutex = new System.Threading.Mutex(true, "PureSeeder3App", out singleInstanceResult);
             if (!singleInstanceResult)
                 return;
 
-            var xulLocation = @"xulrunner";
-
             // Setup Gecko browser
+            var xulLocation = @"xulrunner";
             Gecko.Xpcom.Initialize(xulLocation);
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
 
-            //var container = new FormsContainer();
-            //var container = new TempContainer();
             var context = Bootstrapper.GetDataContext();
             LoadSettingsAtStartup(context);
             LoadDefaultServers(context);

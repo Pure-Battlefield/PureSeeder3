@@ -77,6 +77,7 @@ namespace PureSeeder.Forms
             notifyIcon1.Icon = Properties.Resources.PBOff;
             notifyIcon1.Text = Constants.ApplicationName;
             this.Text = Constants.ApplicationName;
+            this.closeToolStripMenuItem.Text = String.Format("Close {0}", Constants.ApplicationName);
         }
 
         private async void SpinUpProcessMonitor()
@@ -459,7 +460,6 @@ namespace PureSeeder.Forms
         {
             if (FormWindowState.Minimized == this.WindowState && _context.Settings.MinimizeToTray)
             {
-                notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running", "Right click to restore the window", ToolTipIcon.Info);
                 this.Hide();
             }
         }
@@ -495,6 +495,33 @@ namespace PureSeeder.Forms
         private void loginButton_Click(object sender, EventArgs e)
         {
             Login();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                this.Hide();
+                this.WindowState = FormWindowState.Minimized;
+            }
+        }
+
+        private void MainForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.Visible == false)
+            {
+                notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running", "Right click or double click to restore the window", ToolTipIcon.Info);
+            }
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         #endregion UiEvents
@@ -542,5 +569,7 @@ namespace PureSeeder.Forms
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds * 1000));
         }
+
+
     }
 }

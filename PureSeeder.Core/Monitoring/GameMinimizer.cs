@@ -35,24 +35,4 @@ namespace PureSeeder.Core.Monitoring
                 });
         }
     }
-
-    class RunAction
-    {
-        public Task RunActionOnGameLoad(CancellationToken token, Func<GameInfo> getCurrentGame, Action action)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                var currentGame = getCurrentGame.Invoke();
-                while (!token.IsCancellationRequested)
-                {
-                    var process = Process.GetProcessesByName(currentGame.ProcessName).FirstOrDefault();
-
-                    if (process == null) continue;
-                    
-                    action.Invoke();
-                    break;
-                }
-            });
-        }
-    }
 }

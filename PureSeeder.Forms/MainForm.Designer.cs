@@ -78,10 +78,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.email = new System.Windows.Forms.TextBox();
             this.AppSettingsTab = new System.Windows.Forms.TabPage();
+            this.autoMinimizeGame = new System.Windows.Forms.CheckBox();
+            this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
-            this.autoMinimizeGame = new System.Windows.Forms.CheckBox();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -313,14 +315,17 @@
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showWindowToolStripMenuItem,
-            this.minimizeWindowToolStripMenuItem});
+            this.minimizeWindowToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.closeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(171, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(171, 98);
             // 
             // showWindowToolStripMenuItem
             // 
@@ -550,6 +555,28 @@
             this.AppSettingsTab.Text = "Application";
             this.AppSettingsTab.UseVisualStyleBackColor = true;
             // 
+            // autoMinimizeGame
+            // 
+            this.autoMinimizeGame.AutoSize = true;
+            this.autoMinimizeGame.Location = new System.Drawing.Point(140, 55);
+            this.autoMinimizeGame.Name = "autoMinimizeGame";
+            this.autoMinimizeGame.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.autoMinimizeGame.Size = new System.Drawing.Size(122, 17);
+            this.autoMinimizeGame.TabIndex = 30;
+            this.autoMinimizeGame.Text = "Auto-Minimize Game";
+            this.autoMinimizeGame.UseVisualStyleBackColor = true;
+            // 
+            // autoMinimizeSeeder
+            // 
+            this.autoMinimizeSeeder.AutoSize = true;
+            this.autoMinimizeSeeder.Location = new System.Drawing.Point(134, 34);
+            this.autoMinimizeSeeder.Name = "autoMinimizeSeeder";
+            this.autoMinimizeSeeder.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.autoMinimizeSeeder.Size = new System.Drawing.Size(128, 17);
+            this.autoMinimizeSeeder.TabIndex = 29;
+            this.autoMinimizeSeeder.Text = "Auto-Minimize Seeder";
+            this.autoMinimizeSeeder.UseVisualStyleBackColor = true;
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -574,27 +601,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
             // 
-            // autoMinimizeSeeder
+            // toolStripMenuItem1
             // 
-            this.autoMinimizeSeeder.AutoSize = true;
-            this.autoMinimizeSeeder.Location = new System.Drawing.Point(134, 34);
-            this.autoMinimizeSeeder.Name = "autoMinimizeSeeder";
-            this.autoMinimizeSeeder.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.autoMinimizeSeeder.Size = new System.Drawing.Size(128, 17);
-            this.autoMinimizeSeeder.TabIndex = 29;
-            this.autoMinimizeSeeder.Text = "Auto-Minimize Seeder";
-            this.autoMinimizeSeeder.UseVisualStyleBackColor = true;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 6);
             // 
-            // autoMinimizeGame
+            // closeToolStripMenuItem
             // 
-            this.autoMinimizeGame.AutoSize = true;
-            this.autoMinimizeGame.Location = new System.Drawing.Point(140, 55);
-            this.autoMinimizeGame.Name = "autoMinimizeGame";
-            this.autoMinimizeGame.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.autoMinimizeGame.Size = new System.Drawing.Size(122, 17);
-            this.autoMinimizeGame.TabIndex = 30;
-            this.autoMinimizeGame.Text = "Auto-Minimize Game";
-            this.autoMinimizeGame.UseVisualStyleBackColor = true;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -612,6 +629,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1142, 733);
             this.Name = "MainForm";
+            this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).EndInit();
             this.browserPanel.ResumeLayout(false);
@@ -689,6 +707,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox autoMinimizeGame;
         private System.Windows.Forms.CheckBox autoMinimizeSeeder;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
     }
 }
 
