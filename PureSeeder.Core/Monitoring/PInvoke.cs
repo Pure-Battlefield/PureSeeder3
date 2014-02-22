@@ -29,7 +29,12 @@ namespace PureSeeder.Core.Monitoring
             ExternalDefs.SetForegroundWindow(curhWnd);  // Set the foreground window back
         }
 
-        private static IntPtr FindWindow(string wndName)
+        public static IntPtr GetActiveWindow()
+        {
+            return ExternalDefs.GetActiveWindow();
+        }
+
+        public static IntPtr FindWindow(string wndName)
         {
             return ExternalDefs.FindWindow(null, wndName);
         }
@@ -37,6 +42,15 @@ namespace PureSeeder.Core.Monitoring
         private static int MakeLParam(int LoWord, int HiWord)
         {
             return ((HiWord << 16) | (LoWord & 0xffff));
+        }
+
+        public static int GetWindowState(IntPtr hWnd)
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            placement.Length = Marshal.SizeOf(placement);
+            ExternalDefs.GetWindowPlacement(hWnd, ref placement);
+
+            return (int)placement.ShowCmd;
         }
     }
 
@@ -86,6 +100,12 @@ namespace PureSeeder.Core.Monitoring
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetActiveWindow();
 
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
@@ -351,5 +371,61 @@ namespace PureSeeder.Core.Monitoring
         /// used when minimizing windows from a different thread.
         /// </summary>
         ForceMinimize = 11
+    }
+
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct WINDOWPLACEMENT
+    {
+        /// <summary>
+        /// The length of the structure, in bytes. Before calling the GetWindowPlacement or SetWindowPlacement functions, set this member to sizeof(WINDOWPLACEMENT).
+        /// <para>
+        /// GetWindowPlacement and SetWindowPlacement fail if this member is not set correctly.
+        /// </para>
+        /// </summary>
+        public int Length;
+
+        /// <summary>
+        /// Specifies flags that control the position of the minimized window and the method by which the window is restored.
+        /// </summary>
+        public int Flags;
+
+        /// <summary>
+        /// The current show state of the window.
+        /// 0 - Hidden
+        /// 1 - Normal
+        /// 2 - Minimized
+        /// 3 = Maximized
+        /// </summary>
+        //public ShowWindowCommands ShowCmd;
+        public int ShowCmd;
+
+        /// <summary>
+        /// The coordinates of the window's upper-left corner when the window is minimized.
+        /// </summary>
+        public System.Drawing.Point MinPosition;
+
+        /// <summary>
+        /// The coordinates of the window's upper-left corner when the window is maximized.
+        /// </summary>
+        public System.Drawing.Point MaxPosition;
+
+        /// <summary>
+        /// The window's coordinates when the window is in the restored position.
+        /// </summary>
+        public System.Drawing.Rectangle NormalPosition;
+
+        /// <summary>
+        /// Gets the default (empty) value.
+        /// </summary>
+        public static WINDOWPLACEMENT Default
+        {
+            get
+            {
+                WINDOWPLACEMENT result = new WINDOWPLACEMENT();
+                result.Length = Marshal.SizeOf(result);
+                return result;
+            }
+        }
     }
 }

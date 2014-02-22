@@ -126,7 +126,7 @@ namespace PureSeeder.Core.Context
         private async void SpinUpMinimizer()
         {
             var cts = new CancellationTokenSource();
-            cts.CancelAfter(30 * 1000);
+            cts.CancelAfter(300 * 1000);  // Cancel the background task after 5 minutes.
 
             var minimizerCt = cts.Token;
             await new GameMinimizer().MinimizeGameOnce(minimizerCt, () => Session.CurrentGame);

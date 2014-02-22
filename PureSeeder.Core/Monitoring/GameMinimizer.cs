@@ -22,8 +22,14 @@ namespace PureSeeder.Core.Monitoring
                         {
                             if (currentGame != null)
                             {
-                                PInvoke.MinimizeWindow(currentGame.WindowTitle);
-                                break;
+                                var gameWnd = PInvoke.FindWindow(currentGame.WindowTitle);
+                                var wndState = PInvoke.GetWindowState(gameWnd);
+                                
+                                if (gameWnd.ToInt32() != 0 && (wndState == 1 || wndState == 3))
+                                {
+                                    PInvoke.MinimizeWindow(currentGame.WindowTitle);
+                                    break;
+                                }
                             }
                         }
 
