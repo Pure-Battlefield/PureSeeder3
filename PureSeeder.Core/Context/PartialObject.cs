@@ -84,6 +84,11 @@ namespace PureSeeder.Core.Context
 
             if (expressionStack.Count == 0)
             {
+                if (value is JArray)
+                {
+                    valueItem = ((JArray) value).ToObject<TValue>();
+                    return true;
+                }
                 valueItem = value.Value<TValue>();
                 return true;
             }
@@ -109,10 +114,19 @@ namespace PureSeeder.Core.Context
 
             var valueLambda = propertyExpr.Compile();
 
-            var mergeTargetValue = valueLambda(mergeTarget);
-            var matchingValue = TryGetMatchingValue(propertyExpr, ref mergeTargetValue);
+            var mergeTargetValue = valueLambda(mergeTarget); // Testcode
+            var newValue = default(TValue);
+            var matchingValue = TryGetMatchingValue(propertyExpr, ref newValue);
 
-            var afterMergeValue = valueLambda(mergeTarget);  // Testcode
+            var assignLambda = Expression.Lambda<Action<TEntity, TValue>>(
+               Expression.Assign(propertyExpr.Body, valueParameterExpr),
+               parameterExpr,
+               valueParameterExpr
+               ).Compile();
+
+            assignLambda(mergeTarget, newValue);
+
+            mergeTargetValue = valueLambda(mergeTarget);  // Testcode
             return matchingValue;
         }
     }
