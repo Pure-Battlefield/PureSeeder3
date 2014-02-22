@@ -31,6 +31,8 @@ namespace PureSeeder.Core.Configuration
             public const string IdleKickAvoidanceTimer = "IdleKickAvoidanceTimer";
             public const string Email = "Email";
             public const string Password = "Password";
+            public const string AutoMinimizeSeeder = "AutoMinimizeSeeder";
+            public const string AutoMinimizeGame = "AutoMinimizeGame";
         }
 
         public const int GameHangProtectionTimerInterval = 30; // minutes

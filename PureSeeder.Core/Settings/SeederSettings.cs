@@ -96,5 +96,21 @@ namespace PureSeeder.Core.Settings
             get { return ((int) this[Constants.SettingNames.IdleKickAvoidanceTimer]); }
             set { this[Constants.SettingNames.IdleKickAvoidanceTimer] = (int) value; }
         }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("false")]
+        public bool AutoMinimizeSeeder
+        {
+            get { return ((bool)this[Constants.SettingNames.AutoMinimizeSeeder]); }
+            set { this[Constants.SettingNames.AutoMinimizeSeeder] = (bool)value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("true")]
+        public bool AutoMinimizeGame
+        {
+            get { return ((bool)this[Constants.SettingNames.AutoMinimizeGame]); }
+            set { this[Constants.SettingNames.AutoMinimizeGame] = (bool)value; }
+        }
     }
 }

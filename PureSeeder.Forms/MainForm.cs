@@ -130,6 +130,8 @@ namespace PureSeeder.Forms
             autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false, DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
             refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
+            autoMinimizeSeeder.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeSeeder, false, DataSourceUpdateMode.OnPropertyChanged);
+            autoMinimizeGame.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeGame, false, DataSourceUpdateMode.OnPropertyChanged);
 
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -195,6 +197,8 @@ namespace PureSeeder.Forms
             const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
             RunJavascript(jsCommand);
+
+            AutoMinimizeSeeder();
 
             _context.JoinServer();
         }
@@ -515,6 +519,20 @@ namespace PureSeeder.Forms
                 await Sleep(time);
                 SetStatus("");
             }
+        }
+
+        private async void AutoMinimizeSeeder()
+        {
+            if (!this._context.Settings.AutoMinimizeSeeder)
+                return;
+
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(300 * 1000);  // Cancel the background task after 5 minutes
+
+            var minimizerCt = cts.Token;
+            await
+                new RunAction().RunActionOnGameLoad(minimizerCt, () => this._context.Session.CurrentGame,
+                    () => { this.WindowState = FormWindowState.Minimized; });
         }
 
         #endregion UiManipulation

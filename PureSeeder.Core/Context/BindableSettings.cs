@@ -13,7 +13,9 @@ namespace PureSeeder.Core.Context
         {
             if (settings == null) throw new ArgumentNullException("settings");
             //settings.Reset();
+            //settings.Reload();
             //settings.Upgrade();
+            //settings.Save();
             _settings = settings;
             DirtySettings = false;
             this.PropertyChanged += SettingChanged;
@@ -116,6 +118,20 @@ namespace PureSeeder.Core.Context
         {
             get { return _settings.Email; }
             set { SetProperty(_settings, value, x => x.Email); }
+        }
+
+        [JsonIgnore]
+        public bool AutoMinimizeSeeder
+        {
+            get { return _settings.AutoMinimizeSeeder; }
+            set { SetProperty(_settings, value, x => x.AutoMinimizeSeeder); }
+        }
+
+        [JsonIgnore]
+        public bool AutoMinimizeGame
+        {
+            get { return _settings.AutoMinimizeGame; }
+            set { SetProperty(_settings, value, x => x.AutoMinimizeGame); }
         }
     }
 }

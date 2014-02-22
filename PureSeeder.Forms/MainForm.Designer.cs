@@ -80,6 +80,8 @@
             this.AppSettingsTab = new System.Windows.Forms.TabPage();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
+            this.autoMinimizeGame = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -387,27 +389,27 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.importToolStripMenuItem.Text = "Import";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -534,6 +536,8 @@
             // 
             // AppSettingsTab
             // 
+            this.AppSettingsTab.Controls.Add(this.autoMinimizeGame);
+            this.AppSettingsTab.Controls.Add(this.autoMinimizeSeeder);
             this.AppSettingsTab.Controls.Add(this.label11);
             this.AppSettingsTab.Controls.Add(this.refreshInterval);
             this.AppSettingsTab.Controls.Add(this.minimizeToTray);
@@ -569,6 +573,28 @@
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
+            // 
+            // autoMinimizeSeeder
+            // 
+            this.autoMinimizeSeeder.AutoSize = true;
+            this.autoMinimizeSeeder.Location = new System.Drawing.Point(134, 34);
+            this.autoMinimizeSeeder.Name = "autoMinimizeSeeder";
+            this.autoMinimizeSeeder.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.autoMinimizeSeeder.Size = new System.Drawing.Size(128, 17);
+            this.autoMinimizeSeeder.TabIndex = 29;
+            this.autoMinimizeSeeder.Text = "Auto-Minimize Seeder";
+            this.autoMinimizeSeeder.UseVisualStyleBackColor = true;
+            // 
+            // autoMinimizeGame
+            // 
+            this.autoMinimizeGame.AutoSize = true;
+            this.autoMinimizeGame.Location = new System.Drawing.Point(140, 55);
+            this.autoMinimizeGame.Name = "autoMinimizeGame";
+            this.autoMinimizeGame.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.autoMinimizeGame.Size = new System.Drawing.Size(122, 17);
+            this.autoMinimizeGame.TabIndex = 30;
+            this.autoMinimizeGame.Text = "Auto-Minimize Game";
+            this.autoMinimizeGame.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -661,6 +687,8 @@
         private System.Windows.Forms.TabPage AppSettingsTab;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox autoMinimizeGame;
+        private System.Windows.Forms.CheckBox autoMinimizeSeeder;
     }
 }
 

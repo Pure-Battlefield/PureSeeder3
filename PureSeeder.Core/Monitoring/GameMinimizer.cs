@@ -20,22 +20,39 @@ namespace PureSeeder.Core.Monitoring
 
                         if (process != null)
                         {
-                            if (currentGame != null)
-                            {
                                 var gameWnd = PInvoke.FindWindow(currentGame.WindowTitle);
                                 var wndState = PInvoke.GetWindowState(gameWnd);
-                                
-                                if (gameWnd.ToInt32() != 0 && (wndState == 1 || wndState == 3))
-                                {
-                                    PInvoke.MinimizeWindow(currentGame.WindowTitle);
-                                    break;
-                                }
+
+                            if (gameWnd.ToInt32() != 0 && (wndState == 1 || wndState == 3))
+                            {
+                                PInvoke.MinimizeWindow(currentGame.WindowTitle);
+                                break;
                             }
                         }
 
                         Thread.Sleep(1000); // Sleep for a second
                     }
                 });
+        }
+    }
+
+    class RunAction
+    {
+        public Task RunActionOnGameLoad(CancellationToken token, Func<GameInfo> getCurrentGame, Action action)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var currentGame = getCurrentGame.Invoke();
+                while (!token.IsCancellationRequested)
+                {
+                    var process = Process.GetProcessesByName(currentGame.ProcessName).FirstOrDefault();
+
+                    if (process == null) continue;
+                    
+                    action.Invoke();
+                    break;
+                }
+            });
         }
     }
 }
