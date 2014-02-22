@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,7 +22,6 @@ namespace PureSeeder.Core.Context
             _expressionStackBuilder = expressionStackBuilder;
 
             CreatePartialInfo(json);
-            CreateEntity(json);
         }
 
         public static PartialObject<TEntity> Create(string json)
@@ -34,13 +34,7 @@ namespace PureSeeder.Core.Context
             PartialInfo = JObject.Parse(json);
         }
 
-        private void CreateEntity(string json)
-        {
-            Entity = JsonConvert.DeserializeObject<TEntity>(json, new JsonSerializerSettings() {ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor});
-        }
-
         public JObject PartialInfo { get; private set; }
-        public TEntity Entity { get; private set; }
 
         public bool Exists<TValue>(Expression<Func<TEntity, TValue>> expression)
         {
@@ -69,30 +63,57 @@ namespace PureSeeder.Core.Context
             return Exists(expressionStack, newJObject);
         }
 
-        public void MergeValue<TValue>(Expression<Func<TEntity, TValue>> propertyExpr, TEntity mergeTarget)
+        public bool TryGetMatchingValue<TValue>(Expression<Func<TEntity, TValue>> expression, ref TValue valueItem)
         {
-            if (!Exists(propertyExpr))  // Check if the property was passed in
-                return;
+            var expressionStack = _expressionStackBuilder.BuildStack(expression);
+
+            if (expressionStack.Count == 0)
+            {
+                return false;
+            }
+
+            return GetMatchingValue(expressionStack, PartialInfo, ref valueItem);
+        }
+
+        private static bool GetMatchingValue<TValue>(Stack<string> expressionStack, JObject jObject, ref TValue valueItem)
+        {
+            var value = jObject.GetValue(expressionStack.Pop(), StringComparison.InvariantCultureIgnoreCase);
+
+            if (value == null)
+                return false;
+
+            if (expressionStack.Count == 0)
+            {
+                valueItem = value.Value<TValue>();
+                return true;
+            }
+
+            var newJObject = value as JObject;
+            if (newJObject == null)
+                throw new ArgumentException();
+//                return false; // Should probably throw an exception here but too lazy to handle it
+
+            return GetMatchingValue(expressionStack, newJObject, ref valueItem);
+        }
+
+        public bool MergeItem<TValue>(Expression<Func<TEntity, TValue>> propertyExpr, TEntity mergeTarget)
+        {
+            if (!Exists(propertyExpr))
+                return false;
 
             var memberExpr = propertyExpr.Body as MemberExpression;
             if (memberExpr == null)
-                return;
+                return false;
             var parameterExpr = memberExpr.Expression as ParameterExpression;
-            var valueParameterExpr = Expression.Parameter(typeof (TValue));
+            var valueParameterExpr = Expression.Parameter(typeof(TValue));
 
             var valueLambda = propertyExpr.Compile();
 
-            var inputValue = valueLambda(Entity);
-            var mergeTargetValue = valueLambda(mergeTarget);  // Testcode
+            var mergeTargetValue = valueLambda(mergeTarget);
+            var matchingValue = TryGetMatchingValue(propertyExpr, ref mergeTargetValue);
 
-            var assignLambda = Expression.Lambda<Action<TEntity, TValue>>(
-               Expression.Assign(propertyExpr.Body, valueParameterExpr),
-               parameterExpr,
-               valueParameterExpr
-               ).Compile();
-
-            assignLambda(mergeTarget, inputValue);
-            mergeTargetValue = valueLambda(mergeTarget); // Testcode
+            var afterMergeValue = valueLambda(mergeTarget);  // Testcode
+            return matchingValue;
         }
     }
 }
