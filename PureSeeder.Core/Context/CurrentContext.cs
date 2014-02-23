@@ -55,18 +55,22 @@ namespace PureSeeder.Core.Context
 
             // Todo: This probably isn't the best way of doing this
             //  - should probably have some method of denoting if a setting is importable, then it should run
-            //    newSettings.MergeValue() on each setting that is importable
-//            newSettings.MergeValue((BindableSettings x) => x.Servers, _bindableSettings);
+
             newSettings.MergeItem((BindableSettings x) => x.RefreshInterval, _bindableSettings);
-            newSettings.MergeItem((BindableSettings x) => x.Servers, _bindableSettings);
-//            if (newSettings.Exists((BindableSettings x) => x.Servers))
-//            {
-//                _bindableSettings.Servers.Clear();
-//                foreach (var server in newSettings.Entity.Servers)
-//                {
-//                    _bindableSettings.Servers.Add(server);
-//                }
-//            }
+
+            // Note: This is a little hacky but I'm not sure how to trigger a refresh on the binding when replacing the entire list
+            var servers = new Servers();
+            newSettings.MergeItem(x => x.Servers, ref servers);
+
+            if (servers.Any())
+            {
+                _bindableSettings.Servers.Clear();
+                _bindableSettings.CurrentServer = 0;
+                foreach (var server in servers)
+                {
+                    _bindableSettings.Servers.Add(server);
+                }
+            }
         }
 
         public void UpdateStatus(string pageData)

@@ -96,7 +96,6 @@ namespace PureSeeder.Core.Context
             var newJObject = value as JObject;
             if (newJObject == null)
                 throw new ArgumentException();
-//                return false; // Should probably throw an exception here but too lazy to handle it
 
             return GetMatchingValue(expressionStack, newJObject, ref valueItem);
         }
@@ -127,6 +126,27 @@ namespace PureSeeder.Core.Context
             assignLambda(mergeTarget, newValue);
 
             mergeTargetValue = valueLambda(mergeTarget);  // Testcode
+            return matchingValue;
+        }
+
+        public bool MergeItem<TValue>(Expression<Func<TEntity, TValue>> propertyExpr, ref TValue mergeTarget)
+        {
+            if (!Exists(propertyExpr))
+                return false;
+
+            var memberExpr = propertyExpr.Body as MemberExpression;
+            if (memberExpr == null)
+                return false;
+            var parameterExpr = memberExpr.Expression as ParameterExpression;
+            var valueParameterExpr = Expression.Parameter(typeof(TValue));
+
+            var valueLambda = propertyExpr.Compile();
+
+            var newValue = default(TValue);
+            var matchingValue = TryGetMatchingValue(propertyExpr, ref newValue);
+
+            mergeTarget = newValue;
+
             return matchingValue;
         }
     }

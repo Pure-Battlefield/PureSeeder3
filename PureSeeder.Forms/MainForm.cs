@@ -113,7 +113,9 @@ namespace PureSeeder.Forms
 
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
-            serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer/*, false, DataSourceUpdateMode.OnPropertyChanged*/);
+            
+            // Controlling this manually
+            //serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer, false, DataSourceUpdateMode.OnPropertyChanged);
 
             SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
             SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -422,6 +424,7 @@ namespace PureSeeder.Forms
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            _context.Settings.CurrentServer = serverSelector.SelectedIndex;
             AnyRefresh();
         }
 
@@ -569,7 +572,5 @@ namespace PureSeeder.Forms
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds * 1000));
         }
-
-
     }
 }
