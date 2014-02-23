@@ -54,7 +54,7 @@ namespace PureSeeder.Core.Context
             var newSettings = PartialObject<BindableSettings>.Create(jsonText);
 
             // Todo: This probably isn't the best way of doing this
-            //  - should probably have some method of denoting if a setting is importable, then it should run
+            //  - should probably have some method of denoting if a setting is importable, then it should run automatically
 
             newSettings.MergeItem((BindableSettings x) => x.RefreshInterval, _bindableSettings);
 

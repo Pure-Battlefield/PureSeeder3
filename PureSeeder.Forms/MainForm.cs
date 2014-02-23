@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,8 +8,8 @@ using Gecko;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Monitoring;
-using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
+using PureSeeder.Forms.Properties;
 using Timer = System.Windows.Forms.Timer;
 
 namespace PureSeeder.Forms
@@ -22,13 +17,13 @@ namespace PureSeeder.Forms
     public partial class MainForm : Form
     {
         private readonly IDataContext _context;
-        private readonly Timer _refreshTimer;
-        private readonly ProcessMonitor _processMonitor;
         private readonly IdleKickAvoider _idleKickAvoider;
+        private readonly ProcessMonitor _processMonitor;
+        private readonly Timer _refreshTimer;
 
         // CancellationTokens
-        private CancellationToken _processMonitorCt;
         private CancellationToken _avoidIdleKickCt;
+        private CancellationToken _processMonitorCt;
 
         private MainForm()
         {
@@ -40,19 +35,21 @@ namespace PureSeeder.Forms
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
 
-            _context.Session.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
-            _context.Settings.PropertyChanged += new PropertyChangedEventHandler(ContextPropertyChanged);
+            _context.Session.PropertyChanged += ContextPropertyChanged;
+            _context.Settings.PropertyChanged += ContextPropertyChanged;
 
             _refreshTimer = new Timer();
 
             // Todo: This should be injected
-            _processMonitor = new ProcessMonitor(new ICrashDetector[] {new CrashDetector(new CrashHandler()), new DetectCrashByFaultWindow() });
+            _processMonitor =
+                new ProcessMonitor(new ICrashDetector[]
+                {new CrashDetector(new CrashHandler()), new DetectCrashByFaultWindow()});
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
             _idleKickAvoider = new IdleKickAvoider();
         }
 
         #region Initialization
-        
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -73,11 +70,11 @@ namespace PureSeeder.Forms
 
         private void UiSetup()
         {
-            this.Icon = PureSeeder.Forms.Properties.Resources.PB;
-            notifyIcon1.Icon = Properties.Resources.PBOff;
+            Icon = Resources.PB;
+            notifyIcon1.Icon = Resources.PBOff;
             notifyIcon1.Text = Constants.ApplicationName;
-            this.Text = Constants.ApplicationName;
-            this.closeToolStripMenuItem.Text = String.Format("Close {0}", Constants.ApplicationName);
+            Text = Constants.ApplicationName;
+            closeToolStripMenuItem.Text = String.Format("Close {0}", Constants.ApplicationName);
         }
 
         private async void SpinUpProcessMonitor()
@@ -89,7 +86,9 @@ namespace PureSeeder.Forms
         private async void SpinUpAvoidIdleKick()
         {
             _avoidIdleKickCt = new CancellationTokenSource().Token;
-            await _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer, () => _context.Session.CurrentGame);
+            await
+                _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer,
+                    () => _context.Session.CurrentGame);
         }
 
         private void SetRefreshTimer()
@@ -109,16 +108,18 @@ namespace PureSeeder.Forms
 
         private void CreateBindings()
         {
-            var serversBindingSource = new BindingSource { DataSource = _context.Settings.Servers, };
+            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers,};
 
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
-            
+
             // Controlling this manually
             //serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer, false, DataSourceUpdateMode.OnPropertyChanged);
 
-            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
-            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true, DataSourceUpdateMode.OnPropertyChanged);
+            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true,
+                DataSourceUpdateMode.OnPropertyChanged);
 
             username.DataBindings.Add("Text", _context.Settings, x => x.Username);
             password.DataBindings.Add("Text", _context.Settings, x => x.Password);
@@ -128,35 +129,40 @@ namespace PureSeeder.Forms
             maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
             currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
-            logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false, DataSourceUpdateMode.OnPropertyChanged);
-            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false, DataSourceUpdateMode.OnPropertyChanged);
-            autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false, DataSourceUpdateMode.OnPropertyChanged);
+            logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false,
+                DataSourceUpdateMode.OnPropertyChanged);
+            minimizeToTray.DataBindings.Add("Checked", _context.Settings, x => x.MinimizeToTray, false,
+                DataSourceUpdateMode.OnPropertyChanged);
+            autoLogin.DataBindings.Add("Checked", _context.Settings, x => x.AutoLogin, false,
+                DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
             refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
-            autoMinimizeSeeder.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeSeeder, false, DataSourceUpdateMode.OnPropertyChanged);
-            autoMinimizeGame.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeGame, false, DataSourceUpdateMode.OnPropertyChanged);
+            autoMinimizeSeeder.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeSeeder, false,
+                DataSourceUpdateMode.OnPropertyChanged);
+            autoMinimizeGame.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeGame, false,
+                DataSourceUpdateMode.OnPropertyChanged);
 
-            saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true, DataSourceUpdateMode.OnPropertyChanged);
+            saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true,
+                DataSourceUpdateMode.OnPropertyChanged);
         }
-
 
         #endregion Intialization
 
         #region EventHandlers
 
-        void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
+        private void HandleProcessStatusChange(object sender, ProcessStateChangeEventArgs e)
         {
             _context.Session.BfIsRunning = e.IsRunning;
 
             if (_context.Session.BfIsRunning)
-                notifyIcon1.Icon = Properties.Resources.PBOn;
+                notifyIcon1.Icon = Resources.PBOn;
             if (!_context.Session.BfIsRunning)
-                notifyIcon1.Icon = Properties.Resources.PBOff;
+                notifyIcon1.Icon = Resources.PBOff;
         }
 
         private void TimedRefresh(object sender, EventArgs e)
         {
-           AnyRefresh();
+            AnyRefresh();
         }
 
         private void AnyRefresh()
@@ -185,7 +191,7 @@ namespace PureSeeder.Forms
             _refreshTimer.Start();
         }
 
-        void BrowserChanged(object sender, EventArgs e)
+        private void BrowserChanged(object sender, EventArgs e)
         {
             UpdateContext();
         }
@@ -197,7 +203,8 @@ namespace PureSeeder.Forms
         private void JoinServer()
         {
             // Todo: This should be moved into configuration so it can more easily be changed
-            const string jsCommand = "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
+            const string jsCommand =
+                "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
             RunJavascript(jsCommand);
 
@@ -216,35 +223,36 @@ namespace PureSeeder.Forms
             if (cb.Items.Count == 0)
                 return Constants.DefaultUrl;
 
-            var address = _context.CurrentServer.Address; 
+            string address = _context.CurrentServer.Address;
 
             return address;
         }
 
         private async void LoadPage()
         {
-            var selectedUrl = GetAddress(serverSelector);
+            string selectedUrl = GetAddress(serverSelector);
             if (selectedUrl == String.Empty)
                 selectedUrl = Constants.DefaultUrl;
+
+            SetStatus(String.Format("Loading: {0}", selectedUrl), 3);
 
             await Navigate(selectedUrl);
         }
 
         private Task Navigate(string url)
         {
-            return Task.Factory.StartNew(() => this.BeginInvoke(new Action(() => geckoWebBrowser1.Navigate(url))));
+            return Task.Factory.StartNew(() => BeginInvoke(new Action(() => geckoWebBrowser1.Navigate(url))));
         }
 
-        void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateInterface();
         }
 
-        
 
         private void UpdateContext()
         {
-            var source = string.Empty;
+            string source = string.Empty;
 
             string pageSource = string.Empty;
 
@@ -261,8 +269,8 @@ namespace PureSeeder.Forms
             if (!ShouldSeed())
                 return;
 
-            var result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
-                                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+            DialogResult result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
 
             if (result == DialogResult.Cancel)
                 return;
@@ -282,13 +290,13 @@ namespace PureSeeder.Forms
 
             if (_context.GetUserStatus() == UserStatus.Correct)
                 return;
-                
+
 
             if (_context.GetUserStatus() == UserStatus.Incorrect)
             {
                 return;
             }
-            
+
             Login();
         }
 
@@ -297,13 +305,15 @@ namespace PureSeeder.Forms
             SetStatus("Attempting login.");
 
             // Todo: This should be moved into configuration so it can more easily be changed
-            string jsCommand = String.Format("$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();", email.Text, password.Text);
+            string jsCommand =
+                String.Format(
+                    "$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();",
+                    email.Text, password.Text);
 
             RunJavascript(jsCommand);
 
             await Sleep(1);
             SetStatus("");
-
         }
 
         private void RunJavascript(string javascript)
@@ -322,28 +332,28 @@ namespace PureSeeder.Forms
         private Task CheckLogout(Action successfulLogout, Action failedLogout)
         {
             return Task.Factory.StartNew(() =>
+            {
+                const int logoutCheckCount = 10;
+                for (int i = 0; i < logoutCheckCount; i++)
                 {
-                    const int logoutCheckCount = 10;
-                    for (var i = 0; i < logoutCheckCount; i++)
+                    if (_context.GetUserStatus() == UserStatus.None)
                     {
-                        if (_context.GetUserStatus() == UserStatus.None)
-                        {
-                            if (successfulLogout != null)
-                                successfulLogout.Invoke();
+                        if (successfulLogout != null)
+                            successfulLogout.Invoke();
 
-                            return;
-                        }
-
-                        Thread.Sleep(1000);
+                        return;
                     }
-                    if (failedLogout != null)
-                        failedLogout.Invoke();
-                });
+
+                    Thread.Sleep(1000);
+                }
+                if (failedLogout != null)
+                    failedLogout.Invoke();
+            });
         }
 
         private bool ShouldSeed()
         {
-            var shouldSeed = _context.ShouldSeed();
+            ResultReason<ShouldNotSeedReason> shouldSeed = _context.ShouldSeed();
 
             if (!shouldSeed.Result)
             {
@@ -389,12 +399,12 @@ namespace PureSeeder.Forms
 
         private void AttemptKick()
         {
-            var shouldKick = _context.ShouldKick();
+            ResultReason<KickReason> shouldKick = _context.ShouldKick();
             if (shouldKick.Result)
             {
                 if (shouldKick.Reason == KickReason.AboveSeedingRange)
                 {
-                    var result =
+                    DialogResult result =
                         MessageBoxEx.Show(
                             "Player count above max threshold. If game is running it will be stopped in 5 seconds.",
                             "Max Player Threshold Exceeded", MessageBoxButtons.OKCancel,
@@ -450,20 +460,20 @@ namespace PureSeeder.Forms
 
         private void showWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+            Show();
+            WindowState = FormWindowState.Normal;
         }
 
         private void minimizeWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if (FormWindowState.Minimized == this.WindowState && _context.Settings.MinimizeToTray)
+            if (FormWindowState.Minimized == WindowState && _context.Settings.MinimizeToTray)
             {
-                this.Hide();
+                Hide();
             }
         }
 
@@ -474,7 +484,7 @@ namespace PureSeeder.Forms
 
         private void saveSettingsDialog_FileOk(object sender, CancelEventArgs e)
         {
-            var fileName = saveSettingsDialog.FileName;
+            string fileName = saveSettingsDialog.FileName;
             _context.ExportSettings(fileName);
         }
 
@@ -485,14 +495,14 @@ namespace PureSeeder.Forms
 
         private void importSettingsDialog_FileOk(object sender, CancelEventArgs e)
         {
-            var fileName = importSettingsDialog.FileName;
+            string fileName = importSettingsDialog.FileName;
             _context.ImportSettings(fileName);
             AnyRefresh();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -502,29 +512,30 @@ namespace PureSeeder.Forms
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
+            if (WindowState == FormWindowState.Minimized)
             {
-                this.Show();
-                this.WindowState = FormWindowState.Normal;
+                Show();
+                WindowState = FormWindowState.Normal;
             }
             else
             {
-                this.Hide();
-                this.WindowState = FormWindowState.Minimized;
+                Hide();
+                WindowState = FormWindowState.Minimized;
             }
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
         {
-            if (this.Visible == false)
+            if (Visible == false)
             {
-                notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running", "Right click or double click to restore the window", ToolTipIcon.Info);
+                notifyIcon1.ShowBalloonTip(500, "Pure Seeder 3 Still Running",
+                    "Right click or double click to restore the window", ToolTipIcon.Info);
             }
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         #endregion UiEvents
@@ -553,24 +564,23 @@ namespace PureSeeder.Forms
 
         private async void AutoMinimizeSeeder()
         {
-            if (!this._context.Settings.AutoMinimizeSeeder)
+            if (!_context.Settings.AutoMinimizeSeeder)
                 return;
 
             var cts = new CancellationTokenSource();
-            cts.CancelAfter(300 * 1000);  // Cancel the background task after 5 minutes
+            cts.CancelAfter(300*1000); // Cancel the background task after 5 minutes
 
-            var minimizerCt = cts.Token;
+            CancellationToken minimizerCt = cts.Token;
             await
-                new RunAction().RunActionOnGameLoad(minimizerCt, () => this._context.Session.CurrentGame,
-                    () => { this.WindowState = FormWindowState.Minimized; });
+                new RunAction().RunActionOnGameLoad(minimizerCt, () => _context.Session.CurrentGame,
+                    () => { WindowState = FormWindowState.Minimized; });
         }
 
         #endregion UiManipulation
 
-
         private Task Sleep(int seconds)
         {
-            return Task.Factory.StartNew(() => Thread.Sleep(seconds * 1000));
+            return Task.Factory.StartNew(() => Thread.Sleep(seconds*1000));
         }
     }
 }
