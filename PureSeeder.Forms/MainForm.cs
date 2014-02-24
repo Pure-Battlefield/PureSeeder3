@@ -538,6 +538,20 @@ namespace PureSeeder.Forms
             Close();
         }
 
+        private void editServers_Click(object sender, EventArgs e)
+        {
+            _refreshTimer.Stop(); // Stop the refresh timer
+
+            var serverEditor = new ServerEditor(_context);
+            var dlgResult = serverEditor.ShowDialog();
+
+            if (dlgResult == DialogResult.OK)
+                _context.Settings.SaveSettings();
+
+            _refreshTimer.Start(); // Start the refresh timer back up
+        }
+
+
         #endregion UiEvents
 
         #region UiManipulation
@@ -582,5 +596,6 @@ namespace PureSeeder.Forms
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds*1000));
         }
+
     }
 }

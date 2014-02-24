@@ -84,6 +84,7 @@
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.editServers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -503,6 +504,7 @@
             // 
             // ServerSettingsTab
             // 
+            this.ServerSettingsTab.Controls.Add(this.editServers);
             this.ServerSettingsTab.Controls.Add(this.serverSelector);
             this.ServerSettingsTab.Controls.Add(this.label6);
             this.ServerSettingsTab.Controls.Add(this.SeedingMinPlayers);
@@ -613,6 +615,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
             // 
+            // editServers
+            // 
+            this.editServers.Location = new System.Drawing.Point(301, 86);
+            this.editServers.Name = "editServers";
+            this.editServers.Size = new System.Drawing.Size(75, 23);
+            this.editServers.TabIndex = 24;
+            this.editServers.Text = "Edit Servers";
+            this.editServers.UseVisualStyleBackColor = true;
+            this.editServers.Click += new System.EventHandler(this.editServers_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -709,6 +721,7 @@
         private System.Windows.Forms.CheckBox autoMinimizeSeeder;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.Button editServers;
     }
 }
 
