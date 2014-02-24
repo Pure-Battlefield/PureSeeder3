@@ -9,7 +9,6 @@ namespace PureSeeder.Core.Settings
         private string _address;
         private int _minPlayers;
         private int _maxPlayers;
-//        private bool _seedingEnabled;
 
         [Description("Name for the server")]
         public string Name
@@ -40,11 +39,5 @@ namespace PureSeeder.Core.Settings
             get { return this._maxPlayers; }
             set { SetField(ref _maxPlayers, value); }
         }
-
-//        public bool SeedingEnabled
-//        {
-//            get { return this._seedingEnabled; }
-//            set { SetField(ref _seedingEnabled, value); }
-//        }
     }
 }
