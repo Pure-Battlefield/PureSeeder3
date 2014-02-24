@@ -66,6 +66,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewReleaseNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsDialog = new System.Windows.Forms.SaveFileDialog();
             this.importSettingsDialog = new System.Windows.Forms.OpenFileDialog();
@@ -76,6 +77,7 @@
             this.loginButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.ServerSettingsTab = new System.Windows.Forms.TabPage();
+            this.editServers = new System.Windows.Forms.Button();
             this.UserSettingsTab = new System.Windows.Forms.TabPage();
             this.label10 = new System.Windows.Forms.Label();
             this.email = new System.Windows.Forms.TextBox();
@@ -84,7 +86,6 @@
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.editServers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -396,6 +397,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
+            this.viewReleaseNotesToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -407,7 +409,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -424,10 +426,17 @@
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
+            // viewReleaseNotesToolStripMenuItem
+            // 
+            this.viewReleaseNotesToolStripMenuItem.Name = "viewReleaseNotesToolStripMenuItem";
+            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewReleaseNotesToolStripMenuItem.Text = "About";
+            this.viewReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.viewReleaseNotesToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -518,6 +527,16 @@
             this.ServerSettingsTab.TabIndex = 0;
             this.ServerSettingsTab.Text = "Server";
             this.ServerSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // editServers
+            // 
+            this.editServers.Location = new System.Drawing.Point(301, 86);
+            this.editServers.Name = "editServers";
+            this.editServers.Size = new System.Drawing.Size(75, 23);
+            this.editServers.TabIndex = 24;
+            this.editServers.Text = "Edit Servers";
+            this.editServers.UseVisualStyleBackColor = true;
+            this.editServers.Click += new System.EventHandler(this.editServers_Click);
             // 
             // UserSettingsTab
             // 
@@ -614,16 +633,6 @@
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
-            // 
-            // editServers
-            // 
-            this.editServers.Location = new System.Drawing.Point(301, 86);
-            this.editServers.Name = "editServers";
-            this.editServers.Size = new System.Drawing.Size(75, 23);
-            this.editServers.TabIndex = 24;
-            this.editServers.Text = "Edit Servers";
-            this.editServers.UseVisualStyleBackColor = true;
-            this.editServers.Click += new System.EventHandler(this.editServers_Click);
             // 
             // MainForm
             // 
@@ -722,6 +731,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.Button editServers;
+        private System.Windows.Forms.ToolStripMenuItem viewReleaseNotesToolStripMenuItem;
     }
 }
 

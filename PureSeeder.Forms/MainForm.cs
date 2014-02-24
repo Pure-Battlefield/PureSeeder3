@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Deployment.Application;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,6 +62,8 @@ namespace PureSeeder.Forms
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
+            FirstRunCheck();
+
             SetRefreshTimer();
 
             // Spin up background processes
@@ -89,6 +92,17 @@ namespace PureSeeder.Forms
             await
                 _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer,
                     () => _context.Session.CurrentGame);
+        }
+
+        private void FirstRunCheck()
+        {
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                if (ApplicationDeployment.CurrentDeployment.IsFirstRun)
+                {
+                    ShowReleaseNotes();
+                }
+            }
         }
 
         private void SetRefreshTimer()
@@ -551,6 +565,10 @@ namespace PureSeeder.Forms
             _refreshTimer.Start(); // Start the refresh timer back up
         }
 
+        private void viewReleaseNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutDialog().ShowDialog();
+        }
 
         #endregion UiEvents
 
@@ -590,12 +608,19 @@ namespace PureSeeder.Forms
                     () => { WindowState = FormWindowState.Minimized; });
         }
 
+        private static void ShowReleaseNotes()
+        {
+            new ReleaseNotes().ShowDialog();
+        }
+
         #endregion UiManipulation
 
         private Task Sleep(int seconds)
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds*1000));
         }
+
+        
 
     }
 }
