@@ -1,1 +1,1 @@
-exclude:   ['__defaultSettings.psjson.deploy']
+include:   ['__defaultSettings.psjson.deploy']
