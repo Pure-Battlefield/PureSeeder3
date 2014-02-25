@@ -27,9 +27,9 @@
             var decodedData = CryptoJS.enc.Utf8.stringify(words);
             console.log(decodedData);*/
             var encodedText = response.data.content;
-            console.log(encodedText);
+            //console.log(encodedText);
             var decodedText = decode64(encodedText);
-            console.log(decodedText);
+            //console.log(decodedText);
 
             var convert = new Markdown.getSanitizingConverter().makeHtml;
             var convertedText = convert(decodedText);
