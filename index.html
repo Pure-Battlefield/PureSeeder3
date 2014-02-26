@@ -9,23 +9,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/respond.js"></script>
     <script src="javascripts/base64.js"></script>
-    <script src="javascripts/Markdown.Converter.js"></script>
-    <script src="javascripts/Markdown.Sanitizer.js"></script>
+    <script src="javascripts/marked.js"></script>
     <!--<script src="https://api.github.com/repos/bradrhodes/PureSeeder3/readme?callback=rmRender"></script>-->
     <script type="text/javascript">
       $.ajax({
-          url: 'https://api.github.com/repos/pure-battlefield/PureSeeder3/readme?callback=rmRender',
-          headers: {
-            Accept: "application/vnd.github.v3.raw"
-          },
+          url: 'https://api.github.com/repos/pure-battlefield/PureSeeder3/readme?callback=rmRender',          
           dataType: 'jsonp',
           success: function(response)
           {
             var encodedText = response.data.content;
-            var decodedText = decode64(encodedText);
-
-            var convert = new Markdown.getSanitizingConverter().makeHtml;
-            var convertedText = convert(decodedText);
+            var markdownText = Base64.decode(encodedText);            
+            var convertedText = marked(markdownText);
 
             $("#readmeContent").html(convertedText);
           }
