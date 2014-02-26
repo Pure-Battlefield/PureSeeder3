@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xrml="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <assemblyIdentity name="PureSeeder.Forms.application" version="1.0.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <assemblyIdentity name="PureSeeder.Forms.application" version="1.2.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <description asmv2:publisher="PURE Battlefield" asmv2:product="PURE Seeder 3" xmlns="urn:schemas-microsoft-com:asm.v1" />
-  <deployment install="true" mapFileExtensions="true">
+  <deployment install="true" mapFileExtensions="true" minimumRequiredVersion="1.2.0.0">
     <subscription>
       <update>
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://bradrhodes.github.io/PureSeeder3/PureSeeder.Forms.application" />
+    <deploymentProvider codebase="http://pure-battlefield.github.io/PureSeeder3/PureSeeder.Forms.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Application Files\PureSeeder.Forms_1_0_0_0\PureSeeder.Forms.exe.manifest" size="18038">
-      <assemblyIdentity name="PureSeeder.Forms.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
+    <dependentAssembly dependencyType="install" codebase="Application Files\PureSeeder.Forms_1_2_0_0\PureSeeder.Forms.exe.manifest" size="18038">
+      <assemblyIdentity name="PureSeeder.Forms.exe" version="1.2.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vfwTrhrJ8sazwog7S5dnA8A6m5TvDYDgT9XbMj/+yoY=</dsig:DigestValue>
+        <dsig:DigestValue>DqfKyfqVE4YhZk9TiqMXTcqvfR88yh/0avgsOdjfRSw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
