@@ -21,7 +21,7 @@ namespace PureSeeder.Forms
         private void ReleaseNotes_Load(object sender, EventArgs e)
         {
             Icon = Resources.PB;
-            webBrowser1.Url = new Uri("http://bradrhodes.github.io/PureSeeder3/");
+            webBrowser1.Url = new Uri("http://pure-battlefield.github.io/PureSeeder3/");
         }
     }
 }
