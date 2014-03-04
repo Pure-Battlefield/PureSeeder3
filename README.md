@@ -1,6 +1,6 @@
 ## PureSeeder 3
 
-Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica]("https://github.com/gsarrica") 
+Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica](https://github.com/gsarrica) 
 
 
 ### Main Features
