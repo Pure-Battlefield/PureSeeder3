@@ -1,6 +1,6 @@
 ## PureSeeder 3
 
-Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich.
+Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica]("https://github.com/gsarrica") 
 
 
 ### Main Features
@@ -13,9 +13,13 @@ Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https:/
 - Idle kick avoidance while keeping Battlefield 4 in the background silently
 - Ability to auto-minimize both the app and the game when seeding starts
 - Easily import updated server settings files (json-based settings files that are easily readable)
+- Automatic server switching if multiple servers available.
 
 
 ### Changlog
+
+v <add version here>
+- Automatic Server Switching
 
 v 1.2.2.0
 - Transferred ownership of the PureSeeder3 project to PURE Battlefield
