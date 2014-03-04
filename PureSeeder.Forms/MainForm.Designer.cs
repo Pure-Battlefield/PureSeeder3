@@ -101,6 +101,7 @@
             // serverSelector
             // 
             this.serverSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.serverSelector.Enabled = false;
             this.serverSelector.FormattingEnabled = true;
             this.serverSelector.Location = new System.Drawing.Point(6, 6);
             this.serverSelector.Name = "serverSelector";
@@ -409,7 +410,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -429,14 +430,14 @@
             // viewReleaseNotesToolStripMenuItem
             // 
             this.viewReleaseNotesToolStripMenuItem.Name = "viewReleaseNotesToolStripMenuItem";
-            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.viewReleaseNotesToolStripMenuItem.Text = "About";
             this.viewReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.viewReleaseNotesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -629,7 +630,7 @@
             this.groupBox1.Controls.Add(this.curPlayers);
             this.groupBox1.Location = new System.Drawing.Point(15, 29);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 110);
+            this.groupBox1.Size = new System.Drawing.Size(278, 110);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";

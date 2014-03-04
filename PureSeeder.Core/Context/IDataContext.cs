@@ -26,6 +26,12 @@ namespace PureSeeder.Core.Context
         /// </summary>
         /// <param name="filename"></param>
         void ImportSettings(string filename);
+
+        /// <summary>
+        /// Imports settings from a json file
+        /// </summary>
+        /// <param name="filename"></param>
+        void ImportSeederAccounts(string filename);
        
         
         /// <summary>

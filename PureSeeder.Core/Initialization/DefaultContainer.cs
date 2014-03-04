@@ -37,6 +37,8 @@ namespace PureSeeder.Core.Initialization
                 return new List<IDataContextUpdater>
                     {
                         new Bf4PlayerCountsUpdater(),
+                        new ExpansionEnabledUpdater(),
+                        new OnlineSeedersUpdater(),
                         new CurrentBf4UserUpdater(),
                     }.ToArray();
 

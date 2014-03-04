@@ -31,12 +31,27 @@ namespace PureSeeder.Forms
             LoadSettingsAtStartup(context);
             LoadDefaultServers(context);
 
+            LoadSeedingAccountsAtStartup(context);
+            LoadSeedingAccounts(context);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Application.Run(Bootstrapper.GetMainForm(context));
 
             GC.KeepAlive(mutex);
+        }
+
+        static void LoadSeedingAccountsAtStartup(IDataContext context)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Count() < 2)
+                return;
+
+            if (String.IsNullOrEmpty(args[1]))
+                return;
+
+            context.ImportSeederAccounts(args.First());
         }
 
         static void LoadSettingsAtStartup(IDataContext context)
@@ -56,6 +71,14 @@ namespace PureSeeder.Forms
             if (!context.Settings.Servers.Any())
             {
                 context.ImportSettings("DefaultSettings/__defaultSettings.psjson");
+            }
+        }
+        
+        static void LoadSeedingAccounts(IDataContext context)
+        {
+            if (!context.Settings.SeederAccounts.Any())
+            {
+                context.ImportSeederAccounts("DefaultSettings/__seederAccounts.psjson");
             }
         }
 

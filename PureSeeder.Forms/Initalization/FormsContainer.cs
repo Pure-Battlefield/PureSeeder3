@@ -51,6 +51,8 @@ namespace PureSeeder.Forms.Initalization
                         new List<IDataContextUpdater>
                             {
                                 new Bf4PlayerCountsUpdater(),
+                                new ExpansionEnabledUpdater(),
+                                new OnlineSeedersUpdater(),
                                 new CurrentBf4UserUpdater(),
                             }.ToArray()));
 
@@ -74,6 +76,8 @@ namespace PureSeeder.Forms.Initalization
                     new List<IDataContextUpdater>
                         {
                             new Bf4PlayerCountsUpdater(),
+                            new ExpansionEnabledUpdater(),
+                            new OnlineSeedersUpdater(),
                             new CurrentBf4UserUpdater(),
                         }.ToArray());
         }
