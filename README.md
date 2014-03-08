@@ -18,7 +18,7 @@ Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https:/
 
 ### Changlog
 
-v <add version here>
+v 1.3.0.0
 - Automatic Server Switching
 
 v 1.2.2.0
