@@ -1,1 +1,1 @@
-include:   ['__defaultSettings.psjson.deploy', '__seederAccounts.psjson']
+include:   ['__defaultSettings.psjson.deploy', '__seederAccounts.psjson.deploy']
