@@ -91,14 +91,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PureSeeder.Forms.exe" size="212480">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PureSeeder.Forms.exe" size="211968">
       <assemblyIdentity name="PureSeeder.Forms" version="1.0.3.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZUUTV4gwI3oKtTIZkUr1+Tt4O3V59yLlil1gsI1vTL0=</dsig:DigestValue>
+        <dsig:DigestValue>M3H+CCHs8J+1LNh7SufqYsMm1/6v+Z0P/ie06xEH+p0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
