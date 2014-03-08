@@ -10,6 +10,8 @@ namespace PureSeeder.Core.Context
         private string _currentLoggedInUser;
         private GameInfo _currentGame = Constants.Games.Bf4;
         private bool _bfIsRunning;
+        private int? _seedersOnCurrentServer;
+        private bool _expansionEnabled;
 
         public int? CurrentPlayers
         {
@@ -46,6 +48,18 @@ namespace PureSeeder.Core.Context
         {
             get { return this._bfIsRunning; }
             set { SetField(ref _bfIsRunning, value); }
+        }
+
+        public int? SeedersOnCurrentServer
+        {
+            get { return this._seedersOnCurrentServer; }
+            set { SetField(ref _seedersOnCurrentServer, value); }
+        }
+
+        public bool expansionEnabled
+        {
+            get { return this._expansionEnabled; }
+            set { SetField(ref this._expansionEnabled, value); }
         }
     }
 }

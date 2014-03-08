@@ -143,6 +143,9 @@
     <EmbeddedResource Include="ServerEditor.resx">
       <DependentUpon>ServerEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="DefaultSettings\__seederAccounts.psjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\DataSources\Awesomium.Core.IWebView.datasource" />
     <None Include="Properties\DataSources\Awesomium.Windows.Forms.WebControl.datasource" />
     <None Include="Properties\Settings.settings">

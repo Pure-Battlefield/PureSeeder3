@@ -22,6 +22,8 @@ namespace PureSeeder.Forms
         private readonly ProcessMonitor _processMonitor;
         private readonly Timer _refreshTimer;
 
+        private bool switchServer;
+
         // CancellationTokens
         private CancellationToken _avoidIdleKickCt;
         private CancellationToken _processMonitorCt;
@@ -123,6 +125,7 @@ namespace PureSeeder.Forms
         private void CreateBindings()
         {
             var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers,};
+            var seederAccountsBindingSource = new BindingSource { DataSource = _context.Settings.SeederAccounts };
 
             serverSelector.DataSource = serversBindingSource;
             serverSelector.DisplayMember = "Name";
@@ -182,6 +185,11 @@ namespace PureSeeder.Forms
         private void AnyRefresh()
         {
             DisableRefreshButton();
+            if (switchServer)
+            {
+                SwitchServer();
+                switchServer = false;
+            }
             RefreshPageAndData();
         }
 
@@ -393,15 +401,36 @@ namespace PureSeeder.Forms
                 if (shouldSeed.Reason == ShouldNotSeedReason.GameAlreadyRunning)
                     return false;
 
-                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
-                {
-                    SetStatus("Player count above min threshold, not starting seeding.");
-                    return false;
-                }
-
                 if (shouldSeed.Reason == ShouldNotSeedReason.NoServerDefined)
                 {
                     SetStatus("No server defined. Cannot seed.");
+                    return false;
+                }
+                
+                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
+                {
+                    SetStatus("Player count above min threshold, not starting seeding.");
+                    switchServer = true;
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.MaxSeeders)
+                {
+                    SetStatus("Maximum seeders on this server already.");
+                    switchServer = true;
+                    return false;
+                }
+                if (shouldSeed.Reason == ShouldNotSeedReason.UnknownSeedersMaxUsers)
+                {
+                    SetStatus("Cant get Live Scoreboard, and users >= 5");
+                    switchServer = true;
+                    return false;
+                }
+
+                if (shouldSeed.Reason == ShouldNotSeedReason.ExpansionEnabled)
+                {
+                    SetStatus("Expansion enabled on this server.");
+                    switchServer = true;
                     return false;
                 }
 
@@ -409,6 +438,22 @@ namespace PureSeeder.Forms
             }
 
             return true;
+        }
+
+        private void SwitchServer()
+        {
+            var selected = serverSelector.SelectedIndex;
+            var size = serverSelector.Items.Count;
+                                    
+            if (++selected < size)
+            {
+                serverSelector.SelectedIndex = selected;
+            }
+            else
+            {
+                serverSelector.SelectedIndex = 0;
+            }
+            _context.Settings.CurrentServer = serverSelector.SelectedIndex;
         }
 
         private void AttemptKick()

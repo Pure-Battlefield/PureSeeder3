@@ -20,6 +20,7 @@ namespace PureSeeder.Core.Context
             DirtySettings = false;
             this.PropertyChanged += SettingChanged;
             Servers.ServerChanged += SettingChanged;
+            SeederAccounts.SeederAccountChanged += SettingChanged;
         }
 
         // Note: This is to allow Deserializing to this class
@@ -72,6 +73,12 @@ namespace PureSeeder.Core.Context
         {
             get { return _settings.Servers; }
             set { SetProperty(_settings, value, x => x.Servers); }
+        }
+
+        public SeederAccounts SeederAccounts
+        {
+            get { return _settings.SeederAccounts; }
+            set { SetProperty(_settings, value, x => x.SeederAccounts); }
         }
 
         [JsonIgnore]
@@ -133,5 +140,6 @@ namespace PureSeeder.Core.Context
             get { return _settings.AutoMinimizeGame; }
             set { SetProperty(_settings, value, x => x.AutoMinimizeGame); }
         }
+
     }
 }

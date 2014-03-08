@@ -56,6 +56,21 @@ namespace PureSeeder.Core.Settings
             }
             private set { this[Constants.SettingNames.Servers] = (Servers) value; }
         }
+
+        [UserScopedSetting()]
+        public SeederAccounts SeederAccounts
+        {
+            get
+            {
+                if (this[Constants.SettingNames.SeederAccounts] == null)
+                {
+                    var defaultSeederAccounts = new SeederAccounts();
+                    SeederAccounts = defaultSeederAccounts;
+                }
+                return (SeederAccounts)this[Constants.SettingNames.SeederAccounts];
+            }
+            private set { this[Constants.SettingNames.SeederAccounts] = (SeederAccounts)value; }
+        }
         
         [UserScopedSetting()]
         [DefaultSettingValue("0")]

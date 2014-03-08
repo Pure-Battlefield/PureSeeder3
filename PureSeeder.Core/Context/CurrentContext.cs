@@ -13,6 +13,7 @@ using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Monitoring;
 using PureSeeder.Core.Settings;
 using Server = PureSeeder.Core.Settings.Server;
+using SeederAccount = PureSeeder.Core.Settings.SeederAccount;
 
 //using Server = PureSeeder.Core.Configuration.Server;
 
@@ -35,6 +36,9 @@ namespace PureSeeder.Core.Context
 
             _sessionData = sessionData;
             _bindableSettings = bindableSettings;
+
+            //Always switch back to server 0 at startup
+            _bindableSettings.CurrentServer = 0;
             _updaters = updaters;
 
         }
@@ -50,6 +54,7 @@ namespace PureSeeder.Core.Context
 
         public void ImportSettings(string filename)
         {
+            
             var jsonText = File.ReadAllText(filename);
             var newSettings = PartialObject<BindableSettings>.Create(jsonText);
 
@@ -65,10 +70,34 @@ namespace PureSeeder.Core.Context
             if (servers.Any())
             {
                 _bindableSettings.Servers.Clear();
-                _bindableSettings.CurrentServer = 0;
                 foreach (var server in servers)
                 {
                     _bindableSettings.Servers.Add(server);
+                }
+            }
+
+        }
+
+        public void ImportSeederAccounts(string filename)
+        {
+            var jsonText = File.ReadAllText(filename);
+            var newSettings = PartialObject<BindableSettings>.Create(jsonText);
+
+            // Todo: This probably isn't the best way of doing this
+            //  - should probably have some method of denoting if a setting is importable, then it should run automatically
+
+            newSettings.MergeItem((BindableSettings x) => x.RefreshInterval, _bindableSettings);
+
+            // Note: This is a little hacky but I'm not sure how to trigger a refresh on the binding when replacing the entire list
+            var seederAccounts = new SeederAccounts();
+            newSettings.MergeItem(x => x.SeederAccounts, ref seederAccounts);
+
+            if (seederAccounts.Any())
+            {
+                _bindableSettings.SeederAccounts.Clear();
+                foreach (var seedingAccount in seederAccounts)
+                {
+                    _bindableSettings.SeederAccounts.Add(seedingAccount);
                 }
             }
         }
@@ -175,8 +204,17 @@ namespace PureSeeder.Core.Context
             if(BfIsRunning())
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.GameAlreadyRunning);
 
+            if (_sessionData.expansionEnabled)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.ExpansionEnabled);
+
             if(_sessionData.CurrentPlayers > CurrentServer.MinPlayers)
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
+
+            if (_sessionData.SeedersOnCurrentServer != null && _sessionData.SeedersOnCurrentServer >= 5)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.MaxSeeders);
+            
+            if(_sessionData.SeedersOnCurrentServer == null && _sessionData.CurrentPlayers >= 5)
+                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.UnknownSeedersMaxUsers);
 
             return new ResultReason<ShouldNotSeedReason>(true);
         }

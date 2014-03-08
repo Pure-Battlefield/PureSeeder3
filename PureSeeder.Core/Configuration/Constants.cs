@@ -24,6 +24,7 @@ namespace PureSeeder.Core.Configuration
             public const string EnableLogging = "EnableLogging";
             public const string Username = "Username";
             public const string Servers = "Servers";
+            public const string SeederAccounts = "SeederAccounts";
             public const string CurrentServer = "CurrentServer";
             public const string RefreshInterval = "RefreshInterval";
             public const string MinimizeToTray = "MinimizeToTray";
@@ -66,7 +67,10 @@ namespace PureSeeder.Core.Configuration
         NotInRange,
         GameAlreadyRunning,
         NoServerDefined,
-        SeedingDisabled
+        SeedingDisabled,
+        MaxSeeders,
+        UnknownSeedersMaxUsers,
+        ExpansionEnabled
     }
 
     public enum KickReason
