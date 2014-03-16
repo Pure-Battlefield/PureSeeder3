@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="PureSeeder.Forms.exe" version="1.3.0.4" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="Resources\PB.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="PureSeeder.Forms" version="1.0.3.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="PureSeeder.Forms.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Geckofx-Core.dll" size="1781760">
+      <assemblyIdentity name="Geckofx-Core" version="22.0.6.0" publicKeyToken="3209AC31600D1857" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>gv7G0GGznW16EylaiEkf1OoTjVAVq2MANCt3Gkldx18=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Geckofx-Winforms.dll" size="132096">
+      <assemblyIdentity name="Geckofx-Winforms" version="22.0.6.0" publicKeyToken="3209AC31600D1857" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>jagzWMwYn5QVRkq4L8BEDJLmmsXWsAoUb3wihLJvoIg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="465408">
+      <assemblyIdentity name="Newtonsoft.Json" version="4.5.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>8SDByUrdkbsjvXL5mZp4jltEdFWPhf5SypoWSqr/ITw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PureSeeder.Core.dll" size="50176">
+      <assemblyIdentity name="PureSeeder.Core" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>ksyfg2TQFVdvsJvtSS75RDLsefsm6j9cUlHS58RWaMI=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PureSeeder.Forms.exe" size="211968">
+      <assemblyIdentity name="PureSeeder.Forms" version="1.0.3.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>b3T55+QqDETCmpFX1lz4mgN9KBuY9oWp37vXTL6H06A=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="DefaultSettings\__defaultSettings.psjson" size="575">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bMrvxYpY/yVNYSWvVDUEz2vR6BUZk1u0nSfJ1wIE1mo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="DefaultSettings\__seederAccounts.psjson" size="551">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ZhEMyhh6yKduD1n7wYAzNdqhwKCxIjPzAmFR5JfPSzc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="PBOBlueTrans.ico" size="38568">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/NHxrf2KHX/Fmvm6ncZOyaVeskFbhU57kkHZAkCU/xY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="PureSeeder.Forms.exe.config" size="181">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pM9XLJmDhdIDBCt8SJjaVl4j8FLsRjs0pbL2+iAHAOg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Resources\PB.ico" size="38669">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ajBM/2VvXb23RShrCoQ8S+1jGXwdKGACueVQfanofHY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\breakpadinjector.dll" size="67072">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q0BhtekBe62PWiIp8onPjanoDOixCKxEgbVoJ1Dss1U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\D3DCompiler_43.dll" size="2106216">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LyMYLsb0iJOXrEvwPWJTYTbFvbqCXH0sTvCMgn86ihw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\dictionaries\en-US.aff" size="3481">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MuB9qEBrT3HcIGAIWARiaxFvI6M3PQIdGYgx33tLIvE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\dictionaries\en-US.dic" size="681623">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kdaQdpSb8PoJbjQZTAZoYTZqt40+Gu1Ow9fYOMRd2j8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\freebl3.chk" size="899">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tAsSPSOi6CQIR0GSlD9iDEv2UTUeo1HMZNRBtqppJ9U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\freebl3.dll" size="271872">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>G5KQhO3SVJ/ulwaQsZlCsBUDD7c+GANlfA34pOMrI8s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\gkmedias.dll" size="3204096">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>iXQIqV/1Z9LAgxzKKy9RoejOg0XnrzX0sM/Vs4cyyJU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\IA2Marshal.dll" size="26112">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ogLe0ul+GWYOZ/d8vJZWoYFWfgEHLd86BPcjKVcJ0ZI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\js-gdb.py" size="261">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2Xl/G6Z2lAy72/BWogwGeHILNqtQfjYC5y4jQlaTaWw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\libEGL.dll" size="55296">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4PYxi352dfB20glKwQ3XX2ItWx6loPdiUyABFswcIKk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\libGLESv2.dll" size="475136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+E6fIkPUiO7fYeqo5geiVoPPmX5V8lWQG359vAdYm+4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\LICENSE" size="398">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wo5rf1gdw9iRdBi+qARdixIxygZ75L7Wt89ejbbWHfE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\mozalloc.dll" size="8704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RpRK7AwjgRtT+1WLCQEynKb1ftE+q+yYBIsT1Bic5xU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\mozglue.dll" size="100864">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Oeo1d0gJFYkwjWmDVTJS1TWFHYk2P4HoJx6qyCGM8oA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\mozjs.dll" size="3048960">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oeuH0tKE3CQt1OMKUeIZR+shNByiyMWedzF8lk7tvt4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\msvcp100.dll" size="421200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>o7pkIZkSQb6pyDNLYsMIj48TGrkGw8xSETlF0FAWo18=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\msvcr100.dll" size="770384">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EiGglISWSm84r1407ikrmv78yz3G5VQ1/TqvfCNdkGc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\nss3.dll" size="1721344">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ofSA6znO6ZEKnx8eKCWmmbfg9WT8TM0QT2UBBTxIc0A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\nssckbi.dll" size="367616">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q+8wO1UPGX2yLgaMErzcMycPC8muqHHggoAtqLxw+D0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\nssdbm3.chk" size="899">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>djwIuu2zJUrZ57O+6RqUQ5Vlour5uNy/RZoHtQg9U+g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\nssdbm3.dll" size="83968">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8p2yV6V2wMBE3Wy/rFpUNwHz3wEviesQ+bY42+vTMLI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\omni.ja" size="6750222">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DypHDBAkgKZyD5nx10MGXYhCBYGauBk30hgfzNne7oA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\precomplete" size="941">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>k4mT/5hn0ixYtJVJcyZcrKC0Paa3K+BWARJvHIB0EFI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\README.xulrunner" size="591">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EtWrGjqTn7Sk/TvDsRjKZjhhgWjpdkaa9y/lHNp0k9o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\softokn3.chk" size="899">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6Dm3EsdobfjyBOiI+1dAAoUWwSwt1llStD0yujU7fUU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\softokn3.dll" size="144384">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>92oD7l7NCnAPFQmgvxoN1T86hu6u4JyYGGQknG/8DKw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xulrunner\xul.dll" size="18820608">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>OEe95Jq2tKj1ytJZOop9d4VSb00fSq+rGOBUxMJHDjs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <fileAssociation extension=".psjson" description="PURE Seeder 3 JSON settings file" progid="PureSeeder3" defaultIcon="PBOBlueTrans.ico" xmlns="urn:schemas-microsoft-com:clickonce.v1" />
+</asmv1:assembly>
