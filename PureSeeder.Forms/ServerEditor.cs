@@ -71,5 +71,15 @@ namespace PureSeeder.Forms
         {
             _context.Settings.Servers.RemoveAt(serverList.SelectedIndex);
         }
+
+        private void upButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void downButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

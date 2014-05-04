@@ -9,6 +9,14 @@ namespace PureSeeder.Core.Settings
         private string _address;
         private int _minPlayers;
         private int _maxPlayers;
+        private int _priority;
+
+        [Description("Server priority")]
+        public int Priority
+        {
+            get { return this._priority; }
+            set { SetField(ref _priority, value); }
+        }
 
         [Description("Name for the server")]
         public string Name

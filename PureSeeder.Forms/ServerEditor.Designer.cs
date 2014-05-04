@@ -33,6 +33,8 @@
             this.closeDialog = new System.Windows.Forms.Button();
             this.addServer = new System.Windows.Forms.Button();
             this.deleteServer = new System.Windows.Forms.Button();
+            this.upButton = new System.Windows.Forms.Button();
+            this.downButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // serverList
@@ -46,7 +48,7 @@
             // 
             // propertyGrid1
             // 
-            this.propertyGrid1.Location = new System.Drawing.Point(373, 12);
+            this.propertyGrid1.Location = new System.Drawing.Point(407, 12);
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.NoSort;
             this.propertyGrid1.Size = new System.Drawing.Size(450, 224);
@@ -55,7 +57,7 @@
             // closeDialog
             // 
             this.closeDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.closeDialog.Location = new System.Drawing.Point(748, 243);
+            this.closeDialog.Location = new System.Drawing.Point(782, 243);
             this.closeDialog.Name = "closeDialog";
             this.closeDialog.Size = new System.Drawing.Size(75, 23);
             this.closeDialog.TabIndex = 2;
@@ -83,11 +85,33 @@
             this.deleteServer.UseVisualStyleBackColor = true;
             this.deleteServer.Click += new System.EventHandler(this.deleteServer_Click);
             // 
+            // upButton
+            // 
+            this.upButton.Location = new System.Drawing.Point(369, 12);
+            this.upButton.Name = "upButton";
+            this.upButton.Size = new System.Drawing.Size(31, 23);
+            this.upButton.TabIndex = 5;
+            this.upButton.Text = "U";
+            this.upButton.UseVisualStyleBackColor = true;
+            this.upButton.Click += new System.EventHandler(this.upButton_Click);
+            // 
+            // downButton
+            // 
+            this.downButton.Location = new System.Drawing.Point(369, 41);
+            this.downButton.Name = "downButton";
+            this.downButton.Size = new System.Drawing.Size(31, 23);
+            this.downButton.TabIndex = 6;
+            this.downButton.Text = "D";
+            this.downButton.UseVisualStyleBackColor = true;
+            this.downButton.Click += new System.EventHandler(this.downButton_Click);
+            // 
             // ServerEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(835, 273);
+            this.ClientSize = new System.Drawing.Size(869, 273);
+            this.Controls.Add(this.downButton);
+            this.Controls.Add(this.upButton);
             this.Controls.Add(this.deleteServer);
             this.Controls.Add(this.addServer);
             this.Controls.Add(this.closeDialog);
@@ -108,5 +132,7 @@
         private System.Windows.Forms.Button closeDialog;
         private System.Windows.Forms.Button addServer;
         private System.Windows.Forms.Button deleteServer;
+        private System.Windows.Forms.Button upButton;
+        private System.Windows.Forms.Button downButton;
     }
 }
