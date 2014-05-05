@@ -1,27 +1,20 @@
-﻿using PureSeeder.Core.Configuration;
+﻿using System.Collections.Generic;
+using PureSeeder.Core.Configuration;
 
 namespace PureSeeder.Core.Context
 {
     public class SessionData : BindableBase
     {
-        private int? _currentPlayers;
-        private int? _serverMaxPlayers;
+        public SessionData()
+        {
+            _serverStatuses = new Dictionary<string, ServerStatus>();
+        }
+        
         private bool _seedingEnabled = true;
         private string _currentLoggedInUser;
         private GameInfo _currentGame = Constants.Games.Bf4;
         private bool _bfIsRunning;
-
-        public int? CurrentPlayers
-        {
-            get { return this._currentPlayers; }
-            set { SetField(ref _currentPlayers, value); }
-        }
-
-        public int? ServerMaxPlayers
-        {
-            get { return this._serverMaxPlayers; }
-            set { SetField(ref _serverMaxPlayers, value); }
-        }
+        private Dictionary<string, ServerStatus> _serverStatuses;
 
         public bool SeedingEnabled
         {
@@ -46,6 +39,11 @@ namespace PureSeeder.Core.Context
         {
             get { return this._bfIsRunning; }
             set { SetField(ref _bfIsRunning, value); }
+        }
+
+        public Dictionary<string,  ServerStatus> ServerStatuses
+        {
+            get { return _serverStatuses; }
         }
     }
 }

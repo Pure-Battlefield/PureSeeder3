@@ -9,19 +9,19 @@ namespace PureSeeder.Core.Context
 {
     public class ServerStatus
     {
-        private Server _server;
-        private int _curPlayers;
+        private int? _curPlayers;
+        private int? _maxPlayers;
 
-        public Server Server
-        {
-            get { return _server; }
-            set { _server = value; }
-        }
-
-        public int CurPlayers
+        public int? CurPlayers
         {
             get { return _curPlayers; }
             set { _curPlayers = value; }
+        }
+
+        public int? MaxPlayers
+        {
+            get { return _maxPlayers; } 
+            set { _maxPlayers = value; }
         }
     }
 }

@@ -14,8 +14,8 @@ namespace PureSeeder.Core.Context
 
             if (!curPlayers.Success)
             {
-                context.Session.CurrentPlayers = null;
-                context.Session.ServerMaxPlayers = null;
+//                context.Session.CurrentPlayers = null;
+//                context.Session.ServerMaxPlayers = null; Deprecated
                 return;
             }
 
@@ -24,8 +24,8 @@ namespace PureSeeder.Core.Context
             int.TryParse(curPlayers.Groups[1].Value, out currentPlayers);
             int.TryParse(curPlayers.Groups[2].Value, out maxPlayers);
 
-            context.Session.CurrentPlayers = currentPlayers;
-            context.Session.ServerMaxPlayers = maxPlayers;
+//            context.Session.CurrentPlayers = currentPlayers; Deprecated
+//            context.Session.ServerMaxPlayers = maxPlayers;
         }
     }
 }

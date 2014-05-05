@@ -5,12 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
 using PureSeeder.Core.Annotations;
 using System.Linq;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Monitoring;
+using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 using Server = PureSeeder.Core.Settings.Server;
 
@@ -26,17 +28,20 @@ namespace PureSeeder.Core.Context
         private readonly SessionData _sessionData;
         private readonly BindableSettings _bindableSettings;
         private readonly IDataContextUpdater[] _updaters;
+        private readonly IServerStatusUpdater _serverStatusUpdater;
 
-        public SeederContext(SessionData sessionData, BindableSettings bindableSettings, IDataContextUpdater[] updaters)
+        public SeederContext(SessionData sessionData, BindableSettings bindableSettings, IDataContextUpdater[] updaters,
+                             [NotNull] IServerStatusUpdater serverStatusUpdater)
         {
             if (sessionData == null) throw new ArgumentNullException("sessionData");
             if (bindableSettings == null) throw new ArgumentNullException("bindableSettings");
             if (updaters == null) throw new ArgumentNullException("updaters");
+            if (serverStatusUpdater == null) throw new ArgumentNullException("serverStatusUpdater");
 
             _sessionData = sessionData;
             _bindableSettings = bindableSettings;
             _updaters = updaters;
-
+            _serverStatusUpdater = serverStatusUpdater;
         }
 
         public SessionData Session { get { return _sessionData; } }
@@ -71,6 +76,11 @@ namespace PureSeeder.Core.Context
                     _bindableSettings.Servers.Add(server);
                 }
             }
+        }
+
+        public Task UpdateServerStatuses()
+        {
+            return _serverStatusUpdater.UpdateServerStatuses(this);
         }
 
         public void UpdateStatus(string pageData)
@@ -175,8 +185,9 @@ namespace PureSeeder.Core.Context
             if(BfIsRunning())
                 return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.GameAlreadyRunning);
 
-            if(_sessionData.CurrentPlayers > CurrentServer.MinPlayers)
-                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
+            // Deprecated
+//            if(_sessionData.CurrentPlayers > CurrentServer.MinPlayers)
+//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
 
             return new ResultReason<ShouldNotSeedReason>(true);
         }
@@ -189,8 +200,9 @@ namespace PureSeeder.Core.Context
             if(_bindableSettings.Servers.Count == 0)
                 return new ResultReason<KickReason>(false, KickReason.NoServerDefined);
 
-            if(_sessionData.CurrentPlayers > CurrentServer.MaxPlayers)
-                return new ResultReason<KickReason>(true, KickReason.AboveSeedingRange);
+            // Deprecated
+//            if(_sessionData.CurrentPlayers > CurrentServer.MaxPlayers)
+//                return new ResultReason<KickReason>(true, KickReason.AboveSeedingRange);
 
             return new ResultReason<KickReason>(false);
         }

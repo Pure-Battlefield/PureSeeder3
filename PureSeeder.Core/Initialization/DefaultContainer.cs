@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Initialization
@@ -24,11 +25,15 @@ namespace PureSeeder.Core.Initialization
                 return new BindableSettings(
                     Resolve<SeederUserSettings>());
 
+            if (type == typeof (IServerStatusUpdater))
+                return new ServerStatusUpdater();
+
             if (type == typeof (IDataContext))
                 return new SeederContext(
                     Resolve<SessionData>(),
                     Resolve<BindableSettings>(),
-                    Resolve<IDataContextUpdater[]>());
+                    Resolve<IDataContextUpdater[]>(),
+                    Resolve<IServerStatusUpdater>());
 
             if (type == typeof (SeederUserSettings))
                 return new SeederUserSettings();
@@ -39,6 +44,8 @@ namespace PureSeeder.Core.Initialization
                         new Bf4PlayerCountsUpdater(),
                         new CurrentBf4UserUpdater(),
                     }.ToArray();
+
+
 
             throw new ArgumentException(
                 String.Format("DefaultContainer cannot retrieve an instance of the required type: {0}", type.Name));

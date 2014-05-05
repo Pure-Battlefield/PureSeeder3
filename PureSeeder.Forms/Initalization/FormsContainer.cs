@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Initialization;
+using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Forms.Initalization
@@ -52,7 +53,8 @@ namespace PureSeeder.Forms.Initalization
                             {
                                 new Bf4PlayerCountsUpdater(),
                                 new CurrentBf4UserUpdater(),
-                            }.ToArray()));
+                            }.ToArray(), 
+                        new ServerStatusUpdater()));
 
             throw new ArgumentException(String.Format("FormsContainer cannot create an instance of the required type: {0}", type.Name));
         }
@@ -75,7 +77,8 @@ namespace PureSeeder.Forms.Initalization
                         {
                             new Bf4PlayerCountsUpdater(),
                             new CurrentBf4UserUpdater(),
-                        }.ToArray());
+                        }.ToArray(),
+                    new ServerStatusUpdater());
         }
     }
 }

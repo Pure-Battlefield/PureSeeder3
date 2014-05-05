@@ -58,6 +58,8 @@ namespace PureSeeder.Forms
             CreateBindings();
             UiSetup();
 
+            UpdateServerStatuses();
+
             LoadBattlelog();
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
@@ -69,6 +71,13 @@ namespace PureSeeder.Forms
             // Spin up background processes
             SpinUpProcessMonitor();
             SpinUpAvoidIdleKick();
+        }
+
+        private async void UpdateServerStatuses()
+        {
+            await _context.UpdateServerStatuses();
+
+            var blah = "meh";
         }
 
         private void UiSetup()
@@ -139,8 +148,8 @@ namespace PureSeeder.Forms
             password.DataBindings.Add("Text", _context.Settings, x => x.Password);
             email.DataBindings.Add("Text", _context.Settings, x => x.Email);
 
-            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers);
-            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
+//            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers); // Deprecated
+//            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
             currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false,
@@ -237,9 +246,11 @@ namespace PureSeeder.Forms
             if (cb.Items.Count == 0)
                 return Constants.DefaultUrl;
 
-            string address = _context.CurrentServer.Address;
+            //string address = _context.CurrentServer.Address; // Deprecated
 
-            return address;
+            //return address;
+
+            return string.Empty;
         }
 
         private async void LoadPage()
@@ -275,7 +286,7 @@ namespace PureSeeder.Forms
 
             source = pageSource;
 
-            _context.UpdateStatus(source);
+            //_context.UpdateStatus(source); // Deprecated
         }
 
         private void AttemptSeeding()

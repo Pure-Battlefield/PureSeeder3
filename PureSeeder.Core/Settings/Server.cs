@@ -9,7 +9,6 @@ namespace PureSeeder.Core.Settings
         private string _address;
         private int _minPlayers;
         private int _maxPlayers;
-        private int _priority;
 
         [Description("Name for the server")]
         public string Name

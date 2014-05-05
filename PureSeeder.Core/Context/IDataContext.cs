@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Settings;
 
@@ -26,13 +27,18 @@ namespace PureSeeder.Core.Context
         /// </summary>
         /// <param name="filename"></param>
         void ImportSettings(string filename);
-       
-        
+
+
         /// <summary>
         /// Update current status with the given page data
         /// </summary>
         /// <param name="pageData">Raw page data</param>
-        void UpdateStatus(string pageData);
+        //void UpdateStatus(string pageData); // Todo: Need to update to not deal with single servers anymore
+
+        /// <summary>
+        /// Update the statuses of all the servers in the list
+        /// </summary>
+        Task UpdateServerStatuses();
         
         /// <summary>
         /// Event fired when UpdateStatus is complete
@@ -57,6 +63,6 @@ namespace PureSeeder.Core.Context
 
         void StopGame();
 
-        Server CurrentServer { get; }
+        //Server CurrentServer { get; } // Deprecated
     }
 }
