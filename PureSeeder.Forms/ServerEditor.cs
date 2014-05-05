@@ -35,6 +35,7 @@ namespace PureSeeder.Forms
             var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers};
             serverList.DataSource = serversBindingSource;
             serverList.DisplayMember = "Name";
+            
 
             Icon = Resources.PB;
 
@@ -74,12 +75,26 @@ namespace PureSeeder.Forms
 
         private void upButton_Click(object sender, EventArgs e)
         {
+            var curIndex = serverList.SelectedIndex;
 
+            if (curIndex <= 0) return;
+
+            var item = serverList.SelectedItem;
+            serverList.Items.RemoveAt(curIndex);
+            serverList.Items.Insert(curIndex - 1, item);
+            serverList.SelectedIndex --;
         }
 
         private void downButton_Click(object sender, EventArgs e)
         {
+            var curIndex = serverList.SelectedIndex;
 
+            if (curIndex + 1 >= serverList.Items.Count) return;
+
+            var item = serverList.SelectedItem;
+            serverList.Items.RemoveAt(curIndex);
+            serverList.Items.Insert(curIndex + 1, item);
+            serverList.SelectedIndex ++;
         }
     }
 }

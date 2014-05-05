@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace PureSeeder.Core.Settings
 {
@@ -33,5 +36,16 @@ namespace PureSeeder.Core.Settings
                 handler(sender, e);
         }
 
+        // Todo: Manage server priority in this class.  When adding or removing an item, adjust all the priorities.
+        //       Create public methods for moving an item up or down.
+        private void SortByPriority()
+        {
+            var items = this.Items as List<Server>;
+
+            if (items != null)
+            {
+                items.Sort((s1, s2) => s1.Priority.CompareTo(s2.Priority));
+            }
+        }
     }
 }

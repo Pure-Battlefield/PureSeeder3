@@ -12,6 +12,7 @@ namespace PureSeeder.Core.Settings
         private int _priority;
 
         [Description("Server priority")]
+        [Browsable(false)]
         public int Priority
         {
             get { return this._priority; }

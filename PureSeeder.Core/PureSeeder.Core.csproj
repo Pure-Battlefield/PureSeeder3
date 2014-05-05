@@ -61,6 +61,7 @@
     <Compile Include="Context\IDataContext.cs" />
     <Compile Include="Context\IDataContextUpdater.cs" />
     <Compile Include="Context\PartialObject.cs" />
+    <Compile Include="Context\ServerStatus.cs" />
     <Compile Include="Context\SessionData.cs" />
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />
