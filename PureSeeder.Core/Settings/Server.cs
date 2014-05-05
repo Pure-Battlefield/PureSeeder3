@@ -11,14 +11,6 @@ namespace PureSeeder.Core.Settings
         private int _maxPlayers;
         private int _priority;
 
-        [Description("Server priority")]
-        [Browsable(false)]
-        public int Priority
-        {
-            get { return this._priority; }
-            set { SetField(ref _priority, value); }
-        }
-
         [Description("Name for the server")]
         public string Name
         {
@@ -47,11 +39,6 @@ namespace PureSeeder.Core.Settings
         {
             get { return this._maxPlayers; }
             set { SetField(ref _maxPlayers, value); }
-        }
-
-        public void SetPriority(int priority)
-        {
-            Priority = priority;
         }
     }
 }

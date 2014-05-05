@@ -36,18 +36,6 @@ namespace PureSeeder.Core.Settings
                 handler(sender, e);
         }
 
-        // Todo: Manage server priority in this class.  When adding or removing an item, adjust all the priorities.
-        //       Create public methods for moving an item up or down.
-        private void SortByPriority()
-        {
-            var items = this.Items as List<Server>;
-
-            if (items != null)
-            {
-                items.Sort((s1, s2) => s1.Priority.CompareTo(s2.Priority));
-            }
-        }
-
         public void MoveUp(int index)
         {
             if (index <= 0) return;
@@ -56,12 +44,7 @@ namespace PureSeeder.Core.Settings
             var itemAbove = this[index - 1];
 
             this.RemoveAt(index);
-            item.SetPriority(item.Priority - 1); // Increase the priority of this server
-            itemAbove.SetPriority(item.Priority + 1); // Lower the priority of the server above
-
             this.Insert(index - 1, item);
-
-            SortByPriority(); // Re-sort
         }
 
         public void MoveDown(int index)
@@ -72,12 +55,7 @@ namespace PureSeeder.Core.Settings
             var itemBelow = this[index + 1];
 
             this.RemoveAt(index);
-            item.SetPriority(item.Priority + 1); // 
-            itemBelow.SetPriority(item.Priority -1);
-
             this.Insert(index + 1, item);
-
-            SortByPriority();
         }
     }
 }
