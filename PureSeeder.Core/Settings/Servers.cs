@@ -47,5 +47,37 @@ namespace PureSeeder.Core.Settings
                 items.Sort((s1, s2) => s1.Priority.CompareTo(s2.Priority));
             }
         }
+
+        public void MoveUp(int index)
+        {
+            if (index <= 0) return;
+
+            var item = this[index];
+            var itemAbove = this[index - 1];
+
+            this.RemoveAt(index);
+            item.SetPriority(item.Priority - 1); // Increase the priority of this server
+            itemAbove.SetPriority(item.Priority + 1); // Lower the priority of the server above
+
+            this.Insert(index - 1, item);
+
+            SortByPriority(); // Re-sort
+        }
+
+        public void MoveDown(int index)
+        {
+            if (index + 1 >= this.Count) return;
+
+            var item = this[index];
+            var itemBelow = this[index + 1];
+
+            this.RemoveAt(index);
+            item.SetPriority(item.Priority + 1); // 
+            itemBelow.SetPriority(item.Priority -1);
+
+            this.Insert(index + 1, item);
+
+            SortByPriority();
+        }
     }
 }

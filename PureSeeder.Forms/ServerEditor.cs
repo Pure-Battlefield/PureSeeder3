@@ -77,24 +77,23 @@ namespace PureSeeder.Forms
         {
             var curIndex = serverList.SelectedIndex;
 
-            if (curIndex <= 0) return;
+            if (curIndex <= 0)
+                return;
+            _context.Settings.Servers.MoveUp(curIndex);
 
-            var item = serverList.SelectedItem;
-            serverList.Items.RemoveAt(curIndex);
-            serverList.Items.Insert(curIndex - 1, item);
-            serverList.SelectedIndex --;
+            serverList.SelectedIndex = curIndex - 1;
         }
 
         private void downButton_Click(object sender, EventArgs e)
         {
             var curIndex = serverList.SelectedIndex;
 
-            if (curIndex + 1 >= serverList.Items.Count) return;
+            if (curIndex + 1 >= serverList.Items.Count)
+                return;
 
-            var item = serverList.SelectedItem;
-            serverList.Items.RemoveAt(curIndex);
-            serverList.Items.Insert(curIndex + 1, item);
-            serverList.SelectedIndex ++;
+            _context.Settings.Servers.MoveDown(curIndex);
+
+            serverList.SelectedIndex = curIndex + 1;
         }
     }
 }

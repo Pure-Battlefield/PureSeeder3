@@ -48,5 +48,10 @@ namespace PureSeeder.Core.Settings
             get { return this._maxPlayers; }
             set { SetField(ref _maxPlayers, value); }
         }
+
+        public void SetPriority(int priority)
+        {
+            Priority = priority;
+        }
     }
 }
