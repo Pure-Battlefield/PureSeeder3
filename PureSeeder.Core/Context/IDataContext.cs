@@ -33,7 +33,7 @@ namespace PureSeeder.Core.Context
         /// Update current status with the given page data
         /// </summary>
         /// <param name="pageData">Raw page data</param>
-        //void UpdateStatus(string pageData); // Todo: Need to update to not deal with single servers anymore
+        void UpdateStatus(string pageData); // Todo: Need to update to not deal with single servers anymore
 
         /// <summary>
         /// Update the statuses of all the servers in the list

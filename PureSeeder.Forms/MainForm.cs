@@ -151,8 +151,6 @@ namespace PureSeeder.Forms
             password.DataBindings.Add("Text", _context.Settings, x => x.Password);
             email.DataBindings.Add("Text", _context.Settings, x => x.Email);
 
-//            curPlayers.DataBindings.Add("Text", _context.Session, x => x.CurrentPlayers); // Deprecated
-//            maxPlayers.DataBindings.Add("Text", _context.Session, x => x.ServerMaxPlayers);
             currentLoggedInUser.DataBindings.Add("Text", _context.Session, x => x.CurrentLoggedInUser);
 
             logging.DataBindings.Add("Checked", _context.Settings, x => x.EnableLogging, false,
@@ -171,27 +169,7 @@ namespace PureSeeder.Forms
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
-//            var statusCollection = _context.Settings.Servers.Join(_context.Session.ServerStatuses, s => s.Address,
-//                ss => ss.Key, (server, kvp) => new {server.Name, server.Address, server.MinPlayers, server.MaxPlayers, kvp.Value.CurPlayers, MPlayers = kvp.Value.MaxPlayers});
-//            var statusCollection = _context.Settings.Servers.GroupJoin(
-//                _context.Session.ServerStatuses,
-//                server => server.Address,
-//                status => status.Key,
-//                (server, status) => new {server, status})
-//                .SelectMany(r => r.status.DefaultIfEmpty(), (r, kvp) => new {r, kvp})
-//                .Select(c => new
-//                {
-//                    Name = c.r.server.Name,
-//                    Address = c.r.server.Address,
-//                    MinPlayers = c.r.server.MinPlayers,
-//                    MaxPlayers = c.r.server.MaxPlayers,
-//                    CurPlayers = c.kvp.Value != null ? c.kvp.Value.CurPlayers : -1,
-//                    ServerMax = c.kvp.Value != null ? c.kvp.Value.MaxPlayers : -1
-//                });
-//            var statusBindingSource = new BindingSource() {DataSource = statusCollection};
-
             var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
-//            var statusBindingSource = new BindingSource() {DataSource = _context.Settings.Servers};
 
             dataGridView1.DataSource = statusBindingSource;
         }
@@ -313,7 +291,7 @@ namespace PureSeeder.Forms
 
             source = pageSource;
 
-            //_context.UpdateStatus(source); // Deprecated
+            _context.UpdateStatus(source); 
         }
 
         private void AttemptSeeding()

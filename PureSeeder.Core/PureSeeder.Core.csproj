@@ -54,7 +54,6 @@
     <Compile Include="Configuration\Constants.cs" />
     <Compile Include="Configuration\GameInfo.cs" />
     <Compile Include="Configuration\ResultReason.cs" />
-    <Compile Include="Context\Bf4PlayerCountsUpdater.cs" />
     <Compile Include="Context\BindableBase.cs" />
     <Compile Include="Context\BindableSettings.cs" />
     <Compile Include="Context\CurrentBf4UserUpdater.cs" />
@@ -63,6 +62,7 @@
     <Compile Include="Context\IDataContextUpdater.cs" />
     <Compile Include="Context\PartialObject.cs" />
     <Compile Include="Context\ServerStatus.cs" />
+    <Compile Include="Context\ServerStatusCollection.cs" />
     <Compile Include="Context\SessionData.cs" />
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />

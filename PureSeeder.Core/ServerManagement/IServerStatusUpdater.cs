@@ -31,27 +31,6 @@ namespace PureSeeder.Core.ServerManagement
 
                 Task.WaitAll(tasks.ToArray());
             });
-
-            // Deprecated
-//            return Task.Factory.StartNew(() =>
-//                {
-//                    // Clear out current statuses
-//                    context.Session.ServerStatuses.Clear();
-//
-//                    var httpClient = new HttpClient();
-//
-//                    var tasks = new List<Task>();
-//
-//                    foreach (var server in context.Settings.Servers)
-//                    {
-//                        var address = server.Address;
-//                        //httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result));
-//
-//                        tasks.Add(httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result)));
-//                    }
-//
-//                    Task.WaitAll(tasks.ToArray());
-//                });
         }
 
         // Todo: This could be cleaned up, it's pretty sloppy
@@ -94,7 +73,6 @@ namespace PureSeeder.Core.ServerManagement
 
         private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax)
         {
-            //context.Session.ServerStatuses.Add(address, new ServerStatus() {CurPlayers = curPlayers, MaxPlayers = maxPlayers}); Deprecated
             context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax);
         }
     }
