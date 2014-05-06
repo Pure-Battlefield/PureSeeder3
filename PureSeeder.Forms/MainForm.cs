@@ -77,7 +77,7 @@ namespace PureSeeder.Forms
         {
             await _context.UpdateServerStatuses();
 
-            var blah = "meh";
+            var blah = "meh";  // Todo: Handle the updated server statuses
         }
 
         private void UiSetup()

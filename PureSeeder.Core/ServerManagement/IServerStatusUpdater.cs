@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,18 +17,24 @@ namespace PureSeeder.Core.ServerManagement
     {
         public Task UpdateServerStatuses(IDataContext context)
         {
-            return new Task(() =>
+            return Task.Factory.StartNew(() =>
                 {
                     // Clear out current statuses
                     context.Session.ServerStatuses.Clear();
 
                     var httpClient = new HttpClient();
 
+                    var tasks = new List<Task>();
+
                     foreach (var server in context.Settings.Servers)
                     {
                         var address = server.Address;
-                        httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result));
+                        //httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result));
+
+                        tasks.Add(httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result)));
                     }
+
+                    Task.WaitAll(tasks.ToArray());
                 });
         }
 
