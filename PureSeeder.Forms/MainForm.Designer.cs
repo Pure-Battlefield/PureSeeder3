@@ -697,11 +697,13 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
             // 
             // ServerNameCol
             // 
+            this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ServerNameCol.DataPropertyName = "Name";
             this.ServerNameCol.HeaderText = "Server Name";
             this.ServerNameCol.Name = "ServerNameCol";
@@ -709,38 +711,48 @@
             // 
             // AddressCol
             // 
+            this.AddressCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.AddressCol.DataPropertyName = "Address";
             this.AddressCol.HeaderText = "Address";
             this.AddressCol.Name = "AddressCol";
             this.AddressCol.ReadOnly = true;
+            this.AddressCol.Width = 70;
             // 
             // MinPlayersCol
             // 
+            this.MinPlayersCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.MinPlayersCol.DataPropertyName = "MinPlayers";
-            this.MinPlayersCol.HeaderText = "Minimum Players";
+            this.MinPlayersCol.HeaderText = "Seed Below";
             this.MinPlayersCol.Name = "MinPlayersCol";
             this.MinPlayersCol.ReadOnly = true;
+            this.MinPlayersCol.Width = 89;
             // 
             // MaxPlayersCol
             // 
+            this.MaxPlayersCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.MaxPlayersCol.DataPropertyName = "MaxPlayers";
-            this.MaxPlayersCol.HeaderText = "Maximum Players";
+            this.MaxPlayersCol.HeaderText = "Stop Seeding At";
             this.MaxPlayersCol.Name = "MaxPlayersCol";
             this.MaxPlayersCol.ReadOnly = true;
+            this.MaxPlayersCol.Width = 91;
             // 
             // CurrentPlayersCol
             // 
+            this.CurrentPlayersCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.CurrentPlayersCol.DataPropertyName = "CurPlayers";
             this.CurrentPlayersCol.HeaderText = "Current Players";
             this.CurrentPlayersCol.Name = "CurrentPlayersCol";
             this.CurrentPlayersCol.ReadOnly = true;
+            this.CurrentPlayersCol.Width = 95;
             // 
             // ServerMaxCol
             // 
+            this.ServerMaxCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.ServerMaxCol.DataPropertyName = "ServerMax";
             this.ServerMaxCol.HeaderText = "Server Max";
             this.ServerMaxCol.Name = "ServerMaxCol";
             this.ServerMaxCol.ReadOnly = true;
+            this.ServerMaxCol.Width = 79;
             // 
             // MainForm
             // 
