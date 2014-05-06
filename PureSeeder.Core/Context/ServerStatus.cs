@@ -67,13 +67,23 @@ namespace PureSeeder.Core.Context
         public new string Name
         {
             get { return _innerServer.Name; }
-            set { SetProperty(_innerServer.Name, value, s => s); }
+            //set { SetProperty(_innerServer.Name, value, s => s); }
         }
 
         public new string Address
         {
             get { return _innerServer.Address; }
-            set { SetProperty(_innerServer.Address, value, s => s); }
+            //set { SetProperty(_innerServer.Address, value, s => s); }
+        }
+
+        public new int MinPlayers
+        {
+            get { return _innerServer.MinPlayers; }
+        }
+
+        public new int MaxPlayers
+        {
+            get { return _innerServer.MaxPlayers; }
         }
     }
 
@@ -88,12 +98,19 @@ namespace PureSeeder.Core.Context
             Init(serverCollection);
         }
 
-        private void Init(IEnumerable<Server> serverCollection)
+        private void Init(Servers serverCollection)
         {
+            serverCollection.ListChanged += ServerCollectionOnListChanged ;
+
             foreach (var server in serverCollection)
             {
                 this.Add(new ServerStatus(server));
             }
+        }
+
+        private void ServerCollectionOnListChanged(object sender, ListChangedEventArgs listChangedEventArgs)
+        {
+            OnListChanged(listChangedEventArgs);
         }
 
         public void UpdateStatus(string address, int? curPlayers, int? serverMax)
@@ -105,6 +122,54 @@ namespace PureSeeder.Core.Context
 
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
+        }
+
+        public delegate void ServerChangedHandler(object sender, PropertyChangedEventArgs e);
+        public event ServerChangedHandler ServerChanged;
+
+        protected override void OnAddingNew(AddingNewEventArgs e)
+        {
+            if (e.NewObject != null)
+                ((ServerStatus)e.NewObject).PropertyChanged += OnServerChanged;
+
+            base.OnAddingNew(e);
+        }
+
+        protected override void RemoveItem(int index)
+        {
+            if (this[index] != null)
+                this[index].PropertyChanged -= OnServerChanged;
+
+            base.RemoveItem(index);
+        }
+
+        private void OnServerChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var handler = ServerChanged;
+            if (handler != null)
+                handler(sender, e);
+        }
+
+        public void MoveUp(int index)
+        {
+            if (index <= 0) return;
+
+            var item = this[index];
+            var itemAbove = this[index - 1];
+
+            this.RemoveAt(index);
+            this.Insert(index - 1, item);
+        }
+
+        public void MoveDown(int index)
+        {
+            if (index + 1 >= this.Count) return;
+
+            var item = this[index];
+            var itemBelow = this[index + 1];
+
+            this.RemoveAt(index);
+            this.Insert(index + 1, item);
         }
     }
 }
