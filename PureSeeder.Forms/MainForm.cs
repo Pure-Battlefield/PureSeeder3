@@ -191,6 +191,7 @@ namespace PureSeeder.Forms
 //            var statusBindingSource = new BindingSource() {DataSource = statusCollection};
 
             var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
+//            var statusBindingSource = new BindingSource() {DataSource = _context.Settings.Servers};
 
             dataGridView1.DataSource = statusBindingSource;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,34 +11,6 @@ using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Context
 {
-
-    // Deprecated
-//    public class ServerStatus : BindableBase
-//    {
-//        private int? _curPlayers;
-//        private int? _serverMax;
-//        private Server _server;
-//
-//        public ServerStatus([NotNull] Server innerServer)
-//        {
-//            if (innerServer == null) throw new ArgumentNullException("innerServer");
-//            SetField(ref _server, innerServer);
-//        }
-//
-//        public int? CurPlayers
-//        {
-//            get { return _curPlayers; }
-//            set { SetField(ref _curPlayers, value); }
-//        }
-//
-//        public int? ServerMax
-//        {
-//            get { return _serverMax; } 
-//            set { SetField(ref _serverMax, value); }
-//        }
-//
-//        public Server Server { get { return _server; } }
-//    }
 
     public class ServerStatus : Server
     {
@@ -89,32 +62,70 @@ namespace PureSeeder.Core.Context
 
     public class ServerStatusCollection : BindingList<ServerStatus>
     {
-        private readonly Servers _serverCollection;
+        private Servers _serverCollection;
+        private Dictionary<string, Tuple<int?, int?>> _innerStatusCollection; 
+
+        public ServerStatusCollection()
+        {
+            _serverCollection = new Servers();
+            _innerStatusCollection = new Dictionary<string, Tuple<int?, int?>>();
+        }
         
         public void SetInnerServerCollection([NotNull] Servers serverCollection)
         {
             if (serverCollection == null) throw new ArgumentNullException("serverCollection");
+            _serverCollection = serverCollection;
 
             Init(serverCollection);
+
+            _serverCollection.ListChanged += InnerListChanged;
         }
 
         private void Init(Servers serverCollection)
         {
-            serverCollection.ListChanged += ServerCollectionOnListChanged ;
-
             foreach (var server in serverCollection)
             {
-                this.Add(new ServerStatus(server));
+                var newServerStatus = new ServerStatus(server);
+                var innerStatus = _innerStatusCollection.FirstOrDefault(x => x.Key == server.Address).Value;
+                if (innerStatus != null)
+                {
+                    newServerStatus.CurPlayers = innerStatus.Item1;
+                    newServerStatus.ServerMax = innerStatus.Item2;
+                }
+                this.Add(newServerStatus);
             }
         }
 
-        private void ServerCollectionOnListChanged(object sender, ListChangedEventArgs listChangedEventArgs)
+        private void InnerListChanged(object sender, ListChangedEventArgs e)
         {
-            OnListChanged(listChangedEventArgs);
+            this.Clear();
+
+            Init((Servers) sender);
         }
 
+        public new event ListChangedEventHandler ListChanged
+        {
+            add { _serverCollection.ListChanged += value; }
+            remove { _serverCollection.ListChanged -= value; }
+        }
+
+        public new event AddingNewEventHandler AddingNew
+        {
+            add { _serverCollection.AddingNew += value; }
+            remove { _serverCollection.AddingNew -= value; }
+        }
+
+        public new event Servers.ServerChangedHandler ServerChanged
+        {
+            add { _serverCollection.ServerChanged += value; }
+            remove { _serverCollection.ServerChanged -= value; }
+        }
+      
         public void UpdateStatus(string address, int? curPlayers, int? serverMax)
         {
+            _innerStatusCollection[address] = new Tuple<int?, int?>(curPlayers, serverMax);
+
+            // Update if it exists in the collection
             if (!this.Any(x => x.Address == address))
                 return;
 
@@ -124,31 +135,31 @@ namespace PureSeeder.Core.Context
             server.ServerMax = serverMax;
         }
 
-        public delegate void ServerChangedHandler(object sender, PropertyChangedEventArgs e);
-        public event ServerChangedHandler ServerChanged;
+//        public delegate void ServerChangedHandler(object sender, PropertyChangedEventArgs e);
+//        public event ServerChangedHandler ServerChanged;
 
-        protected override void OnAddingNew(AddingNewEventArgs e)
-        {
-            if (e.NewObject != null)
-                ((ServerStatus)e.NewObject).PropertyChanged += OnServerChanged;
+//        protected override void OnAddingNew(AddingNewEventArgs e)
+//        {
+//            if (e.NewObject != null)
+//                ((ServerStatus)e.NewObject).PropertyChanged += OnServerChanged;
+//
+//            base.OnAddingNew(e);
+//        }
+//
+//        protected override void RemoveItem(int index)
+//        {
+//            if (this[index] != null)
+//                this[index].PropertyChanged -= OnServerChanged;
+//
+//            base.RemoveItem(index);
+//        }
 
-            base.OnAddingNew(e);
-        }
-
-        protected override void RemoveItem(int index)
-        {
-            if (this[index] != null)
-                this[index].PropertyChanged -= OnServerChanged;
-
-            base.RemoveItem(index);
-        }
-
-        private void OnServerChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var handler = ServerChanged;
-            if (handler != null)
-                handler(sender, e);
-        }
+//        private void OnServerChanged(object sender, PropertyChangedEventArgs e)
+//        {
+//            var handler = ServerChanged;
+//            if (handler != null)
+//                handler(sender, e);
+//        }
 
         public void MoveUp(int index)
         {
@@ -170,6 +181,67 @@ namespace PureSeeder.Core.Context
 
             this.RemoveAt(index);
             this.Insert(index + 1, item);
+        }
+    }
+
+    class cr : IList<object>
+    {
+        public IEnumerator<object> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(object[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count { get; private set; }
+        public bool IsReadOnly { get; private set; }
+        public int IndexOf(object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, object item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object this[int index]
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
     }
 }
