@@ -12,6 +12,7 @@ namespace PureSeeder.Core.Context
     {
         private int? _curPlayers;
         private int? _serverMax;
+        private string _blServerName;
 
         private readonly Server _innerServer;
 
@@ -31,6 +32,12 @@ namespace PureSeeder.Core.Context
         {
             get { return _serverMax; } 
             set { SetField(ref _serverMax, value); }
+        }
+
+        public string BlServerName
+        {
+            get { return _blServerName; } 
+            set { SetField(ref _blServerName, value); }
         }
 
         public new string Name

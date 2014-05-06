@@ -38,7 +38,7 @@ namespace PureSeeder.Core.ServerManagement
         {
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                AddServerStatus(context, address, null, null);
+                AddServerStatus(context, address, null, null, string.Empty);
                 return;
             }
 
@@ -46,34 +46,40 @@ namespace PureSeeder.Core.ServerManagement
 
             if (stringContent == null)
             {
-                AddServerStatus(context, address, null, null);
+                AddServerStatus(context, address, null, null, string.Empty);
                 return;
             }
+
+            int? nCurPlayers = null, nMaxPlayers = null;
 
             var curPlayersRegEx = new Regex(@"""slots"".*?""2"":{""current"":(.*?),""max"":(.*?)}");
 
             var curPlayersMatch = curPlayersRegEx.Match(stringContent);
 
-            if (!curPlayersMatch.Success)
-            {
-                AddServerStatus(context, address, null, null);
-                return;
-            }
-
             int curPlayers, maxPlayers;
-            int? nCurPlayers = null, nMaxPlayers = null;
-
+            
             if(int.TryParse(curPlayersMatch.Groups[1].Value, out curPlayers))
                 nCurPlayers = curPlayers;
             if (int.TryParse(curPlayersMatch.Groups[2].Value, out maxPlayers))
                 nMaxPlayers = maxPlayers;
 
-            AddServerStatus(context, address, nCurPlayers, nMaxPlayers);
+            var serverNameRegex = new Regex(@"""name"":""(.*?)"",");
+
+            var serverPlayersMatch = serverNameRegex.Match(stringContent);
+
+            string serverName = string.Empty;
+
+            if (serverPlayersMatch.Success)
+            {
+                serverName = serverPlayersMatch.Groups[1].Value;
+            }
+
+            AddServerStatus(context, address, nCurPlayers, nMaxPlayers, serverName);
         }
 
-        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax)
+        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax, string blServerName)
         {
-            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax);
+            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax, blServerName);
         }
     }
 

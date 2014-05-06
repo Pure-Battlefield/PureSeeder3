@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.serverSelector = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.webControlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.browserPanel = new System.Windows.Forms.Panel();
@@ -42,10 +41,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.currentLoggedInUser = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.SeedingMinPlayers = new System.Windows.Forms.TextBox();
-            this.SeedingMaxPlayers = new System.Windows.Forms.TextBox();
             this.saveSettings = new System.Windows.Forms.Button();
             this.seedingEnabled = new System.Windows.Forms.CheckBox();
             this.logging = new System.Windows.Forms.CheckBox();
@@ -82,6 +77,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.email = new System.Windows.Forms.TextBox();
             this.AppSettingsTab = new System.Windows.Forms.TabPage();
+            this.statusRefresh = new System.Windows.Forms.Button();
+            this.statusRefreshInterval = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.autoMinimizeGame = new System.Windows.Forms.CheckBox();
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -91,14 +89,12 @@
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BLServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label8 = new System.Windows.Forms.Label();
-            this.statusRefreshInterval = new System.Windows.Forms.TextBox();
-            this.statusRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -114,16 +110,6 @@
             this.StatusTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // serverSelector
-            // 
-            this.serverSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.serverSelector.FormattingEnabled = true;
-            this.serverSelector.Location = new System.Drawing.Point(6, 6);
-            this.serverSelector.Name = "serverSelector";
-            this.serverSelector.Size = new System.Drawing.Size(370, 21);
-            this.serverSelector.TabIndex = 0;
-            this.serverSelector.SelectionChangeCommitted += new System.EventHandler(this.serverSelector_SelectionChangeCommitted);
             // 
             // label1
             // 
@@ -235,38 +221,6 @@
             this.currentLoggedInUser.Size = new System.Drawing.Size(110, 20);
             this.currentLoggedInUser.TabIndex = 15;
             this.currentLoggedInUser.Text = "Not Logged In";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 38);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(106, 13);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Seeding Min Players:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 65);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(109, 13);
-            this.label7.TabIndex = 17;
-            this.label7.Text = "Seeding Max Players:";
-            // 
-            // SeedingMinPlayers
-            // 
-            this.SeedingMinPlayers.Location = new System.Drawing.Point(119, 35);
-            this.SeedingMinPlayers.Name = "SeedingMinPlayers";
-            this.SeedingMinPlayers.Size = new System.Drawing.Size(100, 20);
-            this.SeedingMinPlayers.TabIndex = 18;
-            // 
-            // SeedingMaxPlayers
-            // 
-            this.SeedingMaxPlayers.Location = new System.Drawing.Point(119, 62);
-            this.SeedingMaxPlayers.Name = "SeedingMaxPlayers";
-            this.SeedingMaxPlayers.Size = new System.Drawing.Size(100, 20);
-            this.SeedingMaxPlayers.TabIndex = 19;
             // 
             // saveSettings
             // 
@@ -531,11 +485,6 @@
             // ServerSettingsTab
             // 
             this.ServerSettingsTab.Controls.Add(this.editServers);
-            this.ServerSettingsTab.Controls.Add(this.serverSelector);
-            this.ServerSettingsTab.Controls.Add(this.label6);
-            this.ServerSettingsTab.Controls.Add(this.SeedingMinPlayers);
-            this.ServerSettingsTab.Controls.Add(this.label7);
-            this.ServerSettingsTab.Controls.Add(this.SeedingMaxPlayers);
             this.ServerSettingsTab.Controls.Add(this.seedingEnabled);
             this.ServerSettingsTab.Location = new System.Drawing.Point(4, 22);
             this.ServerSettingsTab.Name = "ServerSettingsTab";
@@ -607,6 +556,32 @@
             this.AppSettingsTab.TabIndex = 2;
             this.AppSettingsTab.Text = "Application";
             this.AppSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // statusRefresh
+            // 
+            this.statusRefresh.Location = new System.Drawing.Point(214, 32);
+            this.statusRefresh.Name = "statusRefresh";
+            this.statusRefresh.Size = new System.Drawing.Size(87, 23);
+            this.statusRefresh.TabIndex = 33;
+            this.statusRefresh.Text = "Refresh Now";
+            this.statusRefresh.UseVisualStyleBackColor = true;
+            this.statusRefresh.Click += new System.EventHandler(this.statusRefresh_Click);
+            // 
+            // statusRefreshInterval
+            // 
+            this.statusRefreshInterval.Location = new System.Drawing.Point(155, 34);
+            this.statusRefreshInterval.Name = "statusRefreshInterval";
+            this.statusRefreshInterval.Size = new System.Drawing.Size(43, 20);
+            this.statusRefreshInterval.TabIndex = 32;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(10, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(131, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Status Refresh (Seconds):";
             // 
             // autoMinimizeGame
             // 
@@ -694,6 +669,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ServerNameCol,
+            this.BLServerNameCol,
             this.AddressCol,
             this.MinPlayersCol,
             this.MaxPlayersCol,
@@ -709,11 +685,20 @@
             // 
             // ServerNameCol
             // 
-            this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.ServerNameCol.DataPropertyName = "Name";
             this.ServerNameCol.HeaderText = "Server Name";
             this.ServerNameCol.Name = "ServerNameCol";
             this.ServerNameCol.ReadOnly = true;
+            this.ServerNameCol.Width = 94;
+            // 
+            // BLServerNameCol
+            // 
+            this.BLServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.BLServerNameCol.DataPropertyName = "BlServerName";
+            this.BLServerNameCol.HeaderText = "Battlelog Server Name";
+            this.BLServerNameCol.Name = "BLServerNameCol";
+            this.BLServerNameCol.ReadOnly = true;
             // 
             // AddressCol
             // 
@@ -731,7 +716,7 @@
             this.MinPlayersCol.HeaderText = "Seed Below";
             this.MinPlayersCol.Name = "MinPlayersCol";
             this.MinPlayersCol.ReadOnly = true;
-            this.MinPlayersCol.Width = 82;
+            this.MinPlayersCol.Width = 89;
             // 
             // MaxPlayersCol
             // 
@@ -759,32 +744,6 @@
             this.ServerMaxCol.Name = "ServerMaxCol";
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 37);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(131, 13);
-            this.label8.TabIndex = 31;
-            this.label8.Text = "Status Refresh (Seconds):";
-            // 
-            // statusRefreshInterval
-            // 
-            this.statusRefreshInterval.Location = new System.Drawing.Point(155, 34);
-            this.statusRefreshInterval.Name = "statusRefreshInterval";
-            this.statusRefreshInterval.Size = new System.Drawing.Size(43, 20);
-            this.statusRefreshInterval.TabIndex = 32;
-            // 
-            // statusRefresh
-            // 
-            this.statusRefresh.Location = new System.Drawing.Point(214, 32);
-            this.statusRefresh.Name = "statusRefresh";
-            this.statusRefresh.Size = new System.Drawing.Size(87, 23);
-            this.statusRefresh.TabIndex = 33;
-            this.statusRefresh.Text = "Refresh Now";
-            this.statusRefresh.UseVisualStyleBackColor = true;
-            this.statusRefresh.Click += new System.EventHandler(this.statusRefresh_Click);
             // 
             // MainForm
             // 
@@ -831,7 +790,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox serverSelector;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource webControlBindingSource;
         private System.Windows.Forms.Panel browserPanel;
@@ -844,10 +802,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label currentLoggedInUser;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox SeedingMinPlayers;
-        private System.Windows.Forms.TextBox SeedingMaxPlayers;
         private System.Windows.Forms.Button saveSettings;
         private System.Windows.Forms.CheckBox seedingEnabled;
         private System.Windows.Forms.CheckBox logging;
@@ -892,15 +846,16 @@
         private System.Windows.Forms.TabPage BrowserTab;
         private System.Windows.Forms.TabPage StatusTab;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button statusRefresh;
+        private System.Windows.Forms.TextBox statusRefreshInterval;
+        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BLServerNameCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
-        private System.Windows.Forms.Button statusRefresh;
-        private System.Windows.Forms.TextBox statusRefreshInterval;
-        private System.Windows.Forms.Label label8;
     }
 }
 

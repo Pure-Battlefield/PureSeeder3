@@ -10,12 +10,12 @@ namespace PureSeeder.Core.Context
     public class ServerStatusCollection : BindingList<ServerStatus>
     {
         private Servers _serverCollection;
-        private Dictionary<string, Tuple<int?, int?>> _innerStatusCollection; 
+        private Dictionary<string, Tuple<int?, int?, string>> _innerStatusCollection; 
 
         public ServerStatusCollection()
         {
             _serverCollection = new Servers();
-            _innerStatusCollection = new Dictionary<string, Tuple<int?, int?>>();
+            _innerStatusCollection = new Dictionary<string, Tuple<int?, int?, string>>();
         }
         
         public void SetInnerServerCollection([NotNull] Servers serverCollection)
@@ -38,6 +38,7 @@ namespace PureSeeder.Core.Context
                 {
                     newServerStatus.CurPlayers = innerStatus.Item1;
                     newServerStatus.ServerMax = innerStatus.Item2;
+                    newServerStatus.BlServerName = innerStatus.Item3;
                 }
                 this.Add(newServerStatus);
             }
@@ -68,9 +69,9 @@ namespace PureSeeder.Core.Context
             remove { _serverCollection.ServerChanged -= value; }
         }
       
-        public void UpdateStatus(string address, int? curPlayers, int? serverMax)
+        public void UpdateStatus(string address, int? curPlayers, int? serverMax, string blServerName)
         {
-            _innerStatusCollection[address] = new Tuple<int?, int?>(curPlayers, serverMax);
+            _innerStatusCollection[address] = new Tuple<int?, int?, string>(curPlayers, serverMax, blServerName);
 
             // Update if it exists in the collection
             if (!this.Any(x => x.Address == address))
@@ -80,6 +81,7 @@ namespace PureSeeder.Core.Context
 
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
+            server.BlServerName = blServerName;
         }
     }
 }

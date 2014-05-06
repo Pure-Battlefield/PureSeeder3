@@ -63,7 +63,7 @@ namespace PureSeeder.Forms
             CreateBindings();
             UiSetup();
 
-            //UpdateServerStatuses();
+            UpdateServerStatuses();
 
             LoadBattlelog();
 
@@ -152,18 +152,8 @@ namespace PureSeeder.Forms
 
         private void CreateBindings()
         {
-            var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers,};
-
-            serverSelector.DataSource = serversBindingSource;
-            serverSelector.DisplayMember = "Name";
-
             // Controlling this manually
             //serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer, false, DataSourceUpdateMode.OnPropertyChanged);
-
-            SeedingMinPlayers.DataBindings.Add("Text", serversBindingSource, "MinPlayers", true,
-                DataSourceUpdateMode.OnPropertyChanged);
-            SeedingMaxPlayers.DataBindings.Add("Text", serversBindingSource, "MaxPlayers", true,
-                DataSourceUpdateMode.OnPropertyChanged);
 
             username.DataBindings.Add("Text", _context.Settings, x => x.Username);
             password.DataBindings.Add("Text", _context.Settings, x => x.Password);
@@ -284,7 +274,7 @@ namespace PureSeeder.Forms
 
         private async void LoadPage()
         {
-            string selectedUrl = GetAddress(serverSelector);
+            string selectedUrl = "http://battlelog.battlefield.com/bf4/" /*GetAddress(serverSelector) Deprecated*/;
             if (selectedUrl == String.Empty)
                 selectedUrl = Constants.DefaultUrl;
 
@@ -488,7 +478,7 @@ namespace PureSeeder.Forms
 
         private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            _context.Settings.CurrentServer = serverSelector.SelectedIndex;
+//            _context.Settings.CurrentServer = serverSelector.SelectedIndex; Deprecated
             AnyRefresh();
         }
 
