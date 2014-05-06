@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.ServerManagement
 {
@@ -18,24 +19,39 @@ namespace PureSeeder.Core.ServerManagement
         public Task UpdateServerStatuses(IDataContext context)
         {
             return Task.Factory.StartNew(() =>
+            {
+                var httpClient = new HttpClient();
+                var tasks = new List<Task>();
+
+                foreach (var serverStatus in context.Session.ServerStatuses)
                 {
-                    // Clear out current statuses
-                    context.Session.ServerStatuses.Clear();
+                    var address = serverStatus.Address;
+                    tasks.Add(httpClient.GetAsync(address).ContinueWith(x => HandleResponse(context, address, x.Result)));
+                }
 
-                    var httpClient = new HttpClient();
+                Task.WaitAll(tasks.ToArray());
+            });
 
-                    var tasks = new List<Task>();
-
-                    foreach (var server in context.Settings.Servers)
-                    {
-                        var address = server.Address;
-                        //httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result));
-
-                        tasks.Add(httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result)));
-                    }
-
-                    Task.WaitAll(tasks.ToArray());
-                });
+            // Deprecated
+//            return Task.Factory.StartNew(() =>
+//                {
+//                    // Clear out current statuses
+//                    context.Session.ServerStatuses.Clear();
+//
+//                    var httpClient = new HttpClient();
+//
+//                    var tasks = new List<Task>();
+//
+//                    foreach (var server in context.Settings.Servers)
+//                    {
+//                        var address = server.Address;
+//                        //httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result));
+//
+//                        tasks.Add(httpClient.GetAsync(server.Address).ContinueWith(x => HandleResponse(context, address, x.Result)));
+//                    }
+//
+//                    Task.WaitAll(tasks.ToArray());
+//                });
         }
 
         // Todo: This could be cleaned up, it's pretty sloppy
@@ -76,9 +92,10 @@ namespace PureSeeder.Core.ServerManagement
             AddServerStatus(context, address, nCurPlayers, nMaxPlayers);
         }
 
-        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? maxPlayers)
+        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax)
         {
-            context.Session.ServerStatuses.Add(address, new ServerStatus() {CurPlayers = curPlayers, MaxPlayers = maxPlayers});
+            //context.Session.ServerStatuses.Add(address, new ServerStatus() {CurPlayers = curPlayers, MaxPlayers = maxPlayers}); Deprecated
+            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax);
         }
     }
 

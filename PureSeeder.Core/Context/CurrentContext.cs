@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -42,6 +43,8 @@ namespace PureSeeder.Core.Context
             _bindableSettings = bindableSettings;
             _updaters = updaters;
             _serverStatusUpdater = serverStatusUpdater;
+
+            _sessionData.ServerStatuses.SetInnerServerCollection(_bindableSettings.Servers);
         }
 
         public SessionData Session { get { return _sessionData; } }
@@ -93,7 +96,26 @@ namespace PureSeeder.Core.Context
             OnContextUpdated();
         }
 
-        
+        public IEnumerable Junk()
+        {
+//            var statusCollection = Settings.Servers.GroupJoin(
+//                Session.ServerStatuses,
+//                server => server.Address,
+//                status => status.Key,
+//                (server, status) => new { server, status })
+//                .SelectMany(r => r.status.DefaultIfEmpty(), (r, kvp) => new { r, kvp })
+//                .Select(c => new
+//                {
+//                    Name = c.r.server.Name,
+//                    Address = c.r.server.Address,
+//                    MinPlayers = c.r.server.MinPlayers,
+//                    MaxPlayers = c.r.server.MaxPlayers,
+//                    CurPlayers = c.kvp.Value != null ? c.kvp.Value.CurPlayers : -1,
+//                    ServerMax = c.kvp.Value != null ? c.kvp.Value.MaxPlayers : -1
+//                });
+
+            return null;
+        }
 
         // Todo: This should be abstracted and injected
         public bool BfIsRunning()

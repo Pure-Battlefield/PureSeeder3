@@ -86,6 +86,16 @@
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.BrowserTab = new System.Windows.Forms.TabPage();
+            this.StatusTab = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -96,6 +106,10 @@
             this.UserSettingsTab.SuspendLayout();
             this.AppSettingsTab.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.BrowserTab.SuspendLayout();
+            this.StatusTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // serverSelector
@@ -123,10 +137,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.browserPanel.Controls.Add(this.geckoWebBrowser1);
-            this.browserPanel.Location = new System.Drawing.Point(12, 174);
+            this.browserPanel.Location = new System.Drawing.Point(3, 3);
             this.browserPanel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 80);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(1100, 510);
+            this.browserPanel.Size = new System.Drawing.Size(1090, 916);
             this.browserPanel.TabIndex = 3;
             // 
             // geckoWebBrowser1
@@ -137,7 +151,7 @@
             this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
             this.geckoWebBrowser1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.geckoWebBrowser1.Name = "geckoWebBrowser1";
-            this.geckoWebBrowser1.Size = new System.Drawing.Size(1100, 510);
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1090, 916);
             this.geckoWebBrowser1.TabIndex = 0;
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
             this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
@@ -409,7 +423,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -429,14 +443,14 @@
             // viewReleaseNotesToolStripMenuItem
             // 
             this.viewReleaseNotesToolStripMenuItem.Name = "viewReleaseNotesToolStripMenuItem";
-            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.viewReleaseNotesToolStripMenuItem.Text = "About";
             this.viewReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.viewReleaseNotesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -634,18 +648,112 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
             // 
+            // tabControl2
+            // 
+            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl2.Controls.Add(this.BrowserTab);
+            this.tabControl2.Controls.Add(this.StatusTab);
+            this.tabControl2.Location = new System.Drawing.Point(12, 174);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(1103, 506);
+            this.tabControl2.TabIndex = 0;
+            // 
+            // BrowserTab
+            // 
+            this.BrowserTab.Controls.Add(this.browserPanel);
+            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
+            this.BrowserTab.Name = "BrowserTab";
+            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
+            this.BrowserTab.TabIndex = 0;
+            this.BrowserTab.Text = "Browser";
+            this.BrowserTab.UseVisualStyleBackColor = true;
+            // 
+            // StatusTab
+            // 
+            this.StatusTab.Controls.Add(this.dataGridView1);
+            this.StatusTab.Location = new System.Drawing.Point(4, 22);
+            this.StatusTab.Name = "StatusTab";
+            this.StatusTab.Size = new System.Drawing.Size(1095, 480);
+            this.StatusTab.TabIndex = 0;
+            this.StatusTab.Text = "Status";
+            this.StatusTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ServerNameCol,
+            this.AddressCol,
+            this.MinPlayersCol,
+            this.MaxPlayersCol,
+            this.CurrentPlayersCol,
+            this.ServerMaxCol});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // ServerNameCol
+            // 
+            this.ServerNameCol.DataPropertyName = "Name";
+            this.ServerNameCol.HeaderText = "Server Name";
+            this.ServerNameCol.Name = "ServerNameCol";
+            this.ServerNameCol.ReadOnly = true;
+            // 
+            // AddressCol
+            // 
+            this.AddressCol.DataPropertyName = "Address";
+            this.AddressCol.HeaderText = "Address";
+            this.AddressCol.Name = "AddressCol";
+            this.AddressCol.ReadOnly = true;
+            // 
+            // MinPlayersCol
+            // 
+            this.MinPlayersCol.DataPropertyName = "MinPlayers";
+            this.MinPlayersCol.HeaderText = "Minimum Players";
+            this.MinPlayersCol.Name = "MinPlayersCol";
+            this.MinPlayersCol.ReadOnly = true;
+            // 
+            // MaxPlayersCol
+            // 
+            this.MaxPlayersCol.DataPropertyName = "MaxPlayers";
+            this.MaxPlayersCol.HeaderText = "Maximum Players";
+            this.MaxPlayersCol.Name = "MaxPlayersCol";
+            this.MaxPlayersCol.ReadOnly = true;
+            // 
+            // CurrentPlayersCol
+            // 
+            this.CurrentPlayersCol.DataPropertyName = "CurPlayers";
+            this.CurrentPlayersCol.HeaderText = "Current Players";
+            this.CurrentPlayersCol.Name = "CurrentPlayersCol";
+            this.CurrentPlayersCol.ReadOnly = true;
+            // 
+            // ServerMaxCol
+            // 
+            this.ServerMaxCol.DataPropertyName = "ServerMax";
+            this.ServerMaxCol.HeaderText = "Server Max";
+            this.ServerMaxCol.Name = "ServerMaxCol";
+            this.ServerMaxCol.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1126, 705);
+            this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.joinServerButton);
             this.Controls.Add(this.saveSettings);
-            this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.label1);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1142, 733);
@@ -668,6 +776,10 @@
             this.AppSettingsTab.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
+            this.BrowserTab.ResumeLayout(false);
+            this.StatusTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -732,6 +844,16 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.Button editServers;
         private System.Windows.Forms.ToolStripMenuItem viewReleaseNotesToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage BrowserTab;
+        private System.Windows.Forms.TabPage StatusTab;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
     }
 }
 

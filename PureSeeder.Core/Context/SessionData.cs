@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PureSeeder.Core.Configuration;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Context
 {
@@ -7,14 +8,14 @@ namespace PureSeeder.Core.Context
     {
         public SessionData()
         {
-            _serverStatuses = new Dictionary<string, ServerStatus>();
+            _serverStatuses = new ServerStatusCollection();
         }
         
         private bool _seedingEnabled = true;
         private string _currentLoggedInUser;
         private GameInfo _currentGame = Constants.Games.Bf4;
         private bool _bfIsRunning;
-        private Dictionary<string, ServerStatus> _serverStatuses;
+        private ServerStatusCollection _serverStatuses;
 
         public bool SeedingEnabled
         {
@@ -41,9 +42,6 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _bfIsRunning, value); }
         }
 
-        public Dictionary<string,  ServerStatus> ServerStatuses
-        {
-            get { return _serverStatuses; }
-        }
+        public ServerStatusCollection ServerStatuses { get { return _serverStatuses; }}
     }
 }

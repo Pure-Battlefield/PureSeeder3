@@ -5,10 +5,10 @@ namespace PureSeeder.Core.Settings
 {
     public class Server : BindableBase
     {
-        private string _name;
-        private string _address;
-        private int _minPlayers;
-        private int _maxPlayers;
+        protected string _name;
+        protected string _address;
+        protected int _minPlayers;
+        protected int _maxPlayers;
 
         [Description("Name for the server")]
         public string Name

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Deployment.Application;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,6 +11,7 @@ using Gecko;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Monitoring;
+using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
 using PureSeeder.Forms.Properties;
 using Timer = System.Windows.Forms.Timer;
@@ -167,6 +170,29 @@ namespace PureSeeder.Forms
 
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true,
                 DataSourceUpdateMode.OnPropertyChanged);
+
+//            var statusCollection = _context.Settings.Servers.Join(_context.Session.ServerStatuses, s => s.Address,
+//                ss => ss.Key, (server, kvp) => new {server.Name, server.Address, server.MinPlayers, server.MaxPlayers, kvp.Value.CurPlayers, MPlayers = kvp.Value.MaxPlayers});
+//            var statusCollection = _context.Settings.Servers.GroupJoin(
+//                _context.Session.ServerStatuses,
+//                server => server.Address,
+//                status => status.Key,
+//                (server, status) => new {server, status})
+//                .SelectMany(r => r.status.DefaultIfEmpty(), (r, kvp) => new {r, kvp})
+//                .Select(c => new
+//                {
+//                    Name = c.r.server.Name,
+//                    Address = c.r.server.Address,
+//                    MinPlayers = c.r.server.MinPlayers,
+//                    MaxPlayers = c.r.server.MaxPlayers,
+//                    CurPlayers = c.kvp.Value != null ? c.kvp.Value.CurPlayers : -1,
+//                    ServerMax = c.kvp.Value != null ? c.kvp.Value.MaxPlayers : -1
+//                });
+//            var statusBindingSource = new BindingSource() {DataSource = statusCollection};
+
+            var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
+
+            dataGridView1.DataSource = statusBindingSource;
         }
 
         #endregion Intialization
