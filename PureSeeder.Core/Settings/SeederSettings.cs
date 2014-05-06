@@ -74,6 +74,14 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting]
+        [DefaultSettingValue("60")]
+        public int StatusRefreshInterval
+        {
+            get { return ((int)this[Constants.SettingNames.StatusRefreshInterval]); }
+            set { this[Constants.SettingNames.StatusRefreshInterval] = (int)value; }
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("true")]
         public bool MinimizeToTray
         {

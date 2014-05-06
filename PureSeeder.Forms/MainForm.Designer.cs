@@ -96,6 +96,9 @@
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label8 = new System.Windows.Forms.Label();
+            this.statusRefreshInterval = new System.Windows.Forms.TextBox();
+            this.statusRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -291,7 +294,7 @@
             // 
             this.logging.AutoSize = true;
             this.logging.Enabled = false;
-            this.logging.Location = new System.Drawing.Point(52, 55);
+            this.logging.Location = new System.Drawing.Point(55, 83);
             this.logging.Name = "logging";
             this.logging.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.logging.Size = new System.Drawing.Size(64, 17);
@@ -372,7 +375,7 @@
             // minimizeToTray
             // 
             this.minimizeToTray.AutoSize = true;
-            this.minimizeToTray.Location = new System.Drawing.Point(10, 34);
+            this.minimizeToTray.Location = new System.Drawing.Point(13, 62);
             this.minimizeToTray.Name = "minimizeToTray";
             this.minimizeToTray.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.minimizeToTray.Size = new System.Drawing.Size(106, 17);
@@ -588,6 +591,9 @@
             // 
             // AppSettingsTab
             // 
+            this.AppSettingsTab.Controls.Add(this.statusRefresh);
+            this.AppSettingsTab.Controls.Add(this.statusRefreshInterval);
+            this.AppSettingsTab.Controls.Add(this.label8);
             this.AppSettingsTab.Controls.Add(this.autoMinimizeGame);
             this.AppSettingsTab.Controls.Add(this.autoMinimizeSeeder);
             this.AppSettingsTab.Controls.Add(this.label11);
@@ -605,7 +611,7 @@
             // autoMinimizeGame
             // 
             this.autoMinimizeGame.AutoSize = true;
-            this.autoMinimizeGame.Location = new System.Drawing.Point(140, 55);
+            this.autoMinimizeGame.Location = new System.Drawing.Point(143, 83);
             this.autoMinimizeGame.Name = "autoMinimizeGame";
             this.autoMinimizeGame.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.autoMinimizeGame.Size = new System.Drawing.Size(122, 17);
@@ -616,7 +622,7 @@
             // autoMinimizeSeeder
             // 
             this.autoMinimizeSeeder.AutoSize = true;
-            this.autoMinimizeSeeder.Location = new System.Drawing.Point(134, 34);
+            this.autoMinimizeSeeder.Location = new System.Drawing.Point(137, 62);
             this.autoMinimizeSeeder.Name = "autoMinimizeSeeder";
             this.autoMinimizeSeeder.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.autoMinimizeSeeder.Size = new System.Drawing.Size(128, 17);
@@ -725,7 +731,7 @@
             this.MinPlayersCol.HeaderText = "Seed Below";
             this.MinPlayersCol.Name = "MinPlayersCol";
             this.MinPlayersCol.ReadOnly = true;
-            this.MinPlayersCol.Width = 89;
+            this.MinPlayersCol.Width = 82;
             // 
             // MaxPlayersCol
             // 
@@ -753,6 +759,32 @@
             this.ServerMaxCol.Name = "ServerMaxCol";
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(10, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(131, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Status Refresh (Seconds):";
+            // 
+            // statusRefreshInterval
+            // 
+            this.statusRefreshInterval.Location = new System.Drawing.Point(155, 34);
+            this.statusRefreshInterval.Name = "statusRefreshInterval";
+            this.statusRefreshInterval.Size = new System.Drawing.Size(43, 20);
+            this.statusRefreshInterval.TabIndex = 32;
+            // 
+            // statusRefresh
+            // 
+            this.statusRefresh.Location = new System.Drawing.Point(214, 32);
+            this.statusRefresh.Name = "statusRefresh";
+            this.statusRefresh.Size = new System.Drawing.Size(87, 23);
+            this.statusRefresh.TabIndex = 33;
+            this.statusRefresh.Text = "Refresh Now";
+            this.statusRefresh.UseVisualStyleBackColor = true;
+            this.statusRefresh.Click += new System.EventHandler(this.statusRefresh_Click);
             // 
             // MainForm
             // 
@@ -866,6 +898,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
+        private System.Windows.Forms.Button statusRefresh;
+        private System.Windows.Forms.TextBox statusRefreshInterval;
+        private System.Windows.Forms.Label label8;
     }
 }
 

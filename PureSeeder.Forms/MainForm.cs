@@ -24,6 +24,7 @@ namespace PureSeeder.Forms
         private readonly IdleKickAvoider _idleKickAvoider;
         private readonly ProcessMonitor _processMonitor;
         private readonly Timer _refreshTimer;
+        private readonly Timer _statusRefreshTimer;
 
         // CancellationTokens
         private CancellationToken _avoidIdleKickCt;
@@ -43,6 +44,7 @@ namespace PureSeeder.Forms
             _context.Settings.PropertyChanged += ContextPropertyChanged;
 
             _refreshTimer = new Timer();
+            _statusRefreshTimer = new Timer();
 
             // Todo: This should be injected
             _processMonitor =
@@ -61,7 +63,7 @@ namespace PureSeeder.Forms
             CreateBindings();
             UiSetup();
 
-            UpdateServerStatuses();
+            //UpdateServerStatuses();
 
             LoadBattlelog();
 
@@ -70,6 +72,7 @@ namespace PureSeeder.Forms
             FirstRunCheck();
 
             SetRefreshTimer();
+            SetStatusRefreshTimer();
 
             // Spin up background processes
             SpinUpProcessMonitor();
@@ -132,6 +135,21 @@ namespace PureSeeder.Forms
             _refreshTimer.Start();
         }
 
+        private void SetStatusRefreshTimer()
+        {
+            int statusRefreshTimerInterval;
+            if (!int.TryParse(statusRefreshInterval.Text, out statusRefreshTimerInterval))
+                statusRefreshTimerInterval = _context.Settings.StatusRefreshInterval;
+
+            statusRefreshTimerInterval = statusRefreshTimerInterval*1000;
+
+            _statusRefreshTimer.Interval = statusRefreshTimerInterval;
+
+            _statusRefreshTimer.Tick += TimedStatusRefresh;
+
+            _statusRefreshTimer.Start();
+        }
+
         private void CreateBindings()
         {
             var serversBindingSource = new BindingSource {DataSource = _context.Settings.Servers,};
@@ -161,6 +179,7 @@ namespace PureSeeder.Forms
                 DataSourceUpdateMode.OnPropertyChanged);
             seedingEnabled.DataBindings.Add("Checked", _context.Session, x => x.SeedingEnabled);
             refreshInterval.DataBindings.Add("Text", _context.Settings, x => x.RefreshInterval);
+            statusRefreshInterval.DataBindings.Add("Text", _context.Settings, x => x.StatusRefreshInterval);
             autoMinimizeSeeder.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeSeeder, false,
                 DataSourceUpdateMode.OnPropertyChanged);
             autoMinimizeGame.DataBindings.Add("Checked", _context.Settings, x => x.AutoMinimizeGame, false,
@@ -191,6 +210,11 @@ namespace PureSeeder.Forms
         private void TimedRefresh(object sender, EventArgs e)
         {
             AnyRefresh();
+        }
+
+        private async void TimedStatusRefresh(object sender, EventArgs e)
+        {
+            await _context.UpdateServerStatuses();
         }
 
         private void AnyRefresh()
@@ -634,6 +658,11 @@ namespace PureSeeder.Forms
         private Task Sleep(int seconds)
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds*1000));
+        }
+
+        private void statusRefresh_Click(object sender, EventArgs e)
+        {
+
         }
 
         
