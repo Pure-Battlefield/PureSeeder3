@@ -89,12 +89,13 @@
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BLServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BLServerGuidCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -129,7 +130,7 @@
             this.browserPanel.Location = new System.Drawing.Point(3, 3);
             this.browserPanel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 80);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(1090, 916);
+            this.browserPanel.Size = new System.Drawing.Size(1090, 480);
             this.browserPanel.TabIndex = 3;
             // 
             // geckoWebBrowser1
@@ -140,7 +141,7 @@
             this.geckoWebBrowser1.Location = new System.Drawing.Point(3, 3);
             this.geckoWebBrowser1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.geckoWebBrowser1.Name = "geckoWebBrowser1";
-            this.geckoWebBrowser1.Size = new System.Drawing.Size(1090, 916);
+            this.geckoWebBrowser1.Size = new System.Drawing.Size(1090, 480);
             this.geckoWebBrowser1.TabIndex = 0;
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
             this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
@@ -669,7 +670,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ServerNameCol,
-            this.BLServerNameCol,
+            this.BLServerGuidCol,
             this.AddressCol,
             this.MinPlayersCol,
             this.MaxPlayersCol,
@@ -685,20 +686,20 @@
             // 
             // ServerNameCol
             // 
-            this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ServerNameCol.DataPropertyName = "Name";
             this.ServerNameCol.HeaderText = "Server Name";
             this.ServerNameCol.Name = "ServerNameCol";
             this.ServerNameCol.ReadOnly = true;
-            this.ServerNameCol.Width = 94;
             // 
-            // BLServerNameCol
+            // BLServerGuidCol
             // 
-            this.BLServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.BLServerNameCol.DataPropertyName = "BlServerName";
-            this.BLServerNameCol.HeaderText = "Battlelog Server Name";
-            this.BLServerNameCol.Name = "BLServerNameCol";
-            this.BLServerNameCol.ReadOnly = true;
+            this.BLServerGuidCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.BLServerGuidCol.DataPropertyName = "ServerGuid";
+            this.BLServerGuidCol.HeaderText = "Battlelog Server ID";
+            this.BLServerGuidCol.Name = "BLServerGuidCol";
+            this.BLServerGuidCol.ReadOnly = true;
+            this.BLServerGuidCol.Width = 121;
             // 
             // AddressCol
             // 
@@ -745,11 +746,22 @@
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(482, 70);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1126, 705);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
@@ -850,12 +862,13 @@
         private System.Windows.Forms.TextBox statusRefreshInterval;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BLServerNameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BLServerGuidCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
+        private System.Windows.Forms.Button button1;
     }
 }
 

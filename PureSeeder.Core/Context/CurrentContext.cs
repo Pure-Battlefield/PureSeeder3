@@ -5,10 +5,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PureSeeder.Core.Annotations;
 using System.Linq;
 using PureSeeder.Core.Configuration;
@@ -30,19 +33,23 @@ namespace PureSeeder.Core.Context
         private readonly BindableSettings _bindableSettings;
         private readonly IDataContextUpdater[] _updaters;
         private readonly IServerStatusUpdater _serverStatusUpdater;
+        private readonly IPlayerStatusGetter _playerStatusGetter;
 
         public SeederContext(SessionData sessionData, BindableSettings bindableSettings, IDataContextUpdater[] updaters,
-                             [NotNull] IServerStatusUpdater serverStatusUpdater)
+            [NotNull] IServerStatusUpdater serverStatusUpdater,
+            [NotNull] IPlayerStatusGetter playerStatusGetter)
         {
             if (sessionData == null) throw new ArgumentNullException("sessionData");
             if (bindableSettings == null) throw new ArgumentNullException("bindableSettings");
             if (updaters == null) throw new ArgumentNullException("updaters");
             if (serverStatusUpdater == null) throw new ArgumentNullException("serverStatusUpdater");
+            if (playerStatusGetter == null) throw new ArgumentNullException("playerStatusGetter");
 
             _sessionData = sessionData;
             _bindableSettings = bindableSettings;
             _updaters = updaters;
             _serverStatusUpdater = serverStatusUpdater;
+            _playerStatusGetter = playerStatusGetter;
 
             _sessionData.ServerStatuses.SetInnerServerCollection(_bindableSettings.Servers);
         }
@@ -116,6 +123,11 @@ namespace PureSeeder.Core.Context
 
             if(process != null)
                 process.Close();
+        }
+
+        public PlayerStatus GetPlayerStatus()
+        {
+            return _playerStatusGetter.GetPlayerStatus(this);
         }
 
         public Server CurrentServer 
@@ -209,5 +221,41 @@ namespace PureSeeder.Core.Context
         }
     }
 
-    
+    class PlayerStatusGetter : IPlayerStatusGetter
+    {
+        public PlayerStatus GetPlayerStatus(IDataContext context)
+        {
+            var player = context.Session.CurrentLoggedInUser;
+            if (player == Constants.NotLoggedInUsername)
+                return new PlayerStatus(null, null);
+
+            var httpClient = new HttpClient();
+
+            var response = httpClient.GetStringAsync("http://battlelog.battlefield.com/bf4/").Result;
+
+            var jsonRegex = new Regex(@"Surface\.globalContext = (.*)", RegexOptions.Singleline);
+
+            var jsonMatch = jsonRegex.Match(response);
+
+            if(!jsonMatch.Success)
+                return new PlayerStatus(null, null);
+
+            var json = jsonMatch.Groups[1].Value;
+
+            var jObject = JObject.Parse(json);
+
+            if(jObject == null)
+                return new PlayerStatus(null, null);
+
+            var user = jObject["session"]["user"];
+
+            if(user == null)
+                return new PlayerStatus(null, null);
+
+            var username = user["username"].Value<string>();
+            var currentServer = user["presence"]["playingMP"]["serverGuid"].Value<string>();
+
+            return new PlayerStatus(username, currentServer);
+        }
+    }
 }

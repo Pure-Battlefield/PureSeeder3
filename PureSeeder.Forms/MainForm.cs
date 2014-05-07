@@ -655,6 +655,11 @@ namespace PureSeeder.Forms
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var playerStatus = _context.GetPlayerStatus();
+        }
+
         
 
     }

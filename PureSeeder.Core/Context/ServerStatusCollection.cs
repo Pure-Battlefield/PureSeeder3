@@ -38,7 +38,7 @@ namespace PureSeeder.Core.Context
                 {
                     newServerStatus.CurPlayers = innerStatus.Item1;
                     newServerStatus.ServerMax = innerStatus.Item2;
-                    newServerStatus.BlServerName = innerStatus.Item3;
+                    newServerStatus.ServerGuid = innerStatus.Item3;
                 }
                 this.Add(newServerStatus);
             }
@@ -69,9 +69,9 @@ namespace PureSeeder.Core.Context
             remove { _serverCollection.ServerChanged -= value; }
         }
       
-        public void UpdateStatus(string address, int? curPlayers, int? serverMax, string blServerName)
+        public void UpdateStatus(string address, int? curPlayers, int? serverMax, string serverGuid)
         {
-            _innerStatusCollection[address] = new Tuple<int?, int?, string>(curPlayers, serverMax, blServerName);
+            _innerStatusCollection[address] = new Tuple<int?, int?, string>(curPlayers, serverMax, serverGuid);
 
             // Update if it exists in the collection
             if (!this.Any(x => x.Address == address))
@@ -81,7 +81,7 @@ namespace PureSeeder.Core.Context
 
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
-            server.BlServerName = blServerName;
+            server.ServerGuid = serverGuid;
         }
     }
 }

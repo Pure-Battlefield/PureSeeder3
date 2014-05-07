@@ -12,7 +12,7 @@ namespace PureSeeder.Core.Context
     {
         private int? _curPlayers;
         private int? _serverMax;
-        private string _blServerName;
+        private string _serverGuid;
 
         private readonly Server _innerServer;
 
@@ -34,10 +34,10 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _serverMax, value); }
         }
 
-        public string BlServerName
+        public string ServerGuid
         {
-            get { return _blServerName; } 
-            set { SetField(ref _blServerName, value); }
+            get { return _serverGuid; } 
+            set { SetField(ref _serverGuid, value); }
         }
 
         public new string Name

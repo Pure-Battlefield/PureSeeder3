@@ -60,7 +60,9 @@
     <Compile Include="Context\CurrentContext.cs" />
     <Compile Include="Context\IDataContext.cs" />
     <Compile Include="Context\IDataContextUpdater.cs" />
+    <Compile Include="Context\IPlayerStatusGetter.cs" />
     <Compile Include="Context\PartialObject.cs" />
+    <Compile Include="Context\PlayerStatus.cs" />
     <Compile Include="Context\ServerStatus.cs" />
     <Compile Include="Context\ServerStatusCollection.cs" />
     <Compile Include="Context\SessionData.cs" />

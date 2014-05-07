@@ -53,7 +53,9 @@ namespace PureSeeder.Forms.Initalization
                             {
                                 new CurrentBf4UserUpdater(),
                             }.ToArray(), 
-                        new ServerStatusUpdater()));
+                        new ServerStatusUpdater(),
+                        new PlayerStatusGetter()
+                        ));
 
             throw new ArgumentException(String.Format("FormsContainer cannot create an instance of the required type: {0}", type.Name));
         }
@@ -76,7 +78,8 @@ namespace PureSeeder.Forms.Initalization
                         {
                             new CurrentBf4UserUpdater(),
                         }.ToArray(),
-                    new ServerStatusUpdater());
+                    new ServerStatusUpdater(),
+                    new PlayerStatusGetter());
         }
     }
 }

@@ -63,23 +63,23 @@ namespace PureSeeder.Core.ServerManagement
             if (int.TryParse(curPlayersMatch.Groups[2].Value, out maxPlayers))
                 nMaxPlayers = maxPlayers;
 
-            var serverNameRegex = new Regex(@"""name"":""(.*?)"",");
+            var serverGuidRegex = new Regex(@"/servers/show/pc/(.*?)(?:/?$)");
 
-            var serverPlayersMatch = serverNameRegex.Match(stringContent);
+            var serverGuidMatch = serverGuidRegex.Match(response.RequestMessage.RequestUri.ToString());
 
-            string serverName = string.Empty;
+            string serverGuid = string.Empty;
 
-            if (serverPlayersMatch.Success)
+            if (serverGuidMatch.Success)
             {
-                serverName = serverPlayersMatch.Groups[1].Value;
+                serverGuid = serverGuidMatch.Groups[1].Value;
             }
 
-            AddServerStatus(context, address, nCurPlayers, nMaxPlayers, serverName);
+            AddServerStatus(context, address, nCurPlayers, nMaxPlayers, serverGuid);
         }
 
-        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax, string blServerName)
+        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax, string serverGuid)
         {
-            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax, blServerName);
+            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax, serverGuid);
         }
     }
 
