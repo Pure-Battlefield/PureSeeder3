@@ -8,7 +8,7 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://bradrhodes.github.io/PureSeeder3/beta/PureSeeder.Forms.application" />
+    <deploymentProvider codebase="http://pure-battlefield.github.io/PureSeeder3/beta/PureSeeder.Forms.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
@@ -21,7 +21,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rI0ONc5hqoMPWZg794/gshsN93IWyBGUUt6HYPXBe3E=</dsig:DigestValue>
+        <dsig:DigestValue>qEE9feon5vmfluH0kFTwjBIFj4J4q7Lyk2C8UmL07Rk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
