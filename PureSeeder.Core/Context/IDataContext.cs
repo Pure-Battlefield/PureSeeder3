@@ -64,5 +64,7 @@ namespace PureSeeder.Core.Context
         void StopGame();
 
         Server CurrentServer { get; }
+
+        void setToNextServer();
     }
 }
