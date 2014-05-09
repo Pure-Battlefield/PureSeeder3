@@ -149,9 +149,9 @@ namespace PureSeeder.Core.Context
             }
         }
 
-        public void setToNextServer()
+        public void setToFirstServer()
         {
-            _bindableSettings.CurrentServer++;
+            _bindableSettings.CurrentServer = 0;
         }
 
 
