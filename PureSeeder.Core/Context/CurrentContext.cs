@@ -149,6 +149,11 @@ namespace PureSeeder.Core.Context
             }
         }
 
+        public void setToNextServer()
+        {
+            _bindableSettings.CurrentServer++;
+        }
+
 
         public event ContextUpdatedHandler OnContextUpdate;
         

@@ -298,6 +298,8 @@ namespace PureSeeder.Forms
                 return;
 
             JoinServer();
+
+            _context.setToNextServer();
         }
 
         private void UpdateInterface()
