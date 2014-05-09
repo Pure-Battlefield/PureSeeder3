@@ -221,6 +221,14 @@ namespace PureSeeder.Core.Context
         }
     }
 
+    class GetPlayerStatusFromBrowser : IPlayerStatusGetter
+    {
+        public PlayerStatus GetPlayerStatus(IDataContext context)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class PlayerStatusGetter : IPlayerStatusGetter
     {
         public PlayerStatus GetPlayerStatus(IDataContext context)
