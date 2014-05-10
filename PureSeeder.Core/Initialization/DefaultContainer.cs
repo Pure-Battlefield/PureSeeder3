@@ -26,9 +26,14 @@ namespace PureSeeder.Core.Initialization
                     Resolve<SeederUserSettings>());
 
             if (type == typeof (IServerStatusUpdater))
-                return new ServerStatusUpdater();
+                return new ServerStatusUpdater(
+                    Resolve<IUpdateServerIds>());
+
             if (type == typeof (IPlayerStatusGetter))
                 return new PlayerStatusGetter();
+
+            if (type == typeof (IUpdateServerIds))
+                return new UpdateServerIds();
 
             if (type == typeof (IDataContext))
                 return new SeederContext(

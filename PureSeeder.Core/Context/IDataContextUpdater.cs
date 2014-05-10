@@ -2,6 +2,6 @@
 {
     public interface IDataContextUpdater
     {
-        void UpdateContextData(IDataContext context, string pageData);
+        void Update(IDataContext context, string pageData);
     }
 }

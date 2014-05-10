@@ -34,11 +34,12 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _serverMax, value); }
         }
 
-        public string ServerGuid
-        {
-            get { return _serverGuid; } 
-            set { SetField(ref _serverGuid, value); }
-        }
+        // Deprecated
+//        public string ServerGuid
+//        {
+//            get { return _serverGuid; } 
+//            set { SetField(ref _serverGuid, value); }
+//        }
 
         public new string Name
         {
@@ -60,6 +61,11 @@ namespace PureSeeder.Core.Context
         public new int MaxPlayers
         {
             get { return _innerServer.MaxPlayers; }
+        }
+
+        public new string Id
+        {
+            get { return _innerServer.Id; }
         }
     }
 }

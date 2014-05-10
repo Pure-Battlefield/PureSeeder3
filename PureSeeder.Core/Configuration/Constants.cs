@@ -36,6 +36,12 @@ namespace PureSeeder.Core.Configuration
             public const string AutoMinimizeGame = "AutoMinimizeGame";
         }
 
+        public static class BattlelogUrlTemplates
+        {
+            public const string ServerStatus =
+                "http://battlelog.battlefield.com/bf4/servers/getNumPlayersOnServer/pc/{0}/";
+        }
+
         public const int GameHangProtectionTimerInterval = 30; // minutes
 
         public static class Games

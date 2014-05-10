@@ -5,10 +5,12 @@ namespace PureSeeder.Core.Settings
 {
     public class Server : BindableBase
     {
-        protected string _name;
-        protected string _address;
-        protected int _minPlayers;
-        protected int _maxPlayers;
+        private string _name;
+        private string _address;
+        private int _minPlayers;
+        private int _maxPlayers;
+        private string _id;
+
 
         [Description("Name for the server")]
         public string Name
@@ -24,6 +26,13 @@ namespace PureSeeder.Core.Settings
             set { SetField(ref _address, value); }
         }
 
+        [Description("Unique ID of the server")]
+        //[Browsable(false)]
+        public string Id
+        {
+            get { return this._id; }
+            set { SetField(ref _id, value); }
+        }
         
         [Description("Minimum player threshold. Seeding will happen if there are fewer than this many players.")]
         public int MinPlayers

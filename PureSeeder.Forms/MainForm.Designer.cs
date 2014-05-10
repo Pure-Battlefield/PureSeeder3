@@ -88,6 +88,8 @@
             this.BrowserTab = new System.Windows.Forms.TabPage();
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BLServerGuidCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -95,8 +97,6 @@
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -685,6 +685,26 @@
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(482, 70);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(585, 70);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 38;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // ServerNameCol
             // 
             this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -696,7 +716,7 @@
             // BLServerGuidCol
             // 
             this.BLServerGuidCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.BLServerGuidCol.DataPropertyName = "ServerGuid";
+            this.BLServerGuidCol.DataPropertyName = "Id";
             this.BLServerGuidCol.HeaderText = "Battlelog Server ID";
             this.BLServerGuidCol.Name = "BLServerGuidCol";
             this.BLServerGuidCol.ReadOnly = true;
@@ -746,26 +766,6 @@
             this.ServerMaxCol.Name = "ServerMaxCol";
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(482, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(585, 70);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 38;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -873,6 +873,8 @@
         private System.Windows.Forms.Button statusRefresh;
         private System.Windows.Forms.TextBox statusRefreshInterval;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn BLServerGuidCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
@@ -880,8 +882,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
     }
 }
 

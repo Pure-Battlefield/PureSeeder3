@@ -93,13 +93,18 @@ namespace PureSeeder.Core.Context
             return _serverStatusUpdater.UpdateServerStatuses(this);
         }
 
-        public void UpdateStatus(string pageData)
+        /// <summary>
+        /// Runs all updaters that use the page source
+        /// </summary>
+        /// <param name="pageData">Page source from page currently loaded in browser</param>
+        public void UpdateContext(string pageData)
         {
             foreach (var updater in _updaters)
             {
-                updater.UpdateContextData(this, pageData);
+                updater.Update(this, pageData);
             }
 
+            // Updating complete. Fire the event.
             OnContextUpdated();
         }
 
@@ -163,6 +168,9 @@ namespace PureSeeder.Core.Context
             await new GameMinimizer().MinimizeGameOnce(minimizerCt, () => Session.CurrentGame);
         }
 
+        /// <summary>
+        /// Fires the OnContextUpdate event.
+        /// </summary>
         private void OnContextUpdated()
         {
             var handler = OnContextUpdate;
@@ -221,13 +229,7 @@ namespace PureSeeder.Core.Context
         }
     }
 
-    class GetPlayerStatusFromBrowser : IPlayerStatusGetter
-    {
-        public PlayerStatus GetPlayerStatus(IDataContext context)
-        {
-            throw new NotImplementedException();
-        }
-    }
+ 
 
     class PlayerStatusGetter : IPlayerStatusGetter
     {

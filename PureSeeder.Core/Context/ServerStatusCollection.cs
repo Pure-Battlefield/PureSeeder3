@@ -10,12 +10,12 @@ namespace PureSeeder.Core.Context
     public class ServerStatusCollection : BindingList<ServerStatus>
     {
         private Servers _serverCollection;
-        private Dictionary<string, Tuple<int?, int?, string>> _innerStatusCollection; 
+        private readonly Dictionary<string, Tuple<int?, int?>> _innerStatusCollection; 
 
         public ServerStatusCollection()
         {
             _serverCollection = new Servers();
-            _innerStatusCollection = new Dictionary<string, Tuple<int?, int?, string>>();
+            _innerStatusCollection = new Dictionary<string, Tuple<int?, int?>>();
         }
         
         public void SetInnerServerCollection([NotNull] Servers serverCollection)
@@ -38,7 +38,7 @@ namespace PureSeeder.Core.Context
                 {
                     newServerStatus.CurPlayers = innerStatus.Item1;
                     newServerStatus.ServerMax = innerStatus.Item2;
-                    newServerStatus.ServerGuid = innerStatus.Item3;
+//                    newServerStatus.ServerGuid = innerStatus.Item3; // Deprecated
                 }
                 this.Add(newServerStatus);
             }
@@ -69,9 +69,9 @@ namespace PureSeeder.Core.Context
             remove { _serverCollection.ServerChanged -= value; }
         }
       
-        public void UpdateStatus(string address, int? curPlayers, int? serverMax, string serverGuid)
+        public void UpdateStatus(string address, int? curPlayers, int? serverMax)
         {
-            _innerStatusCollection[address] = new Tuple<int?, int?, string>(curPlayers, serverMax, serverGuid);
+            _innerStatusCollection[address] = new Tuple<int?, int?>(curPlayers, serverMax);
 
             // Update if it exists in the collection
             if (!this.Any(x => x.Address == address))
@@ -81,7 +81,7 @@ namespace PureSeeder.Core.Context
 
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
-            server.ServerGuid = serverGuid;
+//            server.ServerGuid = serverGuid; Deprecated
         }
     }
 }

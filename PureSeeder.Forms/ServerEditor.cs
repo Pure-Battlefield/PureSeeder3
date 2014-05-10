@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PureSeeder.Core.Annotations;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
 using PureSeeder.Forms.Properties;
@@ -57,7 +58,7 @@ namespace PureSeeder.Forms
             LoadProperties();
         }
 
-        private void closeDialog_Click(object sender, EventArgs e)
+        private async void closeDialog_Click(object sender, EventArgs e)
         {
             this.Close();
         }

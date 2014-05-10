@@ -11,6 +11,7 @@ using Gecko;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Monitoring;
+using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
 using PureSeeder.Forms.Properties;
@@ -62,9 +63,8 @@ namespace PureSeeder.Forms
 
             CreateBindings();
             UiSetup();
-
-            UpdateServerStatuses();
-
+            
+            RefreshServerStatuses(null, null);
             LoadBattlelog();
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
@@ -79,12 +79,13 @@ namespace PureSeeder.Forms
             SpinUpAvoidIdleKick();
         }
 
-        private async void UpdateServerStatuses()
-        {
-            await _context.UpdateServerStatuses();
-
-            var blah = "meh";  // Todo: Handle the updated server statuses
-        }
+        // Deprecated
+//        private async void UpdateServerStatuses()
+//        {
+//            await _context.UpdateServerStatuses();
+//
+//            var blah = "meh";  // Todo: Handle the updated server statuses
+//        }
 
         private void UiSetup()
         {
@@ -145,7 +146,7 @@ namespace PureSeeder.Forms
 
             _statusRefreshTimer.Interval = statusRefreshTimerInterval;
 
-            _statusRefreshTimer.Tick += TimedStatusRefresh;
+            _statusRefreshTimer.Tick += RefreshServerStatuses;
 
             _statusRefreshTimer.Start();
         }
@@ -202,7 +203,7 @@ namespace PureSeeder.Forms
             AnyRefresh();
         }
 
-        private async void TimedStatusRefresh(object sender, EventArgs e)
+        private async void RefreshServerStatuses(object sender, EventArgs e)
         {
             await _context.UpdateServerStatuses();
         }
@@ -233,6 +234,9 @@ namespace PureSeeder.Forms
             _refreshTimer.Start();
         }
 
+        /// <summary>
+        /// This method is the event handler for any time the browser is refreshed
+        /// </summary>
         private void BrowserChanged(object sender, EventArgs e)
         {
             UpdateContext();
@@ -260,24 +264,22 @@ namespace PureSeeder.Forms
             LoadPage();
         }
 
-        private string GetAddress(ComboBox cb)
-        {
-            if (cb.Items.Count == 0)
-                return Constants.DefaultUrl;
-
-            //string address = _context.CurrentServer.Address; // Deprecated
-
-            //return address;
-
-            return string.Empty;
-        }
+        // Deprecated
+//        private string GetAddress(ComboBox cb)
+//        {
+//            if (cb.Items.Count == 0)
+//                return Constants.DefaultUrl;
+//
+//            //string address = _context.CurrentServer.Address; // Deprecated
+//
+//            //return address;
+//
+//            return string.Empty;
+//        }
 
         private async void LoadPage()
         {
-            string selectedUrl = "http://battlelog.battlefield.com/bf4/" /*GetAddress(serverSelector) Deprecated*/;
-            if (selectedUrl == String.Empty)
-                selectedUrl = Constants.DefaultUrl;
-
+            const string selectedUrl = Constants.DefaultUrl;
             SetStatus(String.Format("Loading: {0}", selectedUrl), 3);
 
             await Navigate(selectedUrl);
@@ -293,19 +295,20 @@ namespace PureSeeder.Forms
             UpdateInterface();
         }
 
-
+        /// <summary>
+        /// Update the context with the source from the page currently loaded in the browser
+        /// </summary>
         private void UpdateContext()
         {
-            string source = string.Empty;
+            var source = string.Empty;
+            var pageSource = string.Empty;
 
-            string pageSource = string.Empty;
-
+            // Get the source for the page currently loaded in the browser
             if (!string.IsNullOrEmpty(geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml))
                 pageSource = geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml;
 
             source = pageSource;
-
-            _context.UpdateStatus(source); 
+            _context.UpdateContext(source); 
         }
 
         private void AttemptSeeding()
@@ -582,12 +585,16 @@ namespace PureSeeder.Forms
             Close();
         }
 
-        private void editServers_Click(object sender, EventArgs e)
+        private async void editServers_Click(object sender, EventArgs e)
         {
             _refreshTimer.Stop(); // Stop the refresh timer
 
             var serverEditor = new ServerEditor(_context);
             var dlgResult = serverEditor.ShowDialog();
+
+            // This should probably be injected
+            var serverUpdater = new UpdateServerIds();
+            await serverUpdater.Update(_context, true);
 
             if (dlgResult == DialogResult.OK)
                 _context.Settings.SaveSettings();

@@ -33,7 +33,7 @@ namespace PureSeeder.Core.Context
         /// Update current status with the given page data
         /// </summary>
         /// <param name="pageData">Raw page data</param>
-        void UpdateStatus(string pageData); // Todo: Need to update to not deal with single servers anymore
+        void UpdateContext(string pageData); // Todo: Need to update to not deal with single servers anymore
 
         /// <summary>
         /// Update the statuses of all the servers in the list
@@ -41,7 +41,7 @@ namespace PureSeeder.Core.Context
         Task UpdateServerStatuses();
         
         /// <summary>
-        /// Event fired when UpdateStatus is complete
+        /// Event fired when UpdateContext is complete
         /// </summary>
         event ContextUpdatedHandler OnContextUpdate;
         /// <summary>

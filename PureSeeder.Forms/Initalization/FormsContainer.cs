@@ -53,7 +53,8 @@ namespace PureSeeder.Forms.Initalization
                             {
                                 new CurrentBf4UserUpdater(),
                             }.ToArray(), 
-                        new ServerStatusUpdater(),
+                        new ServerStatusUpdater(
+                            new UpdateServerIds()),
                         new PlayerStatusGetter()
                         ));
 
@@ -78,7 +79,8 @@ namespace PureSeeder.Forms.Initalization
                         {
                             new CurrentBf4UserUpdater(),
                         }.ToArray(),
-                    new ServerStatusUpdater(),
+                    new ServerStatusUpdater(
+                        new UpdateServerIds()),
                     new PlayerStatusGetter());
         }
     }

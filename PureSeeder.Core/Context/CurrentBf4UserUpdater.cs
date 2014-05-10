@@ -5,7 +5,7 @@ namespace PureSeeder.Core.Context
 {
     class CurrentBf4UserUpdater : IDataContextUpdater
     {
-        public void UpdateContextData(IDataContext context, string pageData)
+        public void Update(IDataContext context, string pageData)
         {
             // Todo: Make regex pattern a global setting so it can more easily be changed
             var curUserRegEx = new Regex(@"class=""username""\W*href=""/bf4/user/(.*?)/");
@@ -19,15 +19,6 @@ namespace PureSeeder.Core.Context
             }
 
             context.Session.CurrentLoggedInUser = curUser.Groups[1].Value;
-        }
-    }
-
-    class PlayerStatusUpdater : IDataContextUpdater
-    {
-        public void UpdateContextData(IDataContext context, string pageData)
-        {
-            if (context.Session.CurrentLoggedInUser == Constants.NotLoggedInUsername)
-                return;
         }
     }
 }
