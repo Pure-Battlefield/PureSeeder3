@@ -233,11 +233,17 @@ namespace PureSeeder.Core.Context
     {
         public PlayerStatus GetPlayerStatus(IDataContext context)
         {
-            var player = context.Session.CurrentLoggedInUser;
-            if (player == Constants.NotLoggedInUsername)
-                return new PlayerStatus(null, null);
+//            var player = context.Session.CurrentLoggedInUser;
+//            if (player == Constants.NotLoggedInUsername)
+//                return new PlayerStatus(null, null);
 
             var httpClient = new HttpClient();
+
+            /////
+
+            var serverResponse = httpClient.GetAsync("http://bf4-server1.purebattlefield.org").Result;
+
+            /////
 
             var response = httpClient.GetStringAsync("http://battlelog.battlefield.com/bf4/").Result;
 
