@@ -65,6 +65,6 @@ namespace PureSeeder.Core.Context
 
         Server CurrentServer { get; }
 
-        void setToNextServer();
+        void setToFirstServer();
     }
 }
