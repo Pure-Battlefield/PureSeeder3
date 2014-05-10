@@ -80,14 +80,6 @@ namespace PureSeeder.Forms
             SpinUpAvoidIdleKick();
         }
 
-        // Deprecated
-//        private async void UpdateServerStatuses()
-//        {
-//            await _context.UpdateServerStatuses();
-//
-//            var blah = "meh";  // Todo: Handle the updated server statuses
-//        }
-
         private void UiSetup()
         {
             Icon = Resources.PB;
@@ -154,9 +146,6 @@ namespace PureSeeder.Forms
 
         private void CreateBindings()
         {
-            // Controlling this manually
-            //serverSelector.DataBindings.Add("SelectedIndex", _context.Settings, x => x.CurrentServer, false, DataSourceUpdateMode.OnPropertyChanged);
-
             username.DataBindings.Add("Text", _context.Settings, x => x.Username);
             password.DataBindings.Add("Text", _context.Settings, x => x.Password);
             email.DataBindings.Add("Text", _context.Settings, x => x.Email);
@@ -240,6 +229,7 @@ namespace PureSeeder.Forms
         /// </summary>
         private void BrowserChanged(object sender, EventArgs e)
         {
+            curUrl.Text = geckoWebBrowser1.Url.ToString();
             UpdateContext();
         }
 
@@ -264,19 +254,6 @@ namespace PureSeeder.Forms
         {
             LoadPage();
         }
-
-        // Deprecated
-//        private string GetAddress(ComboBox cb)
-//        {
-//            if (cb.Items.Count == 0)
-//                return Constants.DefaultUrl;
-//
-//            //string address = _context.CurrentServer.Address; // Deprecated
-//
-//            //return address;
-//
-//            return string.Empty;
-//        }
 
         private async void LoadPage()
         {
@@ -480,12 +457,6 @@ namespace PureSeeder.Forms
 
         #region UiEvents
 
-        private void serverSelector_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-//            _context.Settings.CurrentServer = serverSelector.SelectedIndex; Deprecated
-            AnyRefresh();
-        }
-
         private void saveSettings_Click(object sender, EventArgs e)
         {
             _context.Settings.SaveSettings();
@@ -662,20 +633,7 @@ namespace PureSeeder.Forms
 
         private void statusRefresh_Click(object sender, EventArgs e)
         {
-
+            _context.UpdateServerStatuses();
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var playerStatus = _context.GetPlayerStatus();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var ps = _context.GetPlayerStatus();
-        }
-
-        
-
     }
 }

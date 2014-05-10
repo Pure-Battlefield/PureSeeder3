@@ -38,7 +38,6 @@ namespace PureSeeder.Core.Context
                 {
                     newServerStatus.CurPlayers = innerStatus.Item1;
                     newServerStatus.ServerMax = innerStatus.Item2;
-//                    newServerStatus.ServerGuid = innerStatus.Item3; // Deprecated
                 }
                 this.Add(newServerStatus);
             }
@@ -81,7 +80,6 @@ namespace PureSeeder.Core.Context
 
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
-//            server.ServerGuid = serverGuid; Deprecated
         }
     }
 }

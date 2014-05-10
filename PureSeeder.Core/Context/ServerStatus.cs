@@ -34,23 +34,14 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _serverMax, value); }
         }
 
-        // Deprecated
-//        public string ServerGuid
-//        {
-//            get { return _serverGuid; } 
-//            set { SetField(ref _serverGuid, value); }
-//        }
-
         public new string Name
         {
             get { return _innerServer.Name; }
-            //set { SetProperty(_innerServer.Name, value, s => s); }
         }
 
         public new string Address
         {
             get { return _innerServer.Address; }
-            //set { SetProperty(_innerServer.Address, value, s => s); }
         }
 
         public new int MinPlayers

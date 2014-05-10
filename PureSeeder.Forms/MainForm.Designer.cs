@@ -33,10 +33,6 @@
             this.webControlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.browserPanel = new System.Windows.Forms.Panel();
             this.geckoWebBrowser1 = new Gecko.GeckoWebBrowser();
-            this.label2 = new System.Windows.Forms.Label();
-            this.curPlayers = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.maxPlayers = new System.Windows.Forms.Label();
             this.username = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -72,6 +68,8 @@
             this.loginButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.ServerSettingsTab = new System.Windows.Forms.TabPage();
+            this.curUrl = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.editServers = new System.Windows.Forms.Button();
             this.UserSettingsTab = new System.Windows.Forms.TabPage();
             this.label10 = new System.Windows.Forms.Label();
@@ -84,12 +82,11 @@
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.BrowserTab = new System.Windows.Forms.TabPage();
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BLServerGuidCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -147,46 +144,6 @@
             this.geckoWebBrowser1.UseHttpActivityObserver = false;
             this.geckoWebBrowser1.DomContentChanged += new System.EventHandler<Gecko.DomEventArgs>(this.geckoWebBrowser1_DomContentChanged);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 20);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Current Players:";
-            // 
-            // curPlayers
-            // 
-            this.curPlayers.AutoSize = true;
-            this.curPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.curPlayers.Location = new System.Drawing.Point(147, 41);
-            this.curPlayers.Name = "curPlayers";
-            this.curPlayers.Size = new System.Drawing.Size(31, 20);
-            this.curPlayers.TabIndex = 5;
-            this.curPlayers.Text = "cur";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(174, 41);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(13, 20);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "/";
-            // 
-            // maxPlayers
-            // 
-            this.maxPlayers.AutoSize = true;
-            this.maxPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxPlayers.Location = new System.Drawing.Point(184, 41);
-            this.maxPlayers.Name = "maxPlayers";
-            this.maxPlayers.Size = new System.Drawing.Size(38, 20);
-            this.maxPlayers.TabIndex = 7;
-            this.maxPlayers.Text = "max";
-            // 
             // username
             // 
             this.username.Location = new System.Drawing.Point(104, 9);
@@ -217,7 +174,7 @@
             // 
             this.currentLoggedInUser.AutoSize = true;
             this.currentLoggedInUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.currentLoggedInUser.Location = new System.Drawing.Point(121, 16);
+            this.currentLoggedInUser.Location = new System.Drawing.Point(146, 16);
             this.currentLoggedInUser.Name = "currentLoggedInUser";
             this.currentLoggedInUser.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.currentLoggedInUser.Size = new System.Drawing.Size(110, 20);
@@ -227,7 +184,7 @@
             // saveSettings
             // 
             this.saveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveSettings.Location = new System.Drawing.Point(585, 145);
+            this.saveSettings.Location = new System.Drawing.Point(242, 86);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(134, 23);
             this.saveSettings.TabIndex = 20;
@@ -382,7 +339,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -402,14 +359,14 @@
             // viewReleaseNotesToolStripMenuItem
             // 
             this.viewReleaseNotesToolStripMenuItem.Name = "viewReleaseNotesToolStripMenuItem";
-            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.viewReleaseNotesToolStripMenuItem.Text = "About";
             this.viewReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.viewReleaseNotesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -486,19 +443,39 @@
             // 
             // ServerSettingsTab
             // 
+            this.ServerSettingsTab.Controls.Add(this.curUrl);
+            this.ServerSettingsTab.Controls.Add(this.label4);
             this.ServerSettingsTab.Controls.Add(this.editServers);
             this.ServerSettingsTab.Controls.Add(this.seedingEnabled);
+            this.ServerSettingsTab.Controls.Add(this.saveSettings);
             this.ServerSettingsTab.Location = new System.Drawing.Point(4, 22);
             this.ServerSettingsTab.Name = "ServerSettingsTab";
             this.ServerSettingsTab.Padding = new System.Windows.Forms.Padding(3);
             this.ServerSettingsTab.Size = new System.Drawing.Size(382, 113);
             this.ServerSettingsTab.TabIndex = 0;
-            this.ServerSettingsTab.Text = "Server";
+            this.ServerSettingsTab.Text = "Main";
             this.ServerSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // curUrl
+            // 
+            this.curUrl.Location = new System.Drawing.Point(6, 19);
+            this.curUrl.Name = "curUrl";
+            this.curUrl.ReadOnly = true;
+            this.curUrl.Size = new System.Drawing.Size(370, 20);
+            this.curUrl.TabIndex = 26;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 13);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "Current URL";
             // 
             // editServers
             // 
-            this.editServers.Location = new System.Drawing.Point(301, 86);
+            this.editServers.Location = new System.Drawing.Point(301, 57);
             this.editServers.Name = "editServers";
             this.editServers.Size = new System.Drawing.Size(75, 23);
             this.editServers.TabIndex = 24;
@@ -618,26 +595,33 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.currentLoggedInUser);
-            this.groupBox1.Controls.Add(this.maxPlayers);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.curPlayers);
             this.groupBox1.Location = new System.Drawing.Point(15, 29);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 110);
+            this.groupBox1.Size = new System.Drawing.Size(262, 110);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(123, 20);
+            this.label2.TabIndex = 37;
+            this.label2.Text = "Seeding Status:";
             // 
             // tabControl2
             // 
             this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl2.Controls.Add(this.BrowserTab);
             this.tabControl2.Controls.Add(this.StatusTab);
+            this.tabControl2.Controls.Add(this.BrowserTab);
             this.tabControl2.Location = new System.Drawing.Point(12, 174);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -684,26 +668,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(482, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(585, 70);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 38;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // ServerNameCol
             // 
@@ -772,15 +736,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1126, 705);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.joinServerButton);
-            this.Controls.Add(this.saveSettings);
             this.Controls.Add(this.label1);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1142, 733);
@@ -817,10 +778,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource webControlBindingSource;
         private System.Windows.Forms.Panel browserPanel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label curPlayers;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label maxPlayers;
         private Gecko.GeckoWebBrowser geckoWebBrowser1;
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.Label label3;
@@ -873,8 +830,6 @@
         private System.Windows.Forms.Button statusRefresh;
         private System.Windows.Forms.TextBox statusRefreshInterval;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn BLServerGuidCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
@@ -882,6 +837,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
+        private System.Windows.Forms.TextBox curUrl;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
     }
 }
 

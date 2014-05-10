@@ -79,6 +79,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerManagement\IServerManager.cs" />
     <Compile Include="ServerManagement\IServerStatusUpdater.cs" />
+    <Compile Include="ServerManagement\IUpdateServerIds.cs" />
+    <Compile Include="ServerManagement\ServerStatusUpdater.cs" />
+    <Compile Include="ServerManagement\UpdateServerIds.cs" />
     <Compile Include="Settings\SeederSettings.cs" />
     <Compile Include="Settings\Server.cs" />
     <Compile Include="Settings\Servers.cs" />
