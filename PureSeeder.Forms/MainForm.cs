@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Deployment.Application;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -598,6 +599,8 @@ namespace PureSeeder.Forms
 
             if (dlgResult == DialogResult.OK)
                 _context.Settings.SaveSettings();
+
+            await _context.UpdateServerStatuses();
 
             _refreshTimer.Start(); // Start the refresh timer back up
         }

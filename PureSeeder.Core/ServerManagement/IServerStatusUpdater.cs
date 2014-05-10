@@ -27,44 +27,77 @@ namespace PureSeeder.Core.ServerManagement
 
     class UpdateServerIds : IUpdateServerIds
     {
-        public Task Update(IDataContext context, bool updateAll = false)
+        private async Task UpdateServerIdAsync(Server server)
         {
-            return Task.Factory.StartNew(async () =>
+            using (var httpClient = new HttpClient())
             {
-                var servers = updateAll
-                    ? context.Settings.Servers
-                    : context.Settings.Servers.Where(x => String.IsNullOrEmpty(x.Id));
+                var localServer = server;
 
-                var httpClient = new HttpClient();
-                var tasks = new List<Task>();
-                foreach (var server in servers)
-                {
-                    var localServer = server;
-                        // Using foreach var in closure can cause unexpected results, so this is necessary
-                    tasks.Add(
-                        httpClient.GetAsync(localServer.Address)
-                            .ContinueWith(x => HandleResponse(localServer, x.Result)));
-                }
+                var response = await httpClient.GetAsync(localServer.Address).ConfigureAwait(true);
+                
+                var regex = new Regex("/pc/(.*?)/?$");
 
-                await Task.WhenAll(tasks.ToArray());
-            });
+                var match = regex.Match(response.RequestMessage.RequestUri.ToString());
+
+                if (!match.Success)
+                    return;
+
+                localServer.Id = match.Groups[1].Value;
+            }
         }
 
-        private void HandleResponse(Server server, HttpResponseMessage response)
+        public async Task Update(IDataContext context, bool updateAll = false)
         {
-            if (response.RequestMessage.RequestUri == null)
-                return;
+            var servers = updateAll
+                ? context.Settings.Servers
+                : context.Settings.Servers.Where(x => String.IsNullOrEmpty(x.Id));
 
-            var regex = new Regex("/pc/(.*?)/");
+            var allTasks = servers.Select(UpdateServerIdAsync);
 
-            var match = regex.Match(response.RequestMessage.RequestUri.ToString());
-
-            if (!match.Success)
-                return;
-
-            server.Id = match.Groups[1].Value;
+            await Task.WhenAll(allTasks);
         }
     }
+
+//    class UpdateServerIds : IUpdateServerIds
+//    {
+//        public Task Update(IDataContext context, bool updateAll = false)
+//        {
+//            return Task.Factory.StartNew(async () =>
+//            {
+//                var servers = updateAll
+//                    ? context.Settings.Servers
+//                    : context.Settings.Servers.Where(x => String.IsNullOrEmpty(x.Id));
+//
+//                var httpClient = new HttpClient();
+//                var tasks = new List<Task>();
+//                foreach (var server in servers)
+//                {
+//                    var localServer = server;
+//                        // Using foreach var in closure can cause unexpected results, so this is necessary
+//                    tasks.Add(
+//                        httpClient.GetAsync(localServer.Address)
+//                            .ContinueWith(x => HandleResponse(localServer, x.Result)));
+//                }
+//
+//                await Task.WhenAll(tasks.ToArray());
+//            });
+//        }
+//
+//        private void HandleResponse(Server server, HttpResponseMessage response)
+//        {
+//            if (response.RequestMessage.RequestUri == null)
+//                return;
+//
+//            var regex = new Regex("/pc/(.*?)/");
+//
+//            var match = regex.Match(response.RequestMessage.RequestUri.ToString());
+//
+//            if (!match.Success)
+//                return;
+//
+//            server.Id = match.Groups[1].Value;
+//        }
+//    }
 
     public class ServerStatusUpdater : IServerStatusUpdater
     {
@@ -76,66 +109,109 @@ namespace PureSeeder.Core.ServerManagement
             _serverIdUpdater = serverIdUpdater;
         }
 
-        public Task UpdateServerStatuses(IDataContext context)
+        private async Task UpdateServerStatus(ServerStatus serverStatus)
         {
-            return Task.Factory.StartNew(async () =>
+            if (String.IsNullOrEmpty(serverStatus.Id))
+                return;
+
+            using (var httpClient = new HttpClient())
             {
-                await _serverIdUpdater.Update(context);
-                var httpClient = new HttpClient();
+                var address = String.Format(Constants.BattlelogUrlTemplates.ServerStatus, serverStatus.Id);
+                var response = await httpClient.GetStringAsync(address).ConfigureAwait(true);
 
-                var tasks = new List<Task>();
-                foreach (var server in context.Session.ServerStatuses)
-                {
-                    var address = String.Format(Constants.BattlelogUrlTemplates.ServerStatus, server.Id);
-                    tasks.Add(httpClient.GetAsync(address).ContinueWith(x => HandleResponse(context, address, x.Result)));
-                }
+                if (String.IsNullOrEmpty(response))
+                    return;
 
-                await Task.WhenAll(tasks.ToArray());
-            });
+                var json = JObject.Parse(response);
+
+                if (json == null)
+                    return;
+
+                serverStatus.CurPlayers = json["slots"]["2"]["current"].Value<int>();
+                serverStatus.ServerMax = json["slots"]["2"]["max"].Value<int>();
+            }
         }
 
-        private void HandleResponse(IDataContext context, string address, HttpResponseMessage response)
+        public async Task UpdateServerStatuses(IDataContext context)
         {
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                AddServerStatus(context, address, null, null);
-                return;
-            }
+            await _serverIdUpdater.Update(context);
 
-            var stringContent = response.Content.ReadAsStringAsync().Result;
+            var allTasks = context.Session.ServerStatuses.Select(UpdateServerStatus);
 
-            if (stringContent == null)
-            {
-                AddServerStatus(context, address, null, null);
-                return;
-            }
-
-            var json = JObject.Parse(stringContent);
-
-            if (json == null)
-            {
-                AddServerStatus(context, address, null, null);
-                return;
-            }
-
-            int? curPlayers = null;
-            int? serverMax = null;
-
-            try
-            {
-                curPlayers = json["slots"]["2"]["current"].Value<int>();
-                serverMax = json["slots"]["2"]["max"].Value<int>();
-            }
-            catch{}
-
-            AddServerStatus(context, address, curPlayers, serverMax);
-        }
-
-        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax)
-        {
-            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax);
+            await Task.WhenAll(allTasks);
         }
     }
+
+//    public class ServerStatusUpdater : IServerStatusUpdater
+//    {
+//        private readonly IUpdateServerIds _serverIdUpdater;
+//
+//        public ServerStatusUpdater([NotNull] IUpdateServerIds serverIdUpdater)
+//        {
+//            if (serverIdUpdater == null) throw new ArgumentNullException("serverIdUpdater");
+//            _serverIdUpdater = serverIdUpdater;
+//        }
+//
+//        public Task UpdateServerStatuses(IDataContext context)
+//        {
+//            return Task.Factory.StartNew(async () =>
+//            {
+//                await _serverIdUpdater.Update(context);
+//                var httpClient = new HttpClient();
+//
+//                var tasks = new List<Task>();
+//                foreach (var server in context.Session.ServerStatuses)
+//                {
+//                    var address = String.Format(Constants.BattlelogUrlTemplates.ServerStatus, server.Id);
+//                    tasks.Add(httpClient.GetAsync(address).ContinueWith(x => HandleResponse(context, address, x.Result)));
+//                }
+//
+//                await Task.WhenAll(tasks.ToArray());
+//            });
+//        }
+//
+//        private void HandleResponse(IDataContext context, string address, HttpResponseMessage response)
+//        {
+//            if (response.StatusCode != HttpStatusCode.OK)
+//            {
+//                AddServerStatus(context, address, null, null);
+//                return;
+//            }
+//
+//            var stringContent = response.Content.ReadAsStringAsync().Result;
+//
+//            if (stringContent == null)
+//            {
+//                AddServerStatus(context, address, null, null);
+//                return;
+//            }
+//
+//            var json = JObject.Parse(stringContent);
+//
+//            if (json == null)
+//            {
+//                AddServerStatus(context, address, null, null);
+//                return;
+//            }
+//
+//            int? curPlayers = null;
+//            int? serverMax = null;
+//
+//            try
+//            {
+//                curPlayers = json["slots"]["2"]["current"].Value<int>();
+//                serverMax = json["slots"]["2"]["max"].Value<int>();
+//            }
+//            catch{}
+//
+//            AddServerStatus(context, address, curPlayers, serverMax);
+//        }
+//
+//        private void AddServerStatus(IDataContext context, string address, int? curPlayers, int? serverMax)
+//        {
+//            context.Session.ServerStatuses.UpdateStatus(address, curPlayers, serverMax);
+//        }
+//    }
 
     // Deprecated
 //    public class ServerStatusUpdater : IServerStatusUpdater
