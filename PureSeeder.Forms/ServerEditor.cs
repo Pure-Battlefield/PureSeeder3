@@ -58,7 +58,7 @@ namespace PureSeeder.Forms
             LoadProperties();
         }
 
-        private async void closeDialog_Click(object sender, EventArgs e)
+        private void closeDialog_Click(object sender, EventArgs e)
         {
             this.Close();
         }

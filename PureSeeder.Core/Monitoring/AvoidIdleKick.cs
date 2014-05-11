@@ -10,7 +10,7 @@ using AutoIt;
 
 namespace PureSeeder.Core.Monitoring
 {
-    class IdleKickAvoider
+    public class IdleKickAvoider
     {
         public Task AvoidIdleKick(CancellationToken token, int numSeconds, Func<GameInfo> getCurrentGame)
         {

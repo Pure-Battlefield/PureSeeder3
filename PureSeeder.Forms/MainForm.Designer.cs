@@ -84,16 +84,17 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.BrowserTab = new System.Windows.Forms.TabPage();
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.BrowserTab = new System.Windows.Forms.TabPage();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BLServerGuidCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -105,9 +106,11 @@
             this.AppSettingsTab.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl2.SuspendLayout();
-            this.BrowserTab.SuspendLayout();
             this.StatusTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.BrowserTab.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -339,7 +342,7 @@
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // importToolStripMenuItem
@@ -359,14 +362,14 @@
             // viewReleaseNotesToolStripMenuItem
             // 
             this.viewReleaseNotesToolStripMenuItem.Name = "viewReleaseNotesToolStripMenuItem";
-            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.viewReleaseNotesToolStripMenuItem.Text = "About";
             this.viewReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.viewReleaseNotesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -445,7 +448,6 @@
             // 
             this.ServerSettingsTab.Controls.Add(this.curUrl);
             this.ServerSettingsTab.Controls.Add(this.label4);
-            this.ServerSettingsTab.Controls.Add(this.editServers);
             this.ServerSettingsTab.Controls.Add(this.seedingEnabled);
             this.ServerSettingsTab.Controls.Add(this.saveSettings);
             this.ServerSettingsTab.Location = new System.Drawing.Point(4, 22);
@@ -475,9 +477,10 @@
             // 
             // editServers
             // 
-            this.editServers.Location = new System.Drawing.Point(301, 57);
+            this.editServers.Dock = System.Windows.Forms.DockStyle.Right;
+            this.editServers.Location = new System.Drawing.Point(1020, 0);
             this.editServers.Name = "editServers";
-            this.editServers.Size = new System.Drawing.Size(75, 23);
+            this.editServers.Size = new System.Drawing.Size(75, 28);
             this.editServers.TabIndex = 24;
             this.editServers.Text = "Edit Servers";
             this.editServers.UseVisualStyleBackColor = true;
@@ -628,19 +631,10 @@
             this.tabControl2.Size = new System.Drawing.Size(1103, 506);
             this.tabControl2.TabIndex = 0;
             // 
-            // BrowserTab
-            // 
-            this.BrowserTab.Controls.Add(this.browserPanel);
-            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
-            this.BrowserTab.Name = "BrowserTab";
-            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
-            this.BrowserTab.TabIndex = 0;
-            this.BrowserTab.Text = "Browser";
-            this.BrowserTab.UseVisualStyleBackColor = true;
-            // 
             // StatusTab
             // 
-            this.StatusTab.Controls.Add(this.dataGridView1);
+            this.StatusTab.Controls.Add(this.panel2);
+            this.StatusTab.Controls.Add(this.panel1);
             this.StatusTab.Location = new System.Drawing.Point(4, 22);
             this.StatusTab.Name = "StatusTab";
             this.StatusTab.Size = new System.Drawing.Size(1095, 480);
@@ -655,11 +649,10 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ServerNameCol,
-            this.BLServerGuidCol,
             this.AddressCol,
+            this.CurrentPlayersCol,
             this.MinPlayersCol,
             this.MaxPlayersCol,
-            this.CurrentPlayersCol,
             this.ServerMaxCol});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -669,6 +662,16 @@
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
             // 
+            // BrowserTab
+            // 
+            this.BrowserTab.Controls.Add(this.browserPanel);
+            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
+            this.BrowserTab.Name = "BrowserTab";
+            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
+            this.BrowserTab.TabIndex = 0;
+            this.BrowserTab.Text = "Browser";
+            this.BrowserTab.UseVisualStyleBackColor = true;
+            // 
             // ServerNameCol
             // 
             this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -676,15 +679,6 @@
             this.ServerNameCol.HeaderText = "Server Name";
             this.ServerNameCol.Name = "ServerNameCol";
             this.ServerNameCol.ReadOnly = true;
-            // 
-            // BLServerGuidCol
-            // 
-            this.BLServerGuidCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.BLServerGuidCol.DataPropertyName = "Id";
-            this.BLServerGuidCol.HeaderText = "Battlelog Server ID";
-            this.BLServerGuidCol.Name = "BLServerGuidCol";
-            this.BLServerGuidCol.ReadOnly = true;
-            this.BLServerGuidCol.Width = 101;
             // 
             // AddressCol
             // 
@@ -694,6 +688,15 @@
             this.AddressCol.Name = "AddressCol";
             this.AddressCol.ReadOnly = true;
             this.AddressCol.Width = 70;
+            // 
+            // CurrentPlayersCol
+            // 
+            this.CurrentPlayersCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CurrentPlayersCol.DataPropertyName = "CurPlayers";
+            this.CurrentPlayersCol.HeaderText = "Current Players";
+            this.CurrentPlayersCol.Name = "CurrentPlayersCol";
+            this.CurrentPlayersCol.ReadOnly = true;
+            this.CurrentPlayersCol.Width = 95;
             // 
             // MinPlayersCol
             // 
@@ -713,15 +716,6 @@
             this.MaxPlayersCol.ReadOnly = true;
             this.MaxPlayersCol.Width = 91;
             // 
-            // CurrentPlayersCol
-            // 
-            this.CurrentPlayersCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CurrentPlayersCol.DataPropertyName = "CurPlayers";
-            this.CurrentPlayersCol.HeaderText = "Current Players";
-            this.CurrentPlayersCol.Name = "CurrentPlayersCol";
-            this.CurrentPlayersCol.ReadOnly = true;
-            this.CurrentPlayersCol.Width = 95;
-            // 
             // ServerMaxCol
             // 
             this.ServerMaxCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -730,6 +724,24 @@
             this.ServerMaxCol.Name = "ServerMaxCol";
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dataGridView1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1095, 480);
+            this.panel1.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.editServers);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 452);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1095, 28);
+            this.panel2.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -765,9 +777,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
-            this.BrowserTab.ResumeLayout(false);
             this.StatusTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.BrowserTab.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -830,16 +844,17 @@
         private System.Windows.Forms.Button statusRefresh;
         private System.Windows.Forms.TextBox statusRefreshInterval;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BLServerGuidCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
         private System.Windows.Forms.TextBox curUrl;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 

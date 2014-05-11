@@ -74,12 +74,13 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.Servers); }
         }
 
-        [JsonIgnore]
-        public int CurrentServer
-        {
-            get { return _settings.CurrentServer; }
-            set { SetProperty(_settings, value, x => x.CurrentServer); }
-        }
+        // Deprecated
+//        [JsonIgnore]
+//        public int CurrentServer
+//        {
+//            get { return _settings.CurrentServer; }
+//            set { SetProperty(_settings, value, x => x.CurrentServer); }
+//        }
 
         public int RefreshInterval
         {

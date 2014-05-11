@@ -61,9 +61,11 @@
     <Compile Include="Context\IDataContext.cs" />
     <Compile Include="Context\IDataContextUpdater.cs" />
     <Compile Include="Context\IPlayerStatusGetter.cs" />
+    <Compile Include="Context\ISeederActionFactory.cs" />
     <Compile Include="Context\PartialObject.cs" />
     <Compile Include="Context\PlayerStatus.cs" />
     <Compile Include="Context\SeederAction.cs" />
+    <Compile Include="Context\SeederActionFactory.cs" />
     <Compile Include="Context\ServerStatus.cs" />
     <Compile Include="Context\ServerStatusCollection.cs" />
     <Compile Include="Context\SessionData.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Monitoring\ProcessMonitor.cs" />
     <Compile Include="Monitoring\RunAction.cs" />
     <Compile Include="PartialObjects\BuildExpressionStack.cs" />
+    <Compile Include="ProcessControl\IProcessController.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerManagement\IServerManager.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Initialization;
+using PureSeeder.Core.ProcessControl;
 using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 
@@ -11,7 +12,9 @@ namespace PureSeeder.Forms.Initalization
     {
         public static MainForm GetMainForm(IDataContext dataContext)
         {
-            return new MainForm(dataContext);
+            return new MainForm(dataContext,
+                new ProcessController(),
+                new SeederActionFactory());
         }
 
         public static IDataContext GetDataContext()

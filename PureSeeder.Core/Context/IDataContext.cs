@@ -33,7 +33,7 @@ namespace PureSeeder.Core.Context
         /// Update current status with the given page data
         /// </summary>
         /// <param name="pageData">Raw page data</param>
-        void UpdateContext(string pageData); // Todo: Need to update to not deal with single servers anymore
+        void UpdateContextWithBrowserPage(string pageData); 
 
         /// <summary>
         /// Update the statuses of all the servers in the list
@@ -41,7 +41,7 @@ namespace PureSeeder.Core.Context
         Task UpdateServerStatuses();
         
         /// <summary>
-        /// Event fired when UpdateContext is complete
+        /// Event fired when UpdateContextWithBrowserPage is complete
         /// </summary>
         event ContextUpdatedHandler OnContextUpdate;
         /// <summary>
@@ -53,17 +53,24 @@ namespace PureSeeder.Core.Context
         /// </summary>
         void JoinServer();
 
-        bool BfIsRunning();
+        /// <summary>
+        /// Checks if BF is currently seeding
+        /// </summary>
+        /// <returns>True if seeding, else false</returns>
+        bool IsSeeding();
 
+        /// <summary>
+        /// Checks whether the current user is the correct user
+        /// </summary>
+        /// <returns></returns>
         UserStatus GetUserStatus();
 
-        ResultReason<ShouldNotSeedReason> ShouldSeed();
+        // Deprecated
+//        ResultReason<ShouldNotSeedReason> ShouldSeed();
+//        ResultReason<KickReason> ShouldKick();
 
-        ResultReason<KickReason> ShouldKick();
+        //void StopGame(); Deprecated
 
-        void StopGame();
-
-        //Server CurrentServer { get; } // Deprecated
 
         PlayerStatus GetPlayerStatus();
     }

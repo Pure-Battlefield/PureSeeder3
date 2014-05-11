@@ -4,14 +4,17 @@ using System.ComponentModel;
 using System.Deployment.Application;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Contexts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
+using PureSeeder.Core.Annotations;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
 using PureSeeder.Core.Monitoring;
+using PureSeeder.Core.ProcessControl;
 using PureSeeder.Core.ServerManagement;
 using PureSeeder.Core.Settings;
 using PureSeeder.Forms.Extensions;
@@ -23,9 +26,11 @@ namespace PureSeeder.Forms
     public partial class MainForm : Form
     {
         private readonly IDataContext _context;
+        private readonly IProcessController _processController;
+        private readonly ISeederActionFactory _seederActionFactory;
         private readonly IdleKickAvoider _idleKickAvoider;
         private readonly ProcessMonitor _processMonitor;
-        private readonly Timer _refreshTimer;
+        private readonly Timer _browserRefreshTimer;
         private readonly Timer _statusRefreshTimer;
 
         // CancellationTokens
@@ -37,47 +42,50 @@ namespace PureSeeder.Forms
             InitializeComponent();
         }
 
-        public MainForm(IDataContext context) : this()
+        public MainForm(IDataContext context, [NotNull] IProcessController processController,
+            [NotNull] ISeederActionFactory seederActionFactory) : this()
         {
             if (context == null) throw new ArgumentNullException("context");
+            if (processController == null) throw new ArgumentNullException("processController");
+            if (seederActionFactory == null) throw new ArgumentNullException("seederActionFactory");
             _context = context;
+            _processController = processController;
+            _seederActionFactory = seederActionFactory;
 
             _context.Session.PropertyChanged += ContextPropertyChanged;
             _context.Settings.PropertyChanged += ContextPropertyChanged;
 
-            _refreshTimer = new Timer();
+            _browserRefreshTimer = new Timer();
             _statusRefreshTimer = new Timer();
 
-            // Todo: This should be injected
-            _processMonitor =
-                new ProcessMonitor(new ICrashDetector[]
-                {new CrashDetector(new CrashHandler()), new DetectCrashByFaultWindow()});
+            _processMonitor = _processController.GetProcessMonitor();
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
-            _idleKickAvoider = new IdleKickAvoider();
+            _idleKickAvoider = _processController.GetIdleKickAvoider();
         }
 
         #region Initialization
 
-        protected override void OnLoad(EventArgs e)
+        protected async override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             CreateBindings();
             UiSetup();
             
-            RefreshServerStatuses(null, null);
-            LoadBattlelog();
+            await RefreshServerStatusesNoSeed();
+            
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
             FirstRunCheck();
 
-            SetRefreshTimer();
-            SetStatusRefreshTimer();
+            SetupRefreshTimers();
 
             // Spin up background processes
             SpinUpProcessMonitor();
             SpinUpAvoidIdleKick();
+
+            /*await*/ LoadBattlelog();
         }
 
         private void UiSetup()
@@ -92,7 +100,7 @@ namespace PureSeeder.Forms
         private async void SpinUpProcessMonitor()
         {
             _processMonitorCt = new CancellationTokenSource().Token;
-            await _processMonitor.CheckOnProcess(_processMonitorCt, () => _context.Session.CurrentGame);
+            await _processMonitor.CheckOnProcess(_processMonitorCt, () => Constants.Games.Bf4);
         }
 
         private async void SpinUpAvoidIdleKick()
@@ -100,7 +108,7 @@ namespace PureSeeder.Forms
             _avoidIdleKickCt = new CancellationTokenSource().Token;
             await
                 _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer,
-                    () => _context.Session.CurrentGame);
+                    () => Constants.Games.Bf4);
         }
 
         private void FirstRunCheck()
@@ -114,7 +122,13 @@ namespace PureSeeder.Forms
             }
         }
 
-        private void SetRefreshTimer()
+        private void SetupRefreshTimers()
+        {
+            SetBrowserRefreshTimer();
+            SetStatusRefreshTimer();
+        }
+
+        private void SetBrowserRefreshTimer()
         {
             int refreshTimerInterval;
             if (!int.TryParse(refreshInterval.Text, out refreshTimerInterval))
@@ -122,11 +136,11 @@ namespace PureSeeder.Forms
 
             refreshTimerInterval = refreshTimerInterval*1000;
 
-            _refreshTimer.Interval = refreshTimerInterval;
+            _browserRefreshTimer.Interval = refreshTimerInterval;
 
-            _refreshTimer.Tick += TimedRefresh;
+            _browserRefreshTimer.Tick += TimedRefresh;
 
-            _refreshTimer.Start();
+            _browserRefreshTimer.Start();
         }
 
         private void SetStatusRefreshTimer()
@@ -139,7 +153,7 @@ namespace PureSeeder.Forms
 
             _statusRefreshTimer.Interval = statusRefreshTimerInterval;
 
-            _statusRefreshTimer.Tick += RefreshServerStatuses;
+            _statusRefreshTimer.Tick += TimedServerStatusRefresh;
 
             _statusRefreshTimer.Start();
         }
@@ -193,9 +207,33 @@ namespace PureSeeder.Forms
             AnyRefresh();
         }
 
-        private async void RefreshServerStatuses(object sender, EventArgs e)
+        private async void TimedServerStatusRefresh(object sender, EventArgs e)
+        {
+            await RefreshServerStatuses();
+        }
+
+        private async Task RefreshServerStatusesNoSeed()
         {
             await _context.UpdateServerStatuses();
+        }
+
+        private async Task RefreshServerStatuses()
+        {
+            await _context.UpdateServerStatuses();
+            var seederAction = _seederActionFactory.GetAction(_context);
+            await SeederActionHandler(seederAction);
+        }
+
+        private async Task SeederActionHandler(SeederAction seederAction)
+        {
+            if (seederAction.ActionType == SeederActionType.Noop)
+                return;
+            if (seederAction.ActionType == SeederActionType.Stop)
+                await _processController.StopGame();
+            if (seederAction.ActionType == SeederActionType.Seed)
+                await AttempSeeding(seederAction);
+
+            throw new ArgumentException("Unknow SeederAction ActionType.");
         }
 
         private void AnyRefresh()
@@ -206,22 +244,57 @@ namespace PureSeeder.Forms
 
         private void RefreshPageAndData()
         {
-            _refreshTimer.Stop();
+            _browserRefreshTimer.Stop();
 
             // Create a single use event handler to fire AttemptSeeding after context is updated
             // This is so that only refreshes triggerd by PS will fire Seeding. This will prevent changes
             // made inside the browser (by redirect/javascript/etc.) from firing the Seeding.
             ContextUpdatedHandler handler = null;
+            handler = async (tSender, tE) =>
+            {
+                _context.OnContextUpdate -= handler;
+                //await RefreshServerStatuses();
+            };
+            _context.OnContextUpdate += handler;
+            RefreshPage();
+
+            _browserRefreshTimer.Start();
+        }
+
+        private Task<bool> CanSeed()
+        {
+            return Task<bool>.Factory.StartNew(() =>
+            {
+                var loggedIn = _context.Session.CurrentLoggedInUser != Constants.NotLoggedInUsername;
+                if (!loggedIn)
+                {
+                    DialogResult result = MessageBoxEx.Show("User not logged in.", "Cannot Seed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+                }
+
+                return loggedIn && _context.Session.SeedingEnabled;
+            });
+        }
+
+        private async Task AttempSeeding(SeederAction seederAction)
+        {
+            if (!await CanSeed())
+                return;
+
+            _browserRefreshTimer.Stop();
+
+            ContextUpdatedHandler handler = null;
             handler = (tSender, tE) =>
             {
                 _context.OnContextUpdate -= handler;
-                AttemptKick();
-                AttemptSeeding();
+                _context.Session.CurrentServer = seederAction.ServerStatus;
+                JoinServer();
             };
             _context.OnContextUpdate += handler;
-            LoadPage();
+            await LoadPage(seederAction.ServerStatus.Address);
 
-            _refreshTimer.Start();
+            _browserRefreshTimer.Start();
         }
 
         /// <summary>
@@ -230,7 +303,7 @@ namespace PureSeeder.Forms
         private void BrowserChanged(object sender, EventArgs e)
         {
             curUrl.Text = geckoWebBrowser1.Url.ToString();
-            UpdateContext();
+            UpdateContextWithBrowserData();
         }
 
         #endregion EventHandlers
@@ -244,23 +317,25 @@ namespace PureSeeder.Forms
                 "document.getElementsByClassName('btn btn-primary btn-large large arrow')[0].click()";
 
             RunJavascript(jsCommand);
-
-            AutoMinimizeSeeder();
+            _processController.MinimizeAfterLaunch();
 
             _context.JoinServer();
         }
 
-        private void LoadBattlelog()
+        private async Task LoadBattlelog()
         {
-            LoadPage();
+            await LoadPage(Constants.DefaultUrl);
         }
 
-        private async void LoadPage()
+        private async Task LoadPage(string url)
         {
-            const string selectedUrl = Constants.DefaultUrl;
-            SetStatus(String.Format("Loading: {0}", selectedUrl), 3);
+            SetStatus(String.Format("Loading: {0}", url), 3);
+            await Navigate(url);
+        }
 
-            await Navigate(selectedUrl);
+        private void RefreshPage()
+        {
+            geckoWebBrowser1.Refresh();
         }
 
         private Task Navigate(string url)
@@ -276,7 +351,7 @@ namespace PureSeeder.Forms
         /// <summary>
         /// Update the context with the source from the page currently loaded in the browser
         /// </summary>
-        private void UpdateContext()
+        private void UpdateContextWithBrowserData()
         {
             var source = string.Empty;
             var pageSource = string.Empty;
@@ -286,22 +361,22 @@ namespace PureSeeder.Forms
                 pageSource = geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml;
 
             source = pageSource;
-            _context.UpdateContext(source); 
+            _context.UpdateContextWithBrowserPage(source); 
         }
 
-        private void AttemptSeeding()
-        {
-            if (!ShouldSeed())
-                return;
-
-            DialogResult result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
-
-            if (result == DialogResult.Cancel)
-                return;
-
-            JoinServer();
-        }
+        // Deprecated
+//        private void AttemptSeedingOld(SeederAction seederAction)
+//        {
+//            
+//
+//            DialogResult result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
+//                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+//
+//            if (result == DialogResult.Cancel)
+//                return;
+//
+//            JoinServer();
+//        }
 
         private void UpdateInterface()
         {
@@ -376,82 +451,84 @@ namespace PureSeeder.Forms
             });
         }
 
-        private bool ShouldSeed()
-        {
-            ResultReason<ShouldNotSeedReason> shouldSeed = _context.ShouldSeed();
+        // Deprecated
+//        private bool ShouldSeed()
+//        {
+//            ResultReason<ShouldNotSeedReason> shouldSeed = _context.ShouldSeed();
+//
+//            if (!shouldSeed.Result)
+//            {
+//                if (shouldSeed.Reason == ShouldNotSeedReason.NotLoggedIn)
+//                {
+//                    SetStatus("Cannot seed. Not logged in.", 5);
+//                    AutoLogin();
+//                    return false;
+//                }
+//
+//                if (shouldSeed.Reason == ShouldNotSeedReason.SeedingDisabled)
+//                {
+//                    SetStatus("Seeding disabled.", 5);
+//                    return false;
+//                }
+//
+//                if (shouldSeed.Reason == ShouldNotSeedReason.IncorrectUser)
+//                {
+//                    SetStatus("Cannot seed. Incorrect logged in user.", 5);
+//                    return false;
+//                }
+//
+//                if (shouldSeed.Reason == ShouldNotSeedReason.GameAlreadyRunning)
+//                    return false;
+//
+//                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
+//                {
+//                    SetStatus("Player count above min threshold, not starting seeding.");
+//                    return false;
+//                }
+//
+//                if (shouldSeed.Reason == ShouldNotSeedReason.NoServerDefined)
+//                {
+//                    SetStatus("No server defined. Cannot seed.");
+//                    return false;
+//                }
+//
+//                throw new NotImplementedException("Need to handle all reasons for seeding not starting.");
+//            }
+//
+//            return true;
+//        }
 
-            if (!shouldSeed.Result)
-            {
-                if (shouldSeed.Reason == ShouldNotSeedReason.NotLoggedIn)
-                {
-                    SetStatus("Cannot seed. Not logged in.", 5);
-                    AutoLogin();
-                    return false;
-                }
-
-                if (shouldSeed.Reason == ShouldNotSeedReason.SeedingDisabled)
-                {
-                    SetStatus("Seeding disabled.", 5);
-                    return false;
-                }
-
-                if (shouldSeed.Reason == ShouldNotSeedReason.IncorrectUser)
-                {
-                    SetStatus("Cannot seed. Incorrect logged in user.", 5);
-                    return false;
-                }
-
-                if (shouldSeed.Reason == ShouldNotSeedReason.GameAlreadyRunning)
-                    return false;
-
-                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
-                {
-                    SetStatus("Player count above min threshold, not starting seeding.");
-                    return false;
-                }
-
-                if (shouldSeed.Reason == ShouldNotSeedReason.NoServerDefined)
-                {
-                    SetStatus("No server defined. Cannot seed.");
-                    return false;
-                }
-
-                throw new NotImplementedException("Need to handle all reasons for seeding not starting.");
-            }
-
-            return true;
-        }
-
-        private void AttemptKick()
-        {
-            ResultReason<KickReason> shouldKick = _context.ShouldKick();
-            if (shouldKick.Result)
-            {
-                if (shouldKick.Reason == KickReason.AboveSeedingRange)
-                {
-                    DialogResult result =
-                        MessageBoxEx.Show(
-                            "Player count above max threshold. If game is running it will be stopped in 5 seconds.",
-                            "Max Player Threshold Exceeded", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
-
-                    if (result == DialogResult.OK)
-                        _context.StopGame();
-
-                    return;
-                }
-
-                if (shouldKick.Reason == KickReason.NoServerDefined)
-                {
-                    return;
-                }
-
-                if (shouldKick.Reason == KickReason.GameNotRunning)
-                    return;
-
-                throw new NotImplementedException("Need to handle all reasons for kicking.");
-            }
-        }
+        // Deprecated
+//        private async void AttemptKick()
+//        {
+//            ResultReason<KickReason> shouldKick = _context.ShouldKick();
+//            if (shouldKick.Result)
+//            {
+//                if (shouldKick.Reason == KickReason.AboveSeedingRange)
+//                {
+//                    DialogResult result =
+//                        MessageBoxEx.Show(
+//                            "Player count above max threshold. If game is running it will be stopped in 5 seconds.",
+//                            "Max Player Threshold Exceeded", MessageBoxButtons.OKCancel,
+//                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+//
+//                    if (result == DialogResult.OK)
+//                        await _processController.StopGame();
+//
+//                    return;
+//                }
+//
+//                if (shouldKick.Reason == KickReason.NoServerDefined)
+//                {
+//                    return;
+//                }
+//
+//                if (shouldKick.Reason == KickReason.GameNotRunning)
+//                    return;
+//
+//                throw new NotImplementedException("Need to handle all reasons for kicking.");
+//            }
+//        }
 
         #endregion BattlelogManipulation
 
@@ -464,7 +541,7 @@ namespace PureSeeder.Forms
 
         private void joinServerButton_Click(object sender, EventArgs e)
         {
-            AttemptSeeding();
+            //AttemptSeeding();
         }
 
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
@@ -559,7 +636,7 @@ namespace PureSeeder.Forms
 
         private async void editServers_Click(object sender, EventArgs e)
         {
-            _refreshTimer.Stop(); // Stop the refresh timer
+            _browserRefreshTimer.Stop(); // Stop the refresh timer
 
             var serverEditor = new ServerEditor(_context);
             var dlgResult = serverEditor.ShowDialog();
@@ -573,12 +650,17 @@ namespace PureSeeder.Forms
 
             await _context.UpdateServerStatuses();
 
-            _refreshTimer.Start(); // Start the refresh timer back up
+            _browserRefreshTimer.Start(); // Start the refresh timer back up
         }
 
         private void viewReleaseNotesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new AboutDialog().ShowDialog();
+        }
+
+        private async void statusRefresh_Click(object sender, EventArgs e)
+        {
+            await RefreshServerStatuses();
         }
 
         #endregion UiEvents
@@ -605,19 +687,20 @@ namespace PureSeeder.Forms
             }
         }
 
-        private async void AutoMinimizeSeeder()
-        {
-            if (!_context.Settings.AutoMinimizeSeeder)
-                return;
-
-            var cts = new CancellationTokenSource();
-            cts.CancelAfter(300*1000); // Cancel the background task after 5 minutes
-
-            CancellationToken minimizerCt = cts.Token;
-            await
-                new RunAction().RunActionOnGameLoad(minimizerCt, () => _context.Session.CurrentGame,
-                    () => { WindowState = FormWindowState.Minimized; });
-        }
+        // Deprecated
+//        private async void AutoMinimizeSeeder()
+//        {
+//            if (!_context.Settings.AutoMinimizeSeeder)
+//                return;
+//
+//            var cts = new CancellationTokenSource();
+//            cts.CancelAfter(300*1000); // Cancel the background task after 5 minutes
+//
+//            CancellationToken minimizerCt = cts.Token;
+//            await
+//                new RunAction().RunActionOnGameLoad(minimizerCt, () => _context.Session.CurrentGame,
+//                    () => { WindowState = FormWindowState.Minimized; });
+//        }
 
         private static void ShowReleaseNotes()
         {
@@ -629,11 +712,6 @@ namespace PureSeeder.Forms
         private Task Sleep(int seconds)
         {
             return Task.Factory.StartNew(() => Thread.Sleep(seconds*1000));
-        }
-
-        private void statusRefresh_Click(object sender, EventArgs e)
-        {
-            _context.UpdateServerStatuses();
         }
     }
 }

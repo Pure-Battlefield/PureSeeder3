@@ -16,6 +16,7 @@ namespace PureSeeder.Core.Context
         private GameInfo _currentGame = Constants.Games.Bf4;
         private bool _bfIsRunning;
         private ServerStatusCollection _serverStatuses;
+        private ServerStatus _currentServer;
 
         public bool SeedingEnabled
         {
@@ -29,12 +30,13 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _currentLoggedInUser, value); }
         }
 
-        public GameInfo CurrentGame
-        {
-            // Note: Right now we only support BF4
-            get { return this._currentGame; }
-            set { /*SetField(ref _currentGame, value);*/ }
-        }
+        // Deprecated
+//        public GameInfo CurrentGame
+//        {
+//            // Note: Right now we only support BF4
+//            get { return this._currentGame; }
+//            set { /*SetField(ref _currentGame, value);*/ }
+//        }
 
         public bool BfIsRunning
         {
@@ -43,5 +45,11 @@ namespace PureSeeder.Core.Context
         }
 
         public ServerStatusCollection ServerStatuses { get { return _serverStatuses; }}
+
+        public ServerStatus CurrentServer
+        {
+            get { return this._currentServer; }
+            set { SetField(ref _currentServer, value); }
+        }
     }
 }
