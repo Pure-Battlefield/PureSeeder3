@@ -377,7 +377,9 @@ namespace PureSeeder.Forms
                 pageSource = geckoWebBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml;
 
             source = pageSource;
-            _context.UpdateContextWithBrowserPage(source); 
+            _context.UpdateContextWithBrowserPage(source);
+
+            AutoLogin();
         }
 
         private void UpdateInterface()
