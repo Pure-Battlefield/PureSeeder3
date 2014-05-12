@@ -189,8 +189,6 @@ namespace PureSeeder.Forms
 
             var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
             dataGridView1.DataSource = statusBindingSource;
-
-            logGridView.DataSource = new BindingSource() {DataSource = Logger.LogList};
         }
 
         #endregion Intialization
@@ -586,11 +584,6 @@ namespace PureSeeder.Forms
         private async void statusRefresh_Click(object sender, EventArgs e)
         {
             await RefreshServerStatuses();
-        }
-
-        private void logGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            logGridView.ClearSelection();
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)

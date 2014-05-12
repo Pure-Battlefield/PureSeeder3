@@ -95,10 +95,6 @@
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BrowserTab = new System.Windows.Forms.TabPage();
-            this.LogTab = new System.Windows.Forms.TabPage();
-            this.logGridView = new System.Windows.Forms.DataGridView();
-            this.TimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LogDisplay = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -115,8 +111,6 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.BrowserTab.SuspendLayout();
-            this.LogTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -633,7 +627,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.StatusTab);
             this.tabControl2.Controls.Add(this.BrowserTab);
-            this.tabControl2.Controls.Add(this.LogTab);
             this.tabControl2.Location = new System.Drawing.Point(12, 174);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -754,55 +747,6 @@
             this.BrowserTab.Text = "Browser";
             this.BrowserTab.UseVisualStyleBackColor = true;
             // 
-            // LogTab
-            // 
-            this.LogTab.Controls.Add(this.logGridView);
-            this.LogTab.Location = new System.Drawing.Point(4, 22);
-            this.LogTab.Name = "LogTab";
-            this.LogTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LogTab.Size = new System.Drawing.Size(1095, 480);
-            this.LogTab.TabIndex = 1;
-            this.LogTab.Text = "Log";
-            this.LogTab.UseVisualStyleBackColor = true;
-            // 
-            // logGridView
-            // 
-            this.logGridView.AllowUserToAddRows = false;
-            this.logGridView.AllowUserToDeleteRows = false;
-            this.logGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.logGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.logGridView.ColumnHeadersVisible = false;
-            this.logGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.TimeCol,
-            this.LogDisplay});
-            this.logGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.logGridView.Location = new System.Drawing.Point(3, 3);
-            this.logGridView.Name = "logGridView";
-            this.logGridView.ReadOnly = true;
-            this.logGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.logGridView.RowHeadersVisible = false;
-            this.logGridView.Size = new System.Drawing.Size(1089, 474);
-            this.logGridView.TabIndex = 0;
-            this.logGridView.SelectionChanged += new System.EventHandler(this.logGridView_SelectionChanged);
-            // 
-            // TimeCol
-            // 
-            this.TimeCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.TimeCol.DataPropertyName = "Time";
-            this.TimeCol.HeaderText = "Time";
-            this.TimeCol.Name = "TimeCol";
-            this.TimeCol.ReadOnly = true;
-            this.TimeCol.Width = 5;
-            // 
-            // LogDisplay
-            // 
-            this.LogDisplay.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.LogDisplay.DataPropertyName = "Message";
-            this.LogDisplay.HeaderText = "Log";
-            this.LogDisplay.Name = "LogDisplay";
-            this.LogDisplay.ReadOnly = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -842,8 +786,6 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.BrowserTab.ResumeLayout(false);
-            this.LogTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.logGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -917,10 +859,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TabPage LogTab;
-        private System.Windows.Forms.DataGridView logGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TimeCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LogDisplay;
     }
 }
 
