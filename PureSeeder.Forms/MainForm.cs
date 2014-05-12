@@ -13,6 +13,7 @@ using Gecko;
 using PureSeeder.Core.Annotations;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Context;
+using PureSeeder.Core.Logging;
 using PureSeeder.Core.Monitoring;
 using PureSeeder.Core.ProcessControl;
 using PureSeeder.Core.ServerManagement;
@@ -85,7 +86,10 @@ namespace PureSeeder.Forms
             SpinUpProcessMonitor();
             SpinUpAvoidIdleKick();
 
-            /*await*/ LoadBattlelog();
+            await LoadBattlelog();
+
+            Logger.Log("Finished initialization.");
+            Logger.Log("Blah");
         }
 
         private void UiSetup()
@@ -184,8 +188,9 @@ namespace PureSeeder.Forms
                 DataSourceUpdateMode.OnPropertyChanged);
 
             var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
-
             dataGridView1.DataSource = statusBindingSource;
+
+            logGridView.DataSource = new BindingSource() {DataSource = Logger.LogList};
         }
 
         #endregion Intialization
@@ -229,9 +234,15 @@ namespace PureSeeder.Forms
             if (seederAction.ActionType == SeederActionType.Noop)
                 return;
             if (seederAction.ActionType == SeederActionType.Stop)
-                await _processController.StopGame();
+            {
+                await _processController.StopGame(_context.IsSeeding());
+                return;
+            }
             if (seederAction.ActionType == SeederActionType.Seed)
+            {
                 await AttempSeeding(seederAction);
+                return;
+            }
 
             throw new ArgumentException("Unknow SeederAction ActionType.");
         }
@@ -289,6 +300,13 @@ namespace PureSeeder.Forms
             {
                 _context.OnContextUpdate -= handler;
                 _context.Session.CurrentServer = seederAction.ServerStatus;
+
+                DialogResult result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
+                
+                if (result == DialogResult.Cancel)
+                    return;
+
                 JoinServer();
             };
             _context.OnContextUpdate += handler;
@@ -364,20 +382,6 @@ namespace PureSeeder.Forms
             _context.UpdateContextWithBrowserPage(source); 
         }
 
-        // Deprecated
-//        private void AttemptSeedingOld(SeederAction seederAction)
-//        {
-//            
-//
-//            DialogResult result = MessageBoxEx.Show("Seeding in 5 seconds.", "Auto-Seeding", MessageBoxButtons.OKCancel,
-//                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
-//
-//            if (result == DialogResult.Cancel)
-//                return;
-//
-//            JoinServer();
-//        }
-
         private void UpdateInterface()
         {
             currentLoggedInUser.ForeColor = _context.GetUserStatus() == UserStatus.Correct ? Color.Green : Color.Red;
@@ -450,85 +454,6 @@ namespace PureSeeder.Forms
                     failedLogout.Invoke();
             });
         }
-
-        // Deprecated
-//        private bool ShouldSeed()
-//        {
-//            ResultReason<ShouldNotSeedReason> shouldSeed = _context.ShouldSeed();
-//
-//            if (!shouldSeed.Result)
-//            {
-//                if (shouldSeed.Reason == ShouldNotSeedReason.NotLoggedIn)
-//                {
-//                    SetStatus("Cannot seed. Not logged in.", 5);
-//                    AutoLogin();
-//                    return false;
-//                }
-//
-//                if (shouldSeed.Reason == ShouldNotSeedReason.SeedingDisabled)
-//                {
-//                    SetStatus("Seeding disabled.", 5);
-//                    return false;
-//                }
-//
-//                if (shouldSeed.Reason == ShouldNotSeedReason.IncorrectUser)
-//                {
-//                    SetStatus("Cannot seed. Incorrect logged in user.", 5);
-//                    return false;
-//                }
-//
-//                if (shouldSeed.Reason == ShouldNotSeedReason.GameAlreadyRunning)
-//                    return false;
-//
-//                if (shouldSeed.Reason == ShouldNotSeedReason.NotInRange)
-//                {
-//                    SetStatus("Player count above min threshold, not starting seeding.");
-//                    return false;
-//                }
-//
-//                if (shouldSeed.Reason == ShouldNotSeedReason.NoServerDefined)
-//                {
-//                    SetStatus("No server defined. Cannot seed.");
-//                    return false;
-//                }
-//
-//                throw new NotImplementedException("Need to handle all reasons for seeding not starting.");
-//            }
-//
-//            return true;
-//        }
-
-        // Deprecated
-//        private async void AttemptKick()
-//        {
-//            ResultReason<KickReason> shouldKick = _context.ShouldKick();
-//            if (shouldKick.Result)
-//            {
-//                if (shouldKick.Reason == KickReason.AboveSeedingRange)
-//                {
-//                    DialogResult result =
-//                        MessageBoxEx.Show(
-//                            "Player count above max threshold. If game is running it will be stopped in 5 seconds.",
-//                            "Max Player Threshold Exceeded", MessageBoxButtons.OKCancel,
-//                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 5000);
-//
-//                    if (result == DialogResult.OK)
-//                        await _processController.StopGame();
-//
-//                    return;
-//                }
-//
-//                if (shouldKick.Reason == KickReason.NoServerDefined)
-//                {
-//                    return;
-//                }
-//
-//                if (shouldKick.Reason == KickReason.GameNotRunning)
-//                    return;
-//
-//                throw new NotImplementedException("Need to handle all reasons for kicking.");
-//            }
-//        }
 
         #endregion BattlelogManipulation
 
@@ -663,6 +588,16 @@ namespace PureSeeder.Forms
             await RefreshServerStatuses();
         }
 
+        private void logGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            logGridView.ClearSelection();
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection();
+        }
+
         #endregion UiEvents
 
         #region UiManipulation
@@ -686,21 +621,6 @@ namespace PureSeeder.Forms
                 SetStatus("");
             }
         }
-
-        // Deprecated
-//        private async void AutoMinimizeSeeder()
-//        {
-//            if (!_context.Settings.AutoMinimizeSeeder)
-//                return;
-//
-//            var cts = new CancellationTokenSource();
-//            cts.CancelAfter(300*1000); // Cancel the background task after 5 minutes
-//
-//            CancellationToken minimizerCt = cts.Token;
-//            await
-//                new RunAction().RunActionOnGameLoad(minimizerCt, () => _context.Session.CurrentGame,
-//                    () => { WindowState = FormWindowState.Minimized; });
-//        }
 
         private static void ShowReleaseNotes()
         {

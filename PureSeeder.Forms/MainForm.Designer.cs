@@ -70,7 +70,6 @@
             this.ServerSettingsTab = new System.Windows.Forms.TabPage();
             this.curUrl = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.editServers = new System.Windows.Forms.Button();
             this.UserSettingsTab = new System.Windows.Forms.TabPage();
             this.label10 = new System.Windows.Forms.Label();
             this.email = new System.Windows.Forms.TextBox();
@@ -81,20 +80,25 @@
             this.autoMinimizeGame = new System.Windows.Forms.CheckBox();
             this.autoMinimizeSeeder = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.editServers = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.StatusTab = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.BrowserTab = new System.Windows.Forms.TabPage();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.BrowserTab = new System.Windows.Forms.TabPage();
+            this.LogTab = new System.Windows.Forms.TabPage();
+            this.logGridView = new System.Windows.Forms.DataGridView();
+            this.TimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LogDisplay = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -107,10 +111,12 @@
             this.groupBox1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.StatusTab.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.BrowserTab.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.LogTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -217,6 +223,7 @@
             this.logging.TabIndex = 22;
             this.logging.Text = "Logging";
             this.logging.UseVisualStyleBackColor = true;
+            this.logging.Visible = false;
             // 
             // joinServerButton
             // 
@@ -226,6 +233,7 @@
             this.joinServerButton.TabIndex = 24;
             this.joinServerButton.Text = "Seed Now";
             this.joinServerButton.UseVisualStyleBackColor = true;
+            this.joinServerButton.Visible = false;
             this.joinServerButton.Click += new System.EventHandler(this.joinServerButton_Click);
             // 
             // refreshInterval
@@ -475,17 +483,6 @@
             this.label4.TabIndex = 25;
             this.label4.Text = "Current URL";
             // 
-            // editServers
-            // 
-            this.editServers.Dock = System.Windows.Forms.DockStyle.Right;
-            this.editServers.Location = new System.Drawing.Point(1020, 0);
-            this.editServers.Name = "editServers";
-            this.editServers.Size = new System.Drawing.Size(75, 28);
-            this.editServers.TabIndex = 24;
-            this.editServers.Text = "Edit Servers";
-            this.editServers.UseVisualStyleBackColor = true;
-            this.editServers.Click += new System.EventHandler(this.editServers_Click);
-            // 
             // UserSettingsTab
             // 
             this.UserSettingsTab.Controls.Add(this.label10);
@@ -596,6 +593,17 @@
             this.label11.TabIndex = 26;
             this.label11.Text = "Browser Refresh (Seconds):";
             // 
+            // editServers
+            // 
+            this.editServers.Dock = System.Windows.Forms.DockStyle.Right;
+            this.editServers.Location = new System.Drawing.Point(1020, 0);
+            this.editServers.Name = "editServers";
+            this.editServers.Size = new System.Drawing.Size(75, 28);
+            this.editServers.TabIndex = 24;
+            this.editServers.Text = "Edit Servers";
+            this.editServers.UseVisualStyleBackColor = true;
+            this.editServers.Click += new System.EventHandler(this.editServers_Click);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label2);
@@ -625,6 +633,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.StatusTab);
             this.tabControl2.Controls.Add(this.BrowserTab);
+            this.tabControl2.Controls.Add(this.LogTab);
             this.tabControl2.Location = new System.Drawing.Point(12, 174);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -642,6 +651,24 @@
             this.StatusTab.Text = "Status";
             this.StatusTab.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.editServers);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 452);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1095, 28);
+            this.panel2.TabIndex = 2;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dataGridView1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1095, 480);
+            this.panel1.TabIndex = 1;
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -658,19 +685,11 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // BrowserTab
-            // 
-            this.BrowserTab.Controls.Add(this.browserPanel);
-            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
-            this.BrowserTab.Name = "BrowserTab";
-            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
-            this.BrowserTab.TabIndex = 0;
-            this.BrowserTab.Text = "Browser";
-            this.BrowserTab.UseVisualStyleBackColor = true;
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // ServerNameCol
             // 
@@ -725,23 +744,64 @@
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
             // 
-            // panel1
+            // BrowserTab
             // 
-            this.panel1.Controls.Add(this.dataGridView1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1095, 480);
-            this.panel1.TabIndex = 1;
+            this.BrowserTab.Controls.Add(this.browserPanel);
+            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
+            this.BrowserTab.Name = "BrowserTab";
+            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
+            this.BrowserTab.TabIndex = 0;
+            this.BrowserTab.Text = "Browser";
+            this.BrowserTab.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // LogTab
             // 
-            this.panel2.Controls.Add(this.editServers);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 452);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1095, 28);
-            this.panel2.TabIndex = 2;
+            this.LogTab.Controls.Add(this.logGridView);
+            this.LogTab.Location = new System.Drawing.Point(4, 22);
+            this.LogTab.Name = "LogTab";
+            this.LogTab.Padding = new System.Windows.Forms.Padding(3);
+            this.LogTab.Size = new System.Drawing.Size(1095, 480);
+            this.LogTab.TabIndex = 1;
+            this.LogTab.Text = "Log";
+            this.LogTab.UseVisualStyleBackColor = true;
+            // 
+            // logGridView
+            // 
+            this.logGridView.AllowUserToAddRows = false;
+            this.logGridView.AllowUserToDeleteRows = false;
+            this.logGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.logGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.logGridView.ColumnHeadersVisible = false;
+            this.logGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.TimeCol,
+            this.LogDisplay});
+            this.logGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.logGridView.Location = new System.Drawing.Point(3, 3);
+            this.logGridView.Name = "logGridView";
+            this.logGridView.ReadOnly = true;
+            this.logGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.logGridView.RowHeadersVisible = false;
+            this.logGridView.Size = new System.Drawing.Size(1089, 474);
+            this.logGridView.TabIndex = 0;
+            this.logGridView.SelectionChanged += new System.EventHandler(this.logGridView_SelectionChanged);
+            // 
+            // TimeCol
+            // 
+            this.TimeCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.TimeCol.DataPropertyName = "Time";
+            this.TimeCol.HeaderText = "Time";
+            this.TimeCol.Name = "TimeCol";
+            this.TimeCol.ReadOnly = true;
+            this.TimeCol.Width = 5;
+            // 
+            // LogDisplay
+            // 
+            this.LogDisplay.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.LogDisplay.DataPropertyName = "Message";
+            this.LogDisplay.HeaderText = "Log";
+            this.LogDisplay.Name = "LogDisplay";
+            this.LogDisplay.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -778,10 +838,12 @@
             this.groupBox1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.StatusTab.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.BrowserTab.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.LogTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.logGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -855,6 +917,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TabPage LogTab;
+        private System.Windows.Forms.DataGridView logGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LogDisplay;
     }
 }
 

@@ -71,6 +71,7 @@
     <Compile Include="Context\SessionData.cs" />
     <Compile Include="Initialization\DefaultContainer.cs" />
     <Compile Include="Initialization\IContainer.cs" />
+    <Compile Include="Logging\Logging.cs" />
     <Compile Include="Monitoring\AvoidIdleKick.cs" />
     <Compile Include="Monitoring\GameMinimizer.cs" />
     <Compile Include="Monitoring\PInvoke.cs" />

@@ -9,9 +9,9 @@ namespace PureSeeder.Core.ProcessControl
 {
     public interface IProcessController
     {
-        Task StopGame();
+        Task StopGame(bool bfIsRunning);
         Task MinimizeAfterLaunch();
-        Task<bool> BfIsRunning();
+        //Task<bool> BfIsRunning();
 
         ProcessMonitor GetProcessMonitor();
         IdleKickAvoider GetIdleKickAvoider();
@@ -19,15 +19,15 @@ namespace PureSeeder.Core.ProcessControl
 
     class ProcessController : IProcessController
     {
-        public async Task StopGame()
+        public async Task StopGame(bool bfIsRunning)
         {
-            if (!await BfIsRunning())
+            if (!bfIsRunning)
                 return;
 
             var process = Process.GetProcessesByName(Constants.Games.Bf4.ProcessName).FirstOrDefault();
 
             if (process != null)
-                process.Close();
+                process.Kill();
         }
 
         public async Task MinimizeAfterLaunch()
@@ -38,10 +38,10 @@ namespace PureSeeder.Core.ProcessControl
             await new GameMinimizer().MinimizeGameOnce(cts.Token, () => Constants.Games.Bf4);
         }
 
-        public Task<bool> BfIsRunning()
-        {
-            throw new System.NotImplementedException();
-        }
+//        public Task<bool> BfIsRunning()
+//        {
+//            throw new System.NotImplementedException();
+//        }
 
         public ProcessMonitor GetProcessMonitor()
         {
