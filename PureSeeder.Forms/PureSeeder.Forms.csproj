@@ -14,7 +14,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PublishUrl>C:\Dev\Junk\PureSeeder\</PublishUrl>
+    <PublishUrl>C:\Dev\Junk\PureSeederBeta\2.0.0.0\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -22,17 +22,18 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
+    <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://bradrhodes.github.io/PureSeeder3/</InstallUrl>
-    <UpdateUrl>http://bradrhodes.github.io/PureSeeder3/</UpdateUrl>
+    <InstallUrl>http://pure-battlefield.github.io/PureSeeder3/beta/</InstallUrl>
+    <UpdateUrl>http://pure-battlefield.github.io/PureSeeder3/beta/</UpdateUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>PURE Seeder 3</ProductName>
     <PublisherName>PURE Battlefield</PublisherName>
+    <MinimumRequiredVersion>2.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -154,6 +155,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Resources\arrow_Down_16xMD.png" />
+    <Content Include="Resources\arrow_Up_16xMD.png" />
     <Content Include="xulrunner\dictionaries\en-US.aff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

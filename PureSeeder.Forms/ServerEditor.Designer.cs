@@ -87,21 +87,21 @@
             // 
             // upButton
             // 
+            this.upButton.Image = global::PureSeeder.Forms.Properties.Resources.arrow_Up_16xMD;
             this.upButton.Location = new System.Drawing.Point(369, 12);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(31, 23);
             this.upButton.TabIndex = 5;
-            this.upButton.Text = "U";
             this.upButton.UseVisualStyleBackColor = true;
             this.upButton.Click += new System.EventHandler(this.upButton_Click);
             // 
             // downButton
             // 
+            this.downButton.Image = global::PureSeeder.Forms.Properties.Resources.arrow_Down_16xMD;
             this.downButton.Location = new System.Drawing.Point(369, 41);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(31, 23);
             this.downButton.TabIndex = 6;
-            this.downButton.Text = "D";
             this.downButton.UseVisualStyleBackColor = true;
             this.downButton.Click += new System.EventHandler(this.downButton_Click);
             // 
