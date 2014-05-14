@@ -1,6 +1,6 @@
 ## PureSeeder 3
 
-Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich.
+Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica](https://github.com/gsarrica) and [Sam Hecht](https://github.com/ForceTen2112).
 
 
 ### Main Features
@@ -16,6 +16,13 @@ Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https:/
 
 
 ### Changlog
+v 2.0.0.x
+- Added functionality for monitoring multiple servers and making a decision on which one to seed
+- Added ability to prioritize servers in the UI
+- Add Server Status tab to view the player counts from all servers
+
+v 1.3.0.0
+- Automatic Server Switching
 
 v 1.2.2.0
 - Transferred ownership of the PureSeeder3 project to PURE Battlefield
@@ -34,6 +41,7 @@ v 0.1.0.1
 - Initial beta release version
 
 ### Installation Instructions
+- the installer can be downloaded from [http://pure-battlefield.github.io/PureSeeder3/](http://pure-battlefield.github.io/PureSeeder3/)
 - we don't have a proper signing key for the installation so Windows may block the installation saying "Windows protected your PC"
 - the install is NOT harmful so if you choose trust us (or you want to verify the source code yourself), you can choose to install it anyway by clicking on the "More info" link below the message, then clicking on the "Run Anyway" button that appears in the lower right hand corner.
 ![Step 1](http://pure-battlefield.github.io/PureSeeder3/images/protect1.png)

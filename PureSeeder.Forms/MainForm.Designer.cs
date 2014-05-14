@@ -88,13 +88,14 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.BrowserTab = new System.Windows.Forms.TabPage();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BrowserTab = new System.Windows.Forms.TabPage();
+            this.SeedingEnabledCol = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -673,16 +674,26 @@
             this.CurrentPlayersCol,
             this.MinPlayersCol,
             this.MaxPlayersCol,
-            this.ServerMaxCol});
+            this.ServerMaxCol,
+            this.SeedingEnabledCol});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1095, 480);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            // 
+            // BrowserTab
+            // 
+            this.BrowserTab.Controls.Add(this.browserPanel);
+            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
+            this.BrowserTab.Name = "BrowserTab";
+            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
+            this.BrowserTab.TabIndex = 0;
+            this.BrowserTab.Text = "Browser";
+            this.BrowserTab.UseVisualStyleBackColor = true;
             // 
             // ServerNameCol
             // 
@@ -737,15 +748,17 @@
             this.ServerMaxCol.ReadOnly = true;
             this.ServerMaxCol.Width = 79;
             // 
-            // BrowserTab
+            // SeedingEnabledCol
             // 
-            this.BrowserTab.Controls.Add(this.browserPanel);
-            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
-            this.BrowserTab.Name = "BrowserTab";
-            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
-            this.BrowserTab.TabIndex = 0;
-            this.BrowserTab.Text = "Browser";
-            this.BrowserTab.UseVisualStyleBackColor = true;
+            this.SeedingEnabledCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.SeedingEnabledCol.DataPropertyName = "SeedingEnabled";
+            this.SeedingEnabledCol.FalseValue = "false";
+            this.SeedingEnabledCol.HeaderText = "Seeding Enabled";
+            this.SeedingEnabledCol.Name = "SeedingEnabledCol";
+            this.SeedingEnabledCol.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.SeedingEnabledCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.SeedingEnabledCol.TrueValue = "true";
+            this.SeedingEnabledCol.Width = 104;
             // 
             // MainForm
             // 
@@ -851,14 +864,15 @@
         private System.Windows.Forms.TextBox curUrl;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerNameCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn AddressCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MinPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn SeedingEnabledCol;
     }
 }
 

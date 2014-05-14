@@ -33,6 +33,10 @@ namespace PureSeeder.Forms
         private readonly ProcessMonitor _processMonitor;
         private readonly Timer _browserRefreshTimer;
         private readonly Timer _statusRefreshTimer;
+        private readonly Timer _randomSeedTimer;
+        private Random _rand;
+        private int _randMin = 60*1000;
+        private int _randMax = 600*1000;
 
         // CancellationTokens
         private CancellationToken _avoidIdleKickCt;
@@ -55,9 +59,11 @@ namespace PureSeeder.Forms
 
             _context.Session.PropertyChanged += ContextPropertyChanged;
             _context.Settings.PropertyChanged += ContextPropertyChanged;
-
+            
             _browserRefreshTimer = new Timer();
             _statusRefreshTimer = new Timer();
+            _rand = new Random();
+            _randomSeedTimer = new Timer();
 
             _processMonitor = _processController.GetProcessMonitor();
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
@@ -130,6 +136,7 @@ namespace PureSeeder.Forms
         {
             SetBrowserRefreshTimer();
             SetStatusRefreshTimer();
+            SetRandomSeedTimer();
         }
 
         private void SetBrowserRefreshTimer()
@@ -160,6 +167,17 @@ namespace PureSeeder.Forms
             _statusRefreshTimer.Tick += TimedServerStatusRefresh;
 
             _statusRefreshTimer.Start();
+        }
+
+        private void SetRandomSeedTimer()
+        {
+            _randomSeedTimer.Tick += RandomSeedTimerHandler;
+            
+            var timerInterval = _rand.Next(_randMin, _randMax); // Random between 1 and 10 mins
+            //SetStatus(String.Format("Time until next seed attempt: {0} seconds", (timerInterval / 1000).ToString()), 5);
+            _randomSeedTimer.Interval = timerInterval;
+            _randomSeedTimer.Enabled = true;
+            _randomSeedTimer.Start();
         }
 
         private void CreateBindings()
@@ -215,6 +233,17 @@ namespace PureSeeder.Forms
             await RefreshServerStatuses();
         }
 
+        private async void RandomSeedTimerHandler(object sender, EventArgs e)
+        {
+            // Set the next random tick length
+            int timerInterval = _rand.Next(_randMin, _randMax);  // Get a new random interval between 1 and 10 mins
+            //SetStatus(String.Format("Time until next seed attempt: {0} seconds", (timerInterval / 1000).ToString()), 5);
+            _randomSeedTimer.Interval = timerInterval;
+
+            
+            await Seed();
+        }
+
         private async Task RefreshServerStatusesNoSeed()
         {
             await _context.UpdateServerStatuses();
@@ -223,7 +252,12 @@ namespace PureSeeder.Forms
         private async Task RefreshServerStatuses()
         {
             await _context.UpdateServerStatuses();
-            var seederAction = _seederActionFactory.GetAction(_context);
+            //await Seed();  // Using random seeding timer for now RandomSeedTimerHandler(object, EventArgs)
+        }
+
+        private async Task Seed()
+        {
+            var seederAction = await _seederActionFactory.GetAction(_context);
             await SeederActionHandler(seederAction);
         }
 

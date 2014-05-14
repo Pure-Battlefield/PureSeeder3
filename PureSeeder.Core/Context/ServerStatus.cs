@@ -62,6 +62,7 @@ namespace PureSeeder.Core.Context
         public new bool SeedingEnabled
         {
             get { return _innerServer.SeedingEnabled; }
+            set { _innerServer.SeedingEnabled = value; }
         }
     }
 }
