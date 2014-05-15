@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PureSeeder.Core.Annotations;
 using PureSeeder.Core.Configuration;
@@ -32,13 +33,23 @@ namespace PureSeeder.Core.ServerManagement
                 if (String.IsNullOrEmpty(response))
                     return;
 
-                var json = JObject.Parse(response);
+                
+                ServerInfo serverInfo;
 
-                if (json == null)
+                try
+                {
+                    serverInfo = JsonConvert.DeserializeObject<ServerInfo>(response);
+                }
+                catch
+                {
                     return;
+                }
 
-                serverStatus.CurPlayers = json["slots"]["2"]["current"].Value<int>();
-                serverStatus.ServerMax = json["slots"]["2"]["max"].Value<int>();
+                if (serverInfo != null && serverInfo.Slots != null && serverInfo.Slots.Players != null)
+                {
+                    serverStatus.CurPlayers = serverInfo.Slots.Players.Current;
+                    serverStatus.ServerMax = serverInfo.Slots.Players.Max;
+                }
             }
         }
 
@@ -50,5 +61,29 @@ namespace PureSeeder.Core.ServerManagement
 
             await Task.WhenAll(allTasks);
         }
+    }
+
+    public class ServerInfo
+    {
+        public ServerSlots Slots { get; set; }
+    }
+
+    public class ServerSlots
+    {
+        [JsonProperty(PropertyName = "1")]
+        public ServerSlot Queue { get; set; }
+        [JsonProperty(PropertyName = "2")]
+        public ServerSlot Players { get; set; }
+        [JsonProperty(PropertyName = "4")]
+        public ServerSlot Commanders { get; set; }
+        [JsonProperty(PropertyName = "8")]
+        public ServerSlot Spectators { get; set; }
+
+    }
+
+    public class ServerSlot
+    {
+        public int Current { get; set; }
+        public int Max { get; set; }
     }
 }

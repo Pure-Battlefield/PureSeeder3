@@ -14,7 +14,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PublishUrl>C:\Dev\Junk\PureSeederBeta\2.0.0.1\</PublishUrl>
+    <PublishUrl>C:\Dev\Junk\Temp\PureSeeder\2.0.0.4\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -24,15 +24,15 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://pure-battlefield.github.io/PureSeeder3/beta/</InstallUrl>
-    <UpdateUrl>http://pure-battlefield.github.io/PureSeeder3/beta/</UpdateUrl>
+    <InstallUrl>http://pure-battlefield.github.io/PureSeeder3/</InstallUrl>
+    <UpdateUrl>http://pure-battlefield.github.io/PureSeeder3/</UpdateUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>PURE Seeder 3</ProductName>
     <PublisherName>PURE Battlefield</PublisherName>
-    <MinimumRequiredVersion>2.0.0.1</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.0.0.4</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
