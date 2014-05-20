@@ -95,7 +95,6 @@ namespace PureSeeder.Forms
             await LoadBattlelog();
 
             Logger.Log("Finished initialization.");
-            Logger.Log("Blah");
         }
 
         private void UiSetup()

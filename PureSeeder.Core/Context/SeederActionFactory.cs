@@ -37,7 +37,14 @@ namespace PureSeeder.Core.Context
 
         private bool IsCurrentServer(ServerStatus thisServer, IDataContext context)
         {
-            return thisServer.Id == context.Session.CurrentServer.Id;
+            try
+            {
+                return thisServer.Id == context.Session.CurrentServer.Id;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
