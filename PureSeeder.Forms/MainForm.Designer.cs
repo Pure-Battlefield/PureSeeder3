@@ -82,13 +82,13 @@
             this.label11 = new System.Windows.Forms.Label();
             this.editServers = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.currentSeedingStatus = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.StatusTab = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.BrowserTab = new System.Windows.Forms.TabPage();
             this.ServerNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddressCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -96,6 +96,7 @@
             this.MaxPlayersCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ServerMaxCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SeedingEnabledCol = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BrowserTab = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.webControlBindingSource)).BeginInit();
             this.browserPanel.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -228,7 +229,6 @@
             this.joinServerButton.TabIndex = 24;
             this.joinServerButton.Text = "Seed Now";
             this.joinServerButton.UseVisualStyleBackColor = true;
-            this.joinServerButton.Visible = false;
             this.joinServerButton.Click += new System.EventHandler(this.joinServerButton_Click);
             // 
             // refreshInterval
@@ -601,6 +601,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.currentSeedingStatus);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.currentLoggedInUser);
@@ -610,6 +611,17 @@
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
+            // 
+            // currentSeedingStatus
+            // 
+            this.currentSeedingStatus.AutoSize = true;
+            this.currentSeedingStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentSeedingStatus.Location = new System.Drawing.Point(146, 36);
+            this.currentSeedingStatus.Name = "currentSeedingStatus";
+            this.currentSeedingStatus.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.currentSeedingStatus.Size = new System.Drawing.Size(97, 20);
+            this.currentSeedingStatus.TabIndex = 37;
+            this.currentSeedingStatus.Text = "Not Seeding";
             // 
             // label2
             // 
@@ -685,16 +697,6 @@
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
-            // BrowserTab
-            // 
-            this.BrowserTab.Controls.Add(this.browserPanel);
-            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
-            this.BrowserTab.Name = "BrowserTab";
-            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
-            this.BrowserTab.TabIndex = 0;
-            this.BrowserTab.Text = "Browser";
-            this.BrowserTab.UseVisualStyleBackColor = true;
-            // 
             // ServerNameCol
             // 
             this.ServerNameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -759,6 +761,16 @@
             this.SeedingEnabledCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.SeedingEnabledCol.TrueValue = "true";
             this.SeedingEnabledCol.Width = 104;
+            // 
+            // BrowserTab
+            // 
+            this.BrowserTab.Controls.Add(this.browserPanel);
+            this.BrowserTab.Location = new System.Drawing.Point(4, 22);
+            this.BrowserTab.Name = "BrowserTab";
+            this.BrowserTab.Size = new System.Drawing.Size(1095, 480);
+            this.BrowserTab.TabIndex = 0;
+            this.BrowserTab.Text = "Browser";
+            this.BrowserTab.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -873,6 +885,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxPlayersCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServerMaxCol;
         private System.Windows.Forms.DataGridViewCheckBoxColumn SeedingEnabledCol;
+        private System.Windows.Forms.Label currentSeedingStatus;
     }
 }
 

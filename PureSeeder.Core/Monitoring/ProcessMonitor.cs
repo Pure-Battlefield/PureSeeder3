@@ -23,7 +23,7 @@ namespace PureSeeder.Core.Monitoring
         // Need a couple of custom events to attach to
        public event ProcessStateChangeHandler OnProcessStateChanged; 
 
-       public /*async*/ Task CheckOnProcess(CancellationToken ct, Func<GameInfo> getGameInfo)
+       public /*async*/ Task CheckOnProcess(CancellationToken ct, Func<GameInfo> getGameInfo, SynchronizationContext context)
         {
             /*await*/ return Task.Factory.StartNew(() =>
                 {
@@ -42,8 +42,8 @@ namespace PureSeeder.Core.Monitoring
                                 Process.GetProcessesByName(currentGame.ProcessName).FirstOrDefault();
                             var isRunning = process != null;
                             if (isRunning != previousState && OnProcessStateChanged != null)
-                                OnProcessStateChanged.Invoke(this,
-                                                             new ProcessStateChangeEventArgs() {IsRunning = isRunning});
+                                context.Post(_ => OnProcessStateChanged(this, new ProcessStateChangeEventArgs() {IsRunning = isRunning}), null);
+                                //OnProcessStateChanged.Invoke(this,new ProcessStateChangeEventArgs() {IsRunning = isRunning}); // Deprecated
 
                             previousState = isRunning;
 

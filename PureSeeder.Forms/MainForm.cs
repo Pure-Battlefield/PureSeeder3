@@ -104,12 +104,13 @@ namespace PureSeeder.Forms
             notifyIcon1.Text = Constants.ApplicationName;
             Text = Constants.ApplicationName;
             closeToolStripMenuItem.Text = String.Format("Close {0}", Constants.ApplicationName);
+            SetCurrentSeedingStatusDisplay();
         }
 
         private async void SpinUpProcessMonitor()
         {
             _processMonitorCt = new CancellationTokenSource().Token;
-            await _processMonitor.CheckOnProcess(_processMonitorCt, () => Constants.Games.Bf4);
+            await _processMonitor.CheckOnProcess(_processMonitorCt, () => Constants.Games.Bf4, SynchronizationContext.Current);
         }
 
         private async void SpinUpAvoidIdleKick()
@@ -220,6 +221,22 @@ namespace PureSeeder.Forms
                 notifyIcon1.Icon = Resources.PBOn;
             if (!_context.Session.BfIsRunning)
                 notifyIcon1.Icon = Resources.PBOff;
+
+            SetCurrentSeedingStatusDisplay();
+        }
+
+        private void SetCurrentSeedingStatusDisplay()
+        {
+            if (_context.Session.BfIsRunning)
+            {
+                currentSeedingStatus.ForeColor = Color.Green;
+                currentSeedingStatus.Text = "Seeding";
+            }
+            else
+            {
+                currentSeedingStatus.ForeColor = Color.Red;
+                currentSeedingStatus.Text = "Not Seeding";
+            }
         }
 
         private void TimedRefresh(object sender, EventArgs e)
@@ -497,9 +514,10 @@ namespace PureSeeder.Forms
             _context.Settings.SaveSettings();
         }
 
-        private void joinServerButton_Click(object sender, EventArgs e)
+        private async void joinServerButton_Click(object sender, EventArgs e)
         {
             //AttemptSeeding();
+            await Seed();
         }
 
         private void geckoWebBrowser1_DomContentChanged(object sender, DomEventArgs e)
