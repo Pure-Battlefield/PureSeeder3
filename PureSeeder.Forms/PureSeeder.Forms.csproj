@@ -14,7 +14,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PublishUrl>C:\Dev\Junk\Temp\PureSeeder\2.0.0.4\</PublishUrl>
+    <PublishUrl>C:\Dev\Junk\Temp\PureSeeder\2.0.0.6\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -29,10 +29,10 @@
     <TargetCulture>en</TargetCulture>
     <ProductName>PURE Seeder 3</ProductName>
     <PublisherName>PURE Battlefield</PublisherName>
-    <MinimumRequiredVersion>2.0.0.4</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.0.0.6</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
