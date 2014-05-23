@@ -1,24 +1,31 @@
 {
   "Servers": [
     {
-      "Name": "PURE Battlefield CQ #1 - 64 Player",
+      "Name": "PURE Battlefield #1",
       "Address": "http://bf4-server1.purebattlefield.org",
-      "MinPlayers": 32,
-      "MaxPlayers": 64,
+      "MinPlayers": 5,
+      "MaxPlayers": 40,
       "SeedingEnabled": true
     },
     {
-      "Name": "PURE Battlefield Mixed Mode #1 = 32 Player",
-      "Address": "http://bf4-server2.purebattlefield.org",
-      "MinPlayers": 16,
+      "Name": "PURE Battlefield #3",
+      "Address": "http://bf4-server3.purebattlefield.org",
+      "MinPlayers": 5,
+      "MaxPlayers": 40,
+      "SeedingEnabled": true
+    },
+    {
+      "Name": "PURE Battlefield #4",
+      "Address": "http://bf4-server4.purebattlefield.org",
+      "MinPlayers": 5,
       "MaxPlayers": 32,
       "SeedingEnabled": true
     },
     {
-      "Name": "PURE Battlefield CQ/DOM #2 - 64 Player",
-      "Address": "http://bf4-server3.purebattlefield.org",
-      "MinPlayers": 32,
-      "MaxPlayers": 64,
+      "Name": "PURE Battlefield #2",
+      "Address": "http://bf4-server2.purebattlefield.org",
+      "MinPlayers": 5,
+      "MaxPlayers": 40,
       "SeedingEnabled": true
     }
   ],
