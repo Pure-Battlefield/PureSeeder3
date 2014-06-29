@@ -172,44 +172,6 @@ namespace PureSeeder.Core.Context
 
             return UserStatus.Incorrect;
         }
-
-        // Deprecated
-//        public ResultReason<ShouldNotSeedReason> ShouldSeed()
-//        {
-//            if(_settings.Servers.Count == 0)
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NoServerDefined);
-//
-//            if (!Session.SeedingEnabled)
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.SeedingDisabled);
-//            
-//            if(GetUserStatus() == UserStatus.None)
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotLoggedIn);
-//
-//            if(GetUserStatus() == UserStatus.Incorrect)
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.IncorrectUser);
-//
-//            if(BfIsRunning())
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.GameAlreadyRunning);
-//
-//            if(_sessionData.CurrentPlayers > CurrentServer.MinPlayers)
-//                return new ResultReason<ShouldNotSeedReason>(false, ShouldNotSeedReason.NotInRange);
-//
-//            return new ResultReason<ShouldNotSeedReason>(true);
-//        }
-//
-//        public ResultReason<KickReason> ShouldKick()
-//        {
-//            if(!BfIsRunning())
-//                return new ResultReason<KickReason>(false, KickReason.GameNotRunning);
-//
-//            if(_settings.Servers.Count == 0)
-//                return new ResultReason<KickReason>(false, KickReason.NoServerDefined);
-//
-//            if(_sessionData.CurrentPlayers > CurrentServer.MaxPlayers)
-//                return new ResultReason<KickReason>(true, KickReason.AboveSeedingRange);
-//
-//            return new ResultReason<KickReason>(false);
-//        }
     }
 
  
@@ -218,15 +180,11 @@ namespace PureSeeder.Core.Context
     {
         public PlayerStatus GetPlayerStatus(IDataContext context)
         {
-//            var player = context.Session.CurrentLoggedInUser;
-//            if (player == Constants.NotLoggedInUsername)
-//                return new PlayerStatus(null, null);
-
             var httpClient = new HttpClient();
 
             /////
 
-            var serverResponse = httpClient.GetAsync("http://bf4-server1.purebattlefield.org").Result;
+            //var serverResponse = httpClient.GetAsync("http://bf4-server1.purebattlefield.org").Result;
 
             /////
 

@@ -78,9 +78,8 @@ namespace PureSeeder.Forms
 
             CreateBindings();
             UiSetup();
-            
+
             await RefreshServerStatusesNoSeed();
-            
 
             geckoWebBrowser1.DocumentCompleted += BrowserChanged;
 
@@ -262,13 +261,27 @@ namespace PureSeeder.Forms
 
         private async Task RefreshServerStatusesNoSeed()
         {
-            await _context.UpdateServerStatuses();
+            try
+            {
+                await _context.UpdateServerStatuses();
+            }
+            catch (Exception ex) // Just try again later
+            {
+                //throw;
+            }
         }
 
         private async Task RefreshServerStatuses()
         {
-            await _context.UpdateServerStatuses();
-            //await Seed();  // Using random seeding timer for now RandomSeedTimerHandler(object, EventArgs)
+            try
+            {
+                await _context.UpdateServerStatuses();
+                //await Seed();  // Using random seeding timer for now RandomSeedTimerHandler(object, EventArgs)
+            }
+            catch  // Just try again later
+            {
+                
+            }
         }
 
         private async Task Seed()
