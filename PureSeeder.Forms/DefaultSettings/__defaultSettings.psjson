@@ -1,6 +1,13 @@
 {
   "Servers": [
     {
+      "Name": "PURE Battlefield #2",
+      "Address": "http://bf4-server2.purebattlefield.org",
+      "MinPlayers": 4,
+      "MaxPlayers": 40,
+      "SeedingEnabled": true
+    },
+    {
       "Name": "PURE Battlefield #1",
       "Address": "http://bf4-server1.purebattlefield.org",
       "MinPlayers": 4,
@@ -19,13 +26,6 @@
       "Address": "http://bf4-server4.purebattlefield.org",
       "MinPlayers": 4,
       "MaxPlayers": 32,
-      "SeedingEnabled": true
-    },
-    {
-      "Name": "PURE Battlefield #2",
-      "Address": "http://bf4-server2.purebattlefield.org",
-      "MinPlayers": 4,
-      "MaxPlayers": 40,
       "SeedingEnabled": true
     }
   ],
