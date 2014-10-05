@@ -34,6 +34,7 @@ namespace PureSeeder.Core.Configuration
             public const string Password = "Password";
             public const string AutoMinimizeSeeder = "AutoMinimizeSeeder";
             public const string AutoMinimizeGame = "AutoMinimizeGame";
+            public const string ReadyUpperTimer = "ReadyUpperTimer";
         }
 
         public static class BattlelogUrlTemplates

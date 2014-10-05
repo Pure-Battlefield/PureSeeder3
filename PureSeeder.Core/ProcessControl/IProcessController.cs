@@ -15,6 +15,7 @@ namespace PureSeeder.Core.ProcessControl
 
         ProcessMonitor GetProcessMonitor();
         IdleKickAvoider GetIdleKickAvoider();
+        ReadyUpper GetReadyUpper();
     }
 
     class ProcessController : IProcessController
@@ -55,6 +56,11 @@ namespace PureSeeder.Core.ProcessControl
         public IdleKickAvoider GetIdleKickAvoider()
         {
             return new IdleKickAvoider();
+        }
+
+        public ReadyUpper GetReadyUpper()
+        {
+            return new ReadyUpper();
         }
     }
 }

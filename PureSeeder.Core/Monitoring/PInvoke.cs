@@ -18,6 +18,31 @@ namespace PureSeeder.Core.Monitoring
             ExternalDefs.SetForegroundWindow(curhWnd);  // Set the foreground window back
         }
 
+        public static void SendEnterPress(string wndName)
+        {
+            var curhWnd = ExternalDefs.GetForegroundWindow();
+            var hWnd = FindWindow(wndName);
+
+            ExternalDefs.SetForegroundWindow(hWnd);
+
+            var enterPress = GetEnterInput();
+
+            ExternalDefs.SendInput(1, enterPress, Marshal.SizeOf(typeof(INPUT)));
+
+            ExternalDefs.SetForegroundWindow(curhWnd);
+        }
+
+        private static INPUT[] GetEnterInput()
+        {
+            var keyDown = new INPUT();
+            keyDown.type = 1;
+            keyDown.ki.wScan = 0x1C;
+            keyDown.ki.time = 0;
+            keyDown.ki.dwExtraInfo = IntPtr.Zero;
+
+            return new INPUT[1]{keyDown};
+        }
+
         public static void MinimizeWindow(string wndName)
         {
             var curhWnd = ExternalDefs.GetForegroundWindow();  // Get the handle for the current foreground window
@@ -107,11 +132,57 @@ namespace PureSeeder.Core.Monitoring
         [DllImport("user32.dll")]
         public static extern IntPtr GetActiveWindow();
 
+        [DllImport("user32.dll")]
+        public static extern UInt32 SendInput(UInt32 nInputs, [MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] INPUT[] pInputs, Int32 cbSize);
+
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MOUSEINPUT
+    {
+        public int dx;
+        public int dy;
+        public int mouseData;
+        public int dwFlags;
+        public int time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct KEYBDINPUT
+    {
+        public short wVk;
+        public short wScan;
+        public int dwFlags;
+        public int time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct HARDWAREINPUT
+    {
+        public int uMsg;
+        public short wParamL;
+        public short wParamH;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct INPUT
+    {
+        [FieldOffset(0)]
+        public int type;
+        [FieldOffset(4)]
+        public MOUSEINPUT mi;
+        [FieldOffset(4)]
+        public KEYBDINPUT ki;
+        [FieldOffset(4)]
+        public HARDWAREINPUT hi;
+    }
+
 
     public struct PROCESS_INFORMATION
     {
@@ -299,6 +370,95 @@ namespace PureSeeder.Core.Monitoring
         VK_RMENU = 0xA5,   //Right MENU key
         VK_PLAY = 0xFA,   //Play key
         VK_ZOOM = 0xFB, //Zoom key 
+    }
+
+    public enum DxVKeys : short
+    {
+        DIK_ESCAPE = 0x01,
+        DIK_1 = 0x02,
+        DIK_2 = 0x03,
+        DIK_3 = 0x04,
+        DIK_4 = 0x05,
+        DIK_5 = 0x06,
+        DIK_6 = 0x07,
+        DIK_7 = 0x08,
+        DIK_8 = 0x09,
+        DIK_9 = 0x0A,
+        DIK_0 = 0x0B,
+        DIK_MINUS = 0x0C    /* - on main keyboard */,
+        DIK_EQUALS = 0x0D,
+        DIK_BACK = 0x0E    /* backspace */,
+        DIK_TAB = 0x0F,
+        DIK_Q = 0x10,
+        DIK_W = 0x11,
+        DIK_E = 0x12,
+        DIK_R = 0x13,
+        DIK_T = 0x14,
+        DIK_Y = 0x15,
+        DIK_U = 0x16,
+        DIK_I = 0x17,
+        DIK_O = 0x18,
+        DIK_P = 0x19,
+        DIK_LBRACKET = 0x1A,
+        DIK_RBRACKET = 0x1B,
+        DIK_RETURN = 0x1C    /* Enter on main keyboard */,
+        DIK_LCONTROL = 0x1D,
+        DIK_A = 0x1E,
+        DIK_S = 0x1F,
+        DIK_D = 0x20,
+        DIK_F = 0x21,
+        DIK_G = 0x22,
+        DIK_H = 0x23,
+        DIK_J = 0x24,
+        DIK_K = 0x25,
+        DIK_L = 0x26,
+        DIK_SEMICOLON = 0x27,
+        DIK_APOSTROPHE = 0x28,
+        DIK_GRAVE = 0x29    /* accent grave */,
+        DIK_LSHIFT = 0x2A,
+        DIK_BACKSLASH = 0x2B,
+        DIK_Z = 0x2C,
+        DIK_X = 0x2D,
+        DIK_C = 0x2E,
+        DIK_V = 0x2F,
+        DIK_B = 0x30,
+        DIK_N = 0x31,
+        DIK_M = 0x32,
+        DIK_COMMA = 0x33,
+        DIK_PERIOD = 0x34    /* . on main keyboard */,
+        DIK_SLASH = 0x35    /* / on main keyboard */,
+        DIK_RSHIFT = 0x36,
+        DIK_MULTIPLY = 0x37    /* * on numeric keypad */,
+        DIK_LMENU = 0x38    /* left Alt */,
+        DIK_SPACE = 0x39,
+        DIK_CAPITAL = 0x3A,
+        DIK_F1 = 0x3B,
+        DIK_F2 = 0x3C,
+        DIK_F3 = 0x3D,
+        DIK_F4 = 0x3E,
+        DIK_F5 = 0x3F,
+        DIK_F6 = 0x40,
+        DIK_F7 = 0x41,
+        DIK_F8 = 0x42,
+        DIK_F9 = 0x43,
+        DIK_F10 = 0x44,
+        DIK_NUMLOCK = 0x45,
+        DIK_SCROLL = 0x46    /* Scroll Lock */,
+        DIK_NUMPAD7 = 0x47,
+        DIK_NUMPAD8 = 0x48,
+        DIK_NUMPAD9 = 0x49,
+        DIK_SUBTRACT = 0x4A    /* - on numeric keypad */,
+        DIK_NUMPAD4 = 0x4B,
+        DIK_NUMPAD5 = 0x4C,
+        DIK_NUMPAD6 = 0x4D,
+        DIK_ADD = 0x4E    /* + on numeric keypad */,
+        DIK_NUMPAD1 = 0x4F,
+        DIK_NUMPAD2 = 0x50,
+        DIK_NUMPAD3 = 0x51,
+        DIK_NUMPAD0 = 0x52,
+        DIK_DECIMAL = 0x53    /* . on numeric keypad */,
+        DIK_F11 = 0x57,
+        DIK_F12 = 0x58
     }
 
     public enum ShowWindowCommands

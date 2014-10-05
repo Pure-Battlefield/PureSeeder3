@@ -105,6 +105,14 @@ namespace PureSeeder.Core.Settings
             set { this[Constants.SettingNames.IdleKickAvoidanceTimer] = (int) value; }
         }
 
+        [UserScopedSetting]
+        [DefaultSettingValue("5")]
+        public int ReadyUpperTimer
+        {
+            get { return ((int) this[Constants.SettingNames.ReadyUpperTimer]); }
+            set { this[Constants.SettingNames.ReadyUpperTimer] = (int) value; }
+        }
+
         [UserScopedSetting()]
         [DefaultSettingValue("false")]
         public bool AutoMinimizeSeeder

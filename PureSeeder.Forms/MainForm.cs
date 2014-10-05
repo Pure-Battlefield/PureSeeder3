@@ -31,6 +31,7 @@ namespace PureSeeder.Forms
         private readonly ISeederActionFactory _seederActionFactory;
         private readonly IdleKickAvoider _idleKickAvoider;
         private readonly ProcessMonitor _processMonitor;
+        private readonly ReadyUpper _readyUpper;
         private readonly Timer _browserRefreshTimer;
         private readonly Timer _statusRefreshTimer;
         private readonly Timer _randomSeedTimer;
@@ -41,6 +42,7 @@ namespace PureSeeder.Forms
         // CancellationTokens
         private CancellationToken _avoidIdleKickCt;
         private CancellationToken _processMonitorCt;
+        private CancellationToken _readyUpdderCt;
 
         private MainForm()
         {
@@ -68,6 +70,7 @@ namespace PureSeeder.Forms
             _processMonitor = _processController.GetProcessMonitor();
             _processMonitor.OnProcessStateChanged += HandleProcessStatusChange;
             _idleKickAvoider = _processController.GetIdleKickAvoider();
+            _readyUpper = _processController.GetReadyUpper();
         }
 
         #region Initialization
@@ -91,6 +94,7 @@ namespace PureSeeder.Forms
             // Spin up background processes
             SpinUpProcessMonitor();
             SpinUpAvoidIdleKick();
+            SpinUpReadyUpper();
 
             await LoadBattlelog();
 
@@ -119,6 +123,13 @@ namespace PureSeeder.Forms
             await
                 _idleKickAvoider.AvoidIdleKick(_avoidIdleKickCt, _context.Settings.IdleKickAvoidanceTimer,
                     () => Constants.Games.Bf4);
+        }
+
+        private async void SpinUpReadyUpper()
+        {
+            _readyUpdderCt = new CancellationTokenSource().Token;
+            await
+                _readyUpper.ReadyUp(_readyUpdderCt, _context.Settings.ReadyUpperTimer, () => Constants.Games.Bf4);
         }
 
         private void FirstRunCheck()

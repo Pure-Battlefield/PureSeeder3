@@ -113,6 +113,12 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.IdleKickAvoidanceTimer); }
         }
 
+        public int ReadyUpperTimer
+        {
+            get { return _settings.ReadyUpperTimer; }
+            set { SetProperty(_settings, value, x => x.ReadyUpperTimer); }
+        }
+
         [JsonIgnore]
         public string Password
         {

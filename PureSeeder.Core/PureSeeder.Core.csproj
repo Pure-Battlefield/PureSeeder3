@@ -76,6 +76,7 @@
     <Compile Include="Monitoring\GameMinimizer.cs" />
     <Compile Include="Monitoring\PInvoke.cs" />
     <Compile Include="Monitoring\ProcessMonitor.cs" />
+    <Compile Include="Monitoring\ReadyUpper.cs" />
     <Compile Include="Monitoring\RunAction.cs" />
     <Compile Include="PartialObjects\BuildExpressionStack.cs" />
     <Compile Include="ProcessControl\IProcessController.cs" />
