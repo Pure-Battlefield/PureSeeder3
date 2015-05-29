@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using PureSeeder.Core.Settings;
 
 namespace PureSeeder.Core.Context
 {
@@ -7,12 +8,18 @@ namespace PureSeeder.Core.Context
     {
         public Task<SeederAction> GetAction(IDataContext context)
         {
-            return Task<SeederAction>.Factory.StartNew(() => { 
+            return Task<SeederAction>.Factory.StartNew(() => {
+                var itimes = context.Session.CurrentTimes;
+
                 if(!context.Session.SeedingEnabled)
                     return new SeederAction(SeederActionType.Noop, "Seeding is disabled.");
+                if (itimes is EmptyTime)
+                    return new SeederAction(SeederActionType.Noop, "No servers for this time slot.");
+
+                var times = (Times) itimes;
 
                 // Iterate over servers where SeedingEnabled is true
-                foreach (var serverStatus in context.Session.ServerStatuses.Where(status => status.SeedingEnabled))
+                foreach (var serverStatus in times.ServerStatuses.Where(status => status.SeedingEnabled))
                 {
                     if(!context.IsSeeding() && serverStatus.CurPlayers < serverStatus.MinPlayers)
                         return new SeederAction(SeederActionType.Seed, "Start seeding on highest priority server.", serverStatus);

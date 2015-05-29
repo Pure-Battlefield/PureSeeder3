@@ -19,7 +19,7 @@ namespace PureSeeder.Core.Context
             _settings = settings;
             DirtySettings = false;
             this.PropertyChanged += SettingChanged;
-            Servers.ServerChanged += SettingChanged;
+            TimesCollection.TimesCollectionChanged += SettingChanged;
         }
 
         // Note: This is to allow Deserializing to this class
@@ -68,10 +68,10 @@ namespace PureSeeder.Core.Context
             set { SetProperty(_settings, value, x => x.EnableLogging); }
         }
 
-        public Servers Servers
+        public TimesCollection TimesCollection
         {
-            get { return _settings.Servers; }
-            set { SetProperty(_settings, value, x => x.Servers); }
+            get { return _settings.TimesCollection; }
+            set { SetProperty(_settings, value, x => x.TimesCollection); }
         }
 
         // Deprecated

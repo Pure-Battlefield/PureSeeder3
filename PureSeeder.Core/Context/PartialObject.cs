@@ -24,9 +24,20 @@ namespace PureSeeder.Core.Context
             CreatePartialInfo(json);
         }
 
+        private PartialObject(JObject info)
+        {
+            _expressionStackBuilder = new BuildExpressionStack();
+            PartialInfo = info;
+        }
+
         public static PartialObject<TEntity> Create(string json)
         {
             return new PartialObject<TEntity>(new BuildExpressionStack(), json);
+        }
+
+        public static PartialObject<TEntity> Create(JObject info)
+        {
+            return new PartialObject<TEntity>(info);
         }
 
         private void CreatePartialInfo(string json)
@@ -86,7 +97,7 @@ namespace PureSeeder.Core.Context
             {
                 if (value is JArray)
                 {
-                    valueItem = ((JArray) value).ToObject<TValue>();
+                    valueItem = ((JArray)value).ToObject<TValue>();
                     return true;
                 }
                 valueItem = value.Value<TValue>();

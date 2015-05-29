@@ -23,7 +23,7 @@ namespace PureSeeder.Core.Configuration
             public const string SleepWhenSeeding = "SleepWhenSeeding";
             public const string EnableLogging = "EnableLogging";
             public const string Username = "Username";
-            public const string Servers = "Servers";
+            public const string TimesCollection = "TimesCollection";
             public const string CurrentServer = "CurrentServer";
             public const string RefreshInterval = "RefreshInterval";
             public const string StatusRefreshInterval = "StatusRefreshInterval";

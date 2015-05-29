@@ -81,5 +81,10 @@ namespace PureSeeder.Core.Context
             server.CurPlayers = curPlayers;
             server.ServerMax = serverMax;
         }
+
+        public Servers Servers
+        {
+            get { return this._serverCollection; }
+        }
     }
 }

@@ -87,9 +87,13 @@
     <Compile Include="ServerManagement\IUpdateServerIds.cs" />
     <Compile Include="ServerManagement\ServerStatusUpdater.cs" />
     <Compile Include="ServerManagement\UpdateServerIds.cs" />
+    <Compile Include="Settings\EmptyTime.cs" />
+    <Compile Include="Settings\ITimes.cs" />
     <Compile Include="Settings\SeederSettings.cs" />
     <Compile Include="Settings\Server.cs" />
     <Compile Include="Settings\Servers.cs" />
+    <Compile Include="Settings\TimesCollection.cs" />
+    <Compile Include="Settings\Times.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

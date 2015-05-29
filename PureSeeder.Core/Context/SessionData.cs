@@ -8,15 +8,32 @@ namespace PureSeeder.Core.Context
     {
         public SessionData()
         {
-            _serverStatuses = new ServerStatusCollection();
+            _timesCollection = new TimesCollection();
         }
         
         private bool _seedingEnabled = true;
         private string _currentLoggedInUser;
         private GameInfo _currentGame = Constants.Games.Bf4;
         private bool _bfIsRunning;
-        private ServerStatusCollection _serverStatuses;
+        private TimesCollection _timesCollection;
         private ServerStatus _currentServer;
+        private ServerStatusCollection _currentServers;
+
+        public ITimes CurrentTimes
+        {
+            get 
+            {
+                //This is O(n) on the number of times. Maybe use timers and a constant.
+                foreach (var times in this._timesCollection)
+                {
+                    if (times.IsInTime())
+                    {
+                        return times;
+                    }
+                }
+                return new EmptyTime();
+            }
+        }
 
         public bool SeedingEnabled
         {
@@ -44,12 +61,16 @@ namespace PureSeeder.Core.Context
             set { SetField(ref _bfIsRunning, value); }
         }
 
-        public ServerStatusCollection ServerStatuses { get { return _serverStatuses; }}
+        public TimesCollection TimesCollection { get { return _timesCollection; }}
 
         public ServerStatus CurrentServer
         {
             get { return this._currentServer; }
             set { SetField(ref _currentServer, value); }
         }
+    }
+
+    class DayNotSpannedException : System.Exception
+    {
     }
 }

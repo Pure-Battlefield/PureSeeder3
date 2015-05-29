@@ -42,19 +42,19 @@ namespace PureSeeder.Core.Settings
         }
 
         [UserScopedSetting()]
-        public Servers Servers
+        public TimesCollection TimesCollection
         {
             get
             {
-                if (this[Constants.SettingNames.Servers] == null)
+                if (this[Constants.SettingNames.TimesCollection] == null)
                 {
                     //var defaultServers = GetDefaultServers();
-                    var defaultServers = new Servers();
-                    Servers = defaultServers;
+                    var defaultTimes = new TimesCollection();
+                    TimesCollection = defaultTimes;
                 }
-                return (Servers) this[Constants.SettingNames.Servers];
+                return (TimesCollection) this[Constants.SettingNames.TimesCollection];
             }
-            private set { this[Constants.SettingNames.Servers] = (Servers) value; }
+            private set { this[Constants.SettingNames.TimesCollection] = (TimesCollection) value; }
         }
         
         [UserScopedSetting()]

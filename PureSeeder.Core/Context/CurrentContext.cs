@@ -51,7 +51,9 @@ namespace PureSeeder.Core.Context
             _serverStatusUpdater = serverStatusUpdater;
             _playerStatusGetter = playerStatusGetter;
 
-            _sessionData.ServerStatuses.SetInnerServerCollection(_settings.Servers);
+            //Deprecated
+            //add all times
+            //_sessionData.TimesCollection.SetTimes(_settings.TimesCollection);
         }
 
         public SessionData Session { get { return _sessionData; } }
@@ -74,18 +76,46 @@ namespace PureSeeder.Core.Context
             newSettings.MergeItem((BindableSettings x) => x.RefreshInterval, _settings);
 
             // Note: This is a little hacky but I'm not sure how to trigger a refresh on the binding when replacing the entire list
-            var servers = new Servers();
-            newSettings.MergeItem(x => x.Servers, ref servers);
+            var timesCollection = MergeTimes(newSettings);
 
-            if (servers.Any())
+            if (timesCollection.Any())
             {
-                _settings.Servers.Clear();
+                _settings.TimesCollection.Clear();
                 //_settings.CurrentServer = 0; Deprecated
-                foreach (var server in servers)
+                foreach (var time in timesCollection)
                 {
-                    _settings.Servers.Add(server);
+                    _settings.TimesCollection.Add(time);
                 }
             }
+        }
+
+        private TimesCollection MergeTimes(PartialObject<BindableSettings> settings)
+        {
+            var timesCollection = new TimesCollection();
+
+            foreach (var timesToken in settings.PartialInfo.Children<JArray>())
+            {
+                foreach (var timesInArray in (JArray) timesToken)
+                {
+                    var times = new Times();
+                    var newSettings = PartialObject<Times>.Create((JObject) timesInArray);
+
+                    newSettings.MergeItem(x => x.StartString, times);
+                    newSettings.MergeItem(x => x.EndString, times);
+
+                    var servers = new Servers();
+                    newSettings.MergeItem(x => x.Servers, ref servers);
+
+                    if (servers.Any())
+                    {
+                        times.Servers = servers;
+                    }
+
+                    timesCollection.Add(times);
+                }
+            }
+
+            return timesCollection;
         }
 
         public Task UpdateServerStatuses()
