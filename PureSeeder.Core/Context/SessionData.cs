@@ -17,23 +17,8 @@ namespace PureSeeder.Core.Context
         private bool _bfIsRunning;
         private TimesCollection _timesCollection;
         private ServerStatus _currentServer;
-        private ServerStatusCollection _currentServers;
 
-        public ITimes CurrentTimes
-        {
-            get 
-            {
-                //This is O(n) on the number of times. Maybe use timers and a constant.
-                foreach (var times in this._timesCollection)
-                {
-                    if (times.IsInTime())
-                    {
-                        return times;
-                    }
-                }
-                return new EmptyTime();
-            }
-        }
+        public Times CurrentTimes { get { return this._timesCollection.CurrentTimes } }
 
         public bool SeedingEnabled
         {
@@ -68,9 +53,5 @@ namespace PureSeeder.Core.Context
             get { return this._currentServer; }
             set { SetField(ref _currentServer, value); }
         }
-    }
-
-    class DayNotSpannedException : System.Exception
-    {
     }
 }
