@@ -1,61 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace PureSeeder.Core.Settings
 {
-    public class TimesCollection : BindingList<Times>
+    public class TimesCollection
     {
-        public delegate void TimesCollectionChangedHandler(object sender, PropertyChangedEventArgs e);
-        public event TimesCollectionChangedHandler TimesCollectionChanged;
+        private Times _currentTimes;
+        private TimesCollection _start;
+        private TimesCollection _rest;
 
-        protected override void OnAddingNew(AddingNewEventArgs e)
+        public Times CurrentTimes { get { return this._currentTimes; } }
+
+        public TimesCollection()
         {
-            if (e.NewObject != null)
-                ((Times) e.NewObject).PropertyChanged += OnTimesCollectionChanged;
 
-            base.OnAddingNew(e);
         }
 
-        protected override void RemoveItem(int index)
+        private TimesCollection(Times times, TimesCollection start)
         {
-            if (this[index] != null)
-                this[index].PropertyChanged -= OnTimesCollectionChanged;
-
-            base.RemoveItem(index);
+            this._currentTimes = times;
+            this._start = start;
+            this._rest = null;
         }
 
-        private void OnTimesCollectionChanged(object sender, PropertyChangedEventArgs e)
+        public void Add(Times times)
         {
-            var handler = TimesCollectionChanged;
-            if (handler != null)
-                handler(sender, e);
+            if (this._start == null)
+            {
+                this._currentTimes = times;
+                this._start = this;
+            }
+            else
+            {
+                this._rest = new TimesCollection(times, this._start);
+            }
         }
 
-        public void MoveUp(int index)
+        public TimesCollection Next()
         {
-            if (index <= 0) return;
-
-            var item = this[index];
-            var itemAbove = this[index - 1];
-
-            this.RemoveAt(index);
-            this.Insert(index - 1, item);
+            if (this._rest == null)
+            {
+                return this._start;
+            } 
+            else
+            {
+                return this._rest;
+            }
         }
 
-        public void MoveDown(int index)
+        public bool HasStarted(TimeSpan now)
         {
-            if (index + 1 >= this.Count) return;
+            return TimeSpan.Compare(now, this._currentTimes.Start) <= 0;
+        }
 
-            var item = this[index];
-            var itemBelow = this[index + 1];
-
-            this.RemoveAt(index);
-            this.Insert(index + 1, item);
+        public bool HasEnded(TimeSpan now)
+        {
+            return TimeSpan.Compare(now, this._currentTimes.End) > 0;
         }
     }
 }

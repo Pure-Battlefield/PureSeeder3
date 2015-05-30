@@ -78,14 +78,9 @@ namespace PureSeeder.Core.Context
             // Note: This is a little hacky but I'm not sure how to trigger a refresh on the binding when replacing the entire list
             var timesCollection = MergeTimes(newSettings);
 
-            if (timesCollection.Any())
+            if (timesCollection.CurrentTimes != null)
             {
-                _settings.TimesCollection.Clear();
-                //_settings.CurrentServer = 0; Deprecated
-                foreach (var time in timesCollection)
-                {
-                    _settings.TimesCollection.Add(time);
-                }
+                _settings.TimesCollection = timesCollection;
             }
         }
 
