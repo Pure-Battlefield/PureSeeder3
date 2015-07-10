@@ -469,13 +469,19 @@ namespace PureSeeder.Forms
         {
             SetStatus("Attempting login.");
 
+            string jsClickLoginCommand = "$(name=\"a.login-btn\")[0].click();";
+
+            RunJavascript(jsClickLoginCommand);
+
+            await Sleep(1);
+
             // Todo: This should be moved into configuration so it can more easily be changed
-            string jsCommand =
+            string jsEmailPassCommand =
                 String.Format(
-                    "$('#base-login-email').val('{0}');$('#base-login-password').val('{1}');$('#baseloginpersist').val() == '1';$(\"[name='submit']\").click();",
+                    "$('#email').val('{0}');$('#password').val('{1}');$('#btnLogin')[0].click();",
                     email.Text, password.Text);
 
-            RunJavascript(jsCommand);
+            RunJavascript(jsEmailPassCommand);
 
             await Sleep(1);
             SetStatus("");
