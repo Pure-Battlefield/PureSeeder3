@@ -57,7 +57,7 @@ namespace PureSeeder.Core.ServerManagement
         {
             await _serverIdUpdater.Update(context);
 
-            var allTasks = context.Session.ServerStatuses.Select(UpdateServerStatus);
+            var allTasks = context.Session.CurrentTimesCollection.CurrentTimes.ServerStatuses.Select(UpdateServerStatus);
 
             await Task.WhenAll(allTasks);
         }

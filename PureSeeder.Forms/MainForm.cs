@@ -216,7 +216,12 @@ namespace PureSeeder.Forms
             saveSettings.DataBindings.Add("Enabled", _context.Settings, x => x.DirtySettings, true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
-            var statusBindingSource = new BindingSource() {DataSource = _context.Session.ServerStatuses};
+            GridBindings();
+        }
+
+        private void GridBindings()
+        {
+            var statusBindingSource = new BindingSource() { DataSource = _context.Session.TimesCollection.CurrentTimes.ServerStatuses };
             dataGridView1.DataSource = statusBindingSource;
         }
 
@@ -273,13 +278,26 @@ namespace PureSeeder.Forms
 
         private async Task RefreshServerStatusesNoSeed()
         {
+            //Probably not the best way to do this, but could not think of a better way
+            var updated = false;
             await _context.UpdateServerStatuses();
+
+            if (updated)
+            {
+                GridBindings();
+            }
         }
 
         private async Task RefreshServerStatuses()
         {
+            var updated = false;
             await _context.UpdateServerStatuses();
             //await Seed();  // Using random seeding timer for now RandomSeedTimerHandler(object, EventArgs)
+
+            if (updated)
+            {
+                GridBindings();
+            }
         }
 
         private async Task Seed()

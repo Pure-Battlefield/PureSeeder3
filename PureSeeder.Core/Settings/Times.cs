@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace PureSeeder.Core.Settings
 {
-    class Times : BindableBase, ITimes
+    public class Times : BindableBase
     {
         private string _startString;
         private string _endString;
@@ -89,11 +89,5 @@ namespace PureSeeder.Core.Settings
 
 
         public ServerStatusCollection ServerStatuses { get { return this._serversStatuses; } }
-
-        public bool IsInTime()
-        {
-            DateTime now = DateTime.Now;
-            return (TimeSpan.Compare(now.TimeOfDay, this._start) >= 0) && (TimeSpan.Compare(now.TimeOfDay, this._end) < 0);
-        }
     }
 }

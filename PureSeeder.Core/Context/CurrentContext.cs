@@ -53,7 +53,7 @@ namespace PureSeeder.Core.Context
 
             //Deprecated
             //add all times
-            //_sessionData.TimesCollection.SetTimes(_settings.TimesCollection);
+            //_sessionData.ServerStatuses.SetInnerServerCollection(_settings.Servers);
         }
 
         public SessionData Session { get { return _sessionData; } }
@@ -115,6 +115,10 @@ namespace PureSeeder.Core.Context
 
         public Task UpdateServerStatuses()
         {
+            if (_sessionData.UpdateTimesCollection(DateTime.Now.TimeOfDay))
+            {
+
+            }
             return _serverStatusUpdater.UpdateServerStatuses(this);
         }
 

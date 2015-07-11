@@ -32,8 +32,8 @@ namespace PureSeeder.Core.ServerManagement
         public async Task Update(IDataContext context, bool updateAll = false)
         {
             var servers = updateAll
-                ? context.Settings.Servers
-                : context.Settings.Servers.Where(x => String.IsNullOrEmpty(x.Id));
+                ? context.Settings.TimesCollection.CurrentTimes.Servers
+                : context.Settings.TimesCollection.CurrentTimes.Servers.Where(x => String.IsNullOrEmpty(x.Id));
 
             var allTasks = servers.Select(UpdateServerIdAsync);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PureSeeder.Core.Configuration;
 using PureSeeder.Core.Settings;
 
@@ -18,7 +19,7 @@ namespace PureSeeder.Core.Context
         private TimesCollection _timesCollection;
         private ServerStatus _currentServer;
 
-        public Times CurrentTimes { get { return this._timesCollection.CurrentTimes } }
+        public TimesCollection CurrentTimesCollection { get { return this._timesCollection; } }
 
         public bool SeedingEnabled
         {
@@ -47,6 +48,18 @@ namespace PureSeeder.Core.Context
         }
 
         public TimesCollection TimesCollection { get { return _timesCollection; }}
+
+        public bool UpdateTimesCollection(TimeSpan now)
+        {
+            var update = _timesCollection.HasEnded(now);
+
+            if (update)
+            {
+                _timesCollection = _timesCollection.Next();
+            }
+
+            return update;
+        }
 
         public ServerStatus CurrentServer
         {

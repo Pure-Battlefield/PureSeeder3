@@ -53,7 +53,7 @@ namespace PureSeeder.Forms
 
         static void LoadDefaultServers(IDataContext context)
         {
-            if (!context.Settings.TimesCollection.Any())
+            if (context.Settings.TimesCollection.CurrentTimes != null)
             {
                 context.ImportSettings("DefaultSettings/__defaultSettings.psjson");
             }
