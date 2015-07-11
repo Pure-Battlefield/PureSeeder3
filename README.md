@@ -1,6 +1,6 @@
 ## PureSeeder 3
 
-Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://www.reddit.com/r/purebattlefield) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica](https://github.com/gsarrica) and [Sam Hecht](https://github.com/ForceTen2112).
+Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https://github.com/bradrhodes") for the [PURE Battlefield](http://gamewithpure.org) community. Inspired by [battlefield-seeder](https://github.com/Pure-Battlefield/Seeding) by Tim Froehlich. Modified by [Gregory Sarrica](https://github.com/gsarrica) and [Sam Hecht](https://github.com/ForceTen2112).
 
 
 ### Main Features
@@ -16,6 +16,9 @@ Windows based seeding tool for Battlefield 4.  Created by [Brad Rhodes]("https:/
 
 
 ### Changlog
+v 2.0.1.0
+- Fixed logging in after Battelog Update
+
 v 2.0.0.x
 - Added functionality for monitoring multiple servers and making a decision on which one to seed
 - Added ability to prioritize servers in the UI
